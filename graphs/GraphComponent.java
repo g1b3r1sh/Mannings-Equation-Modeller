@@ -1,0 +1,34 @@
+package graphs;
+
+import java.awt.Graphics;
+
+public abstract class GraphComponent
+{
+	private Graph graph;
+
+	public GraphComponent(Graph graph)
+	{
+		this.graph = graph;
+	}
+
+	public Graph getGraph()
+	{
+		return this.graph;
+	}
+
+	public int getWidth()
+	{
+		return this.graph.getWidth();
+	}
+
+	public int getHeight()
+	{
+		return this.graph.getHeight();
+	}
+
+	// Override to paint component in graph
+	protected void paintComponent(Graphics g)
+	{
+		return;
+	}
+}
