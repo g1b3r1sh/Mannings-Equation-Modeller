@@ -24,24 +24,24 @@ public class DataVisualsHandler
 		return this.data;
 	}
 
-	public void plotData()
+	public DataPlotter plotData()
 	{
-		this.addVisualiser(new DataPlotter(this.graph, this.data, 10));
+		return this.addVisualiser(new DataPlotter(this.graph, this.data, 10));
 	}
 	
 	public void unplotData()
 	{
-		this.removeVisualiser(visualiser -> visualiser instanceof DataPlotter);
+		this.removeVisualisers(visualiser -> visualiser instanceof DataPlotter);
 	}
 
-	public void connectData()
+	public DataLineConnector connectData()
 	{
-		this.addVisualiser(new DataLineConnector(this.graph, this.data));
+		return this.addVisualiser(new DataLineConnector(this.graph, this.data));
 	}
 
 	public void unconnectData()
 	{
-		this.removeVisualiser(visualiser -> visualiser instanceof DataLineConnector);
+		this.removeVisualisers(visualiser -> visualiser instanceof DataLineConnector);
 	}
 
 	public void clearData()
@@ -55,13 +55,14 @@ public class DataVisualsHandler
 		}
 	}
 
-	private void addVisualiser(DataVisualiser visualiser)
+	private <V extends DataVisualiser> V addVisualiser(V visualiser)
 	{
 		this.graph.getGraphComponents().add(visualiser);
 		this.dataVisuals.add(visualiser);
+		return visualiser;
 	}
 
-	private void removeVisualiser(Predicate<DataVisualiser> predicate)
+	private void removeVisualisers(Predicate<DataVisualiser> predicate)
 	{
 		Iterator<DataVisualiser> it = this.dataVisuals.iterator();
 		while (it.hasNext())

@@ -15,9 +15,9 @@ public class GraphDataCollection
 
 	public boolean containsData(DiscreteData<?, ?> data)
 	{
-		for (DataVisualsHandler wrapper : this.dataList)
+		for (DataVisualsHandler handler : this.dataList)
 		{
-			if (wrapper.getData() == data)
+			if (handler.getData() == data)
 			{
 				return true;
 			}
@@ -25,13 +25,13 @@ public class GraphDataCollection
 		return false;
 	}
 
-	public DataVisualsHandler getWrapper(DiscreteData<?, ?> data)
+	public DataVisualsHandler getVisualsHandler(DiscreteData<?, ?> data)
 	{
-		for (DataVisualsHandler wrapper : this.dataList)
+		for (DataVisualsHandler handler : this.dataList)
 		{
-			if (wrapper.getData() == data)
+			if (handler.getData() == data)
 			{
-				return wrapper;
+				return handler;
 			}
 		}
 		return null;
@@ -47,11 +47,11 @@ public class GraphDataCollection
 
 	public void removeData(DiscreteData<?, ?> data)
 	{
-		DataVisualsHandler wrapper = this.getWrapper(data);
-		if (wrapper != null)
+		DataVisualsHandler handler = this.getVisualsHandler(data);
+		if (handler != null)
 		{
-			wrapper.clearData();
-			this.dataList.remove(wrapper);
+			handler.clearData();
+			this.dataList.remove(handler);
 		}
 	}
 }

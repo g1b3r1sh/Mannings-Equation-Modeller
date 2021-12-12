@@ -1,12 +1,9 @@
 package graphs;
 
 import java.awt.Graphics;
-import java.awt.Color;
 
 public class DataPlotter extends DataVisualiser
 {
-	private final Color CIRCLE_COLOR = Color.BLACK;
-
 	private int circleSize;
 
 	public DataPlotter(Graph graph, DiscreteData<? extends Number, ? extends Number> data, int circleSize)
@@ -18,7 +15,7 @@ public class DataPlotter extends DataVisualiser
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		g.setColor(CIRCLE_COLOR);
+		g.setColor(this.getColor());
 		Plane plane = this.getGraph().getPlane();
 		for (Number x : this.getData().getXSet())
 		{
