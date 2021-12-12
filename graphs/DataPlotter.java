@@ -3,14 +3,14 @@ package graphs;
 import java.awt.Graphics;
 import java.awt.Color;
 
-public class DataVisualizer<N extends Number, M extends Number> extends GraphComponent
+public class DataPlotter<N extends Number, M extends Number> extends GraphComponent
 {
 	private Color CIRCLE_COLOR = Color.BLACK;
 
 	private DiscreteData<N, M> data;
 	private int circleSize;
 
-	public DataVisualizer(Graph graph, DiscreteData<N, M> data, int circleSize)
+	public DataPlotter(Graph graph, DiscreteData<N, M> data, int circleSize)
 	{
 		super(graph);
 

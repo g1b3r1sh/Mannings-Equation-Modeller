@@ -18,8 +18,7 @@ class Main {
 	data.set(3.5, 3);
 
 	JFrame frame = new JFrame("Graph Demo");
-	frame.setVisible(true);
-	frame.setSize(300, 300);
+	frame.setSize(500, 500);
 	frame.setLocation(5, 5);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -35,5 +34,6 @@ class Main {
 	graph.setMinimumSize(new Dimension(200, 200));
 
 	panel.add(graph);
+	frame.setVisible(true);
   }
 }

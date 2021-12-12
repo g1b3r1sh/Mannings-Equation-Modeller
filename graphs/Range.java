@@ -1,8 +1,5 @@
 package graphs;
 
-// NOTE: Move this to a better package if possible
-// TODO: Make this generic
-
 public class Range
 {
 	private int lower;
