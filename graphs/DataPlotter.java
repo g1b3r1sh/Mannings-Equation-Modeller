@@ -5,7 +5,7 @@ import java.awt.Color;
 
 public class DataPlotter extends DataVisualiser
 {
-	private Color CIRCLE_COLOR = Color.BLACK;
+	private final Color CIRCLE_COLOR = Color.BLACK;
 
 	private int circleSize;
 
@@ -18,16 +18,13 @@ public class DataPlotter extends DataVisualiser
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		if (this.getData() != null)
+		g.setColor(CIRCLE_COLOR);
+		Plane plane = this.getGraph().getPlane();
+		for (Number x : this.getData().getXSet())
 		{
-			g.setColor(CIRCLE_COLOR);
-			Plane plane = this.getGraph().getPlane();
-			for (Number x : this.getData().getXSet())
-			{
-				int xPos = plane.posX(x.doubleValue()) - this.circleSize / 2;
-				int yPos = plane.posY(this.getData().y(x).doubleValue()) - this.circleSize / 2;
-				g.fillOval(xPos, yPos, this.circleSize, this.circleSize);
-			}
+			int xPos = plane.posX(x) - this.circleSize / 2;
+			int yPos = plane.posY(this.getData().y(x)) - this.circleSize / 2;
+			g.fillOval(xPos, yPos, this.circleSize, this.circleSize);
 		}
 	}
 }

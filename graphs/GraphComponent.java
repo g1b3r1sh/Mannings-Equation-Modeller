@@ -26,9 +26,5 @@ public abstract class GraphComponent
 		return this.graph.getHeight();
 	}
 
-	// Override to paint component in graph
-	protected void paintComponent(Graphics g)
-	{
-		return;
-	}
+	protected abstract void paintComponent(Graphics g);
 }

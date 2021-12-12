@@ -31,6 +31,7 @@ class Main {
 	graph.getGraphComponents().add(new Grid(graph, 5, 10));
 	graph.getDataList().addData(data);
 	graph.getDataList().getWrapper(data).plotData();
+	graph.getDataList().getWrapper(data).connectData();
 	graph.setMinimumSize(new Dimension(200, 200));
 
 	panel.add(graph);
