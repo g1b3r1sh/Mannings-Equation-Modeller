@@ -35,6 +35,7 @@ class Main {
 	graph.setMinimumSize(new Dimension(200, 200));
 
 	panel.add(graph);
+	
 	frame.setVisible(true);
   }
 }

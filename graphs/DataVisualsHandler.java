@@ -4,15 +4,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
-// TODO: Have a better name
 // Responsible for handling interaction between data visualisers and graph
-public class DataWrapper
+public class DataVisualsHandler
 {
 	private Graph graph;
 	private DiscreteData<?, ?> data;
 	private LinkedList<DataVisualiser> dataVisuals;
 
-	public DataWrapper(Graph graph, DiscreteData<?, ?> data)
+	public DataVisualsHandler(Graph graph, DiscreteData<?, ?> data)
 	{
 		this.graph = graph;
 		this.data = data;

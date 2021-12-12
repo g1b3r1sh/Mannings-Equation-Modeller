@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class GraphDataCollection
 {
 	private Graph graph; // Graph to contain data in
-	private LinkedList<DataWrapper> dataList;
+	private LinkedList<DataVisualsHandler> dataList;
 
 	public GraphDataCollection(Graph graph)
 	{
@@ -15,7 +15,7 @@ public class GraphDataCollection
 
 	public boolean containsData(DiscreteData<?, ?> data)
 	{
-		for (DataWrapper wrapper : this.dataList)
+		for (DataVisualsHandler wrapper : this.dataList)
 		{
 			if (wrapper.getData() == data)
 			{
@@ -25,9 +25,9 @@ public class GraphDataCollection
 		return false;
 	}
 
-	public DataWrapper getWrapper(DiscreteData<?, ?> data)
+	public DataVisualsHandler getWrapper(DiscreteData<?, ?> data)
 	{
-		for (DataWrapper wrapper : this.dataList)
+		for (DataVisualsHandler wrapper : this.dataList)
 		{
 			if (wrapper.getData() == data)
 			{
@@ -41,13 +41,13 @@ public class GraphDataCollection
 	{
 		if (!this.containsData(data))
 		{
-			this.dataList.add(new DataWrapper(this.graph, data));
+			this.dataList.add(new DataVisualsHandler(this.graph, data));
 		}
 	}
 
 	public void removeData(DiscreteData<?, ?> data)
 	{
-		DataWrapper wrapper = this.getWrapper(data);
+		DataVisualsHandler wrapper = this.getWrapper(data);
 		if (wrapper != null)
 		{
 			wrapper.clearData();

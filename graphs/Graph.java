@@ -1,6 +1,5 @@
 package graphs;
 
-import java.util.LinkedList;
 import javax.swing.JComponent;
 import java.awt.Graphics;
 
