@@ -27,12 +27,12 @@ public class Graph extends JComponent
 {
 	private Plane plane;
 	private GraphComponentCollection components;
-	private LinkedList<DiscreteData<?, ?>> dataList;
+	private GraphDataCollection dataList;
 
 	public Graph()
 	{
 		this.components = new GraphComponentCollection();
-		this.dataList = new LinkedList<>();
+		this.dataList = new GraphDataCollection(this);
 	}
 
 	public void setLinearPlane(Range rangeX, Range rangeY)
@@ -50,17 +50,9 @@ public class Graph extends JComponent
 		return this.components;
 	}
 
-	public LinkedList<DiscreteData<?, ?>> getDataList()
+	public GraphDataCollection getDataList()
 	{
 		return this.dataList;
-	}
-
-	public <N extends Number, M extends Number> void showData(DiscreteData<N, M> data)
-	{
-		if (this.dataList.contains(data))
-		{
-			this.components.add(new DataPlotter(this, data, 10));
-		}
 	}
 
 	@Override

@@ -29,8 +29,8 @@ class Main {
 	Graph graph = new Graph();
 	graph.setLinearPlane(new Range(0, 5), new Range(0, 10));
 	graph.getGraphComponents().add(new Grid(graph, 5, 10));
-	graph.getDataList().add(data);
-	graph.showData(data);
+	graph.getDataList().addData(data);
+	graph.getDataList().getWrapper(data).plotData();
 	graph.setMinimumSize(new Dimension(200, 200));
 
 	panel.add(graph);
