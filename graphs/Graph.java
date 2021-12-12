@@ -59,7 +59,7 @@ public class Graph extends JComponent
 	{
 		if (this.dataList.contains(data))
 		{
-			this.components.add(new DataPlotter<N, M>(this, data, 10));
+			this.components.add(new DataPlotter(this, data, 10));
 		}
 	}
 

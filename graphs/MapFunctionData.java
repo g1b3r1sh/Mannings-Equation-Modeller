@@ -28,7 +28,7 @@ public class MapFunctionData<N extends Number, M extends Number> implements Disc
 		return this.data.containsKey(x);
 	}
 
-	public M y(N x)
+	public M y(Number x)
 	{
 		return this.data.get(x);
 	}
