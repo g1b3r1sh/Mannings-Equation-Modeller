@@ -61,7 +61,7 @@ public abstract class GraphAxis extends JComponent
 		return size;
 	}
 
-	public abstract void modifyPreferredSize(Dimension size);
+	protected abstract void modifyPreferredSize(Dimension size);
 
 	@Override
 	public Dimension getMinimumSize()
