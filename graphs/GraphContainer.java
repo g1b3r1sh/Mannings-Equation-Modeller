@@ -13,7 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Component;
 
 // Useful site: https://thebadprogrammer.com/swing-layout-manager-sizing/
-// TODO: Enable scrollpane (scale axis to pane, zoom in/zoom out features)
+// FUTURE: Enable scrollpane (scale axis to pane, zoom in/zoom out features)
 public class GraphContainer extends JComponent
 {
 	public static enum Direction
@@ -73,6 +73,26 @@ public class GraphContainer extends JComponent
 		if (this.containsAxis(direction))
 		{
 			this.removeComponent(direction, 0);
+			if (this.containsNumbers(direction))
+			{
+				this.removeComponent(direction, 1);
+			}
+		}
+	}
+
+	public void addNumbers(Direction direction)
+	{
+		if (this.containsAxis(direction) && !this.containsNumbers(direction))
+		{
+			this.addComponent(direction, new GraphAxisNumbers(this.graph, direction), 1);
+		}
+	}
+
+	public void removeNumbers(Direction direction)
+	{
+		if (this.containsNumbers(direction))
+		{
+			this.removeComponent(direction, 1);
 		}
 	}
 
@@ -201,6 +221,18 @@ public class GraphContainer extends JComponent
 		for (Component c : this.getPanel(direction).getComponents())
 		{
 			if (c instanceof GraphAxis)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean containsNumbers(Direction direction)
+	{
+		for (Component c : this.getPanel(direction).getComponents())
+		{
+			if (c instanceof GraphAxisNumbers)
 			{
 				return true;
 			}

@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 
-// TODO: Finish this class
 public abstract class GraphAxis extends JComponent
 {
 	private Graph graph;
