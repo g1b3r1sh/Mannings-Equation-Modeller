@@ -46,6 +46,12 @@ public class Range
 		}
 	}
 	
+	// TODO: Make this work
+	public double getNumber(double fraction)
+	{
+		return this.lower + this.size() * fraction;
+	}
+	
 	public int size()
 	{
 		return this.getUpper() - this.getLower();
