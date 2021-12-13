@@ -1,0 +1,85 @@
+package graphs;
+
+import javax.swing.JComponent;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Dimension;
+
+// TODO: Finish this class
+public abstract class GraphAxis extends JComponent
+{
+	private Graph graph;
+	
+	private int tickLength = 10;
+	private double scale = 1;
+	private Color color;
+
+	public GraphAxis(Graph graph)
+	{
+		this.graph = graph;
+	}
+
+	public double getScale()
+	{
+		return scale;
+	}
+
+	public void setScale(double scale)
+	{
+		this.scale = scale;
+	}
+
+	public void setTickLength(int tickLength)
+	{
+		this.tickLength = tickLength;
+	}
+
+	public int getTickLength()
+	{
+		return this.tickLength;
+	}
+
+	public void setColor(Color color)
+	{
+		this.color = color;
+	}
+
+	public Color getColor()
+	{
+		return this.color;
+	}
+
+	public Graph getGraph()
+	{
+		return this.graph;
+	}
+	
+	@Override
+	public Dimension getPreferredSize()
+	{		
+		Dimension size = super.getPreferredSize();
+		this.modifyPreferredSize(size);
+		return size;
+	}
+
+	public abstract void modifyPreferredSize(Dimension size);
+
+	@Override
+	public Dimension getMinimumSize()
+	{
+		// You have no choice
+		return this.getPreferredSize();
+	}
+
+	@Override
+	protected void paintComponent(Graphics g)
+	{
+		g.setColor(this.color);
+		
+		this.drawLine(g);
+		this.drawTicks(g);
+	}
+
+	protected abstract void drawLine(Graphics g);
+	protected abstract void drawTicks(Graphics g);
+}

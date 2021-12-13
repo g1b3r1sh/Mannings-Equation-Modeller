@@ -24,8 +24,8 @@ public class Grid extends GraphComponent
 	{
 		super(graph);
 
-		this.numCols = numCols;
-		this.numRows = numRows;
+		this.setNumCols(numCols);
+		this.setNumRows(numRows);
 		// Truncates rows to range between 0 and 1 if not already 
 		this.offsetCol = Grid.floorMod(offsetCol, 1d);
 		this.offsetRow = Grid.floorMod(offsetRow, 1d);
