@@ -25,11 +25,13 @@ Restrictions on scrolling
 public class Graph extends JComponent
 {
 	private Plane plane;
+	private Grid grid;
 	private GraphComponentCollection components;
 	private GraphDataCollection dataList;
 
 	public Graph()
 	{
+		this.grid = new Grid(this, 1, 1);
 		this.components = new GraphComponentCollection();
 		this.dataList = new GraphDataCollection(this);
 	}
@@ -42,6 +44,16 @@ public class Graph extends JComponent
 	public Plane getPlane()
 	{
 		return this.plane;
+	}
+
+	public void setGrid(int numCols, int numRows)
+	{
+		this.grid = new Grid(this, numCols, numRows);
+	}
+
+	public Grid getGrid()
+	{
+		return this.grid;
 	}
 
 	public GraphComponentCollection getGraphComponents()
@@ -57,6 +69,10 @@ public class Graph extends JComponent
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		if (this.grid != null)
+		{
+			this.grid.paintComponent(g);
+		}
 		this.components.paintComponents(g);
 	}
 }
