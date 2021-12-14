@@ -1,8 +1,8 @@
 package graphs;
 
 import java.awt.Dimension;
-
-import graphs.GraphContainer.Direction;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 {
@@ -13,13 +13,24 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	@Override
 	protected void modifyPreferredSize(Dimension size)
 	{
-		size.height = this.fontSize;
+		this.scaleFont();
+		size.height = this.font.getSize();
 	}
 
 	@Override
-	protected void paintNumbers()
+	protected void paintNumbers(Graphics g, Rectangle bounds)
 	{
-		// Special case for numbers on side of 
+		System.out.println(bounds);
+		// Special case for numbers on sides
+		g.drawString(this.getNumberString(0), 0, bounds.height);
+		g.drawString(this.getNumberString(this.getRange().size()), bounds.width - g.getFontMetrics().stringWidth(this.getNumberString(1)), bounds.height);
+	}
+	
+	@Override
+	public boolean isOverlapping()
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

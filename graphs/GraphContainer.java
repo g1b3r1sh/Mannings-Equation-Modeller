@@ -90,7 +90,7 @@ public class GraphContainer extends JComponent
 			}
 			else
 			{
-				this.addComponent(direction, new GraphAxisNumbersVertical(this.graph, this.graph.getPlane().getRangeY()), 1);
+				//this.addComponent(direction, new GraphAxisNumbersVertical(this.graph, this.graph.getPlane().getRangeY()), 1);
 			}
 		}
 	}

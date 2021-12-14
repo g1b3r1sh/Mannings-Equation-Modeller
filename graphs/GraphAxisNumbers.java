@@ -3,6 +3,7 @@ package graphs;
 import javax.swing.JComponent;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,7 +13,8 @@ public abstract class GraphAxisNumbers extends JComponent
 {
 	private Graph graph;
 	private Range range;
-	protected int fontSize = 10;
+	private final int MAX_FONT = 20;
+	protected Font font;
 	protected int precision = 2; // How many digits after decimal point
 	protected int sidePadding = 3;
 	protected int padding = 5;
@@ -21,22 +23,41 @@ public abstract class GraphAxisNumbers extends JComponent
 	{
 		this.graph = graph;
 		this.range = range;
+		this.font = new Font(Font.SANS_SERIF, Font.PLAIN, this.MAX_FONT);
 	}
 
 	public Graph getGraph()
 	{
-		return graph;
+		return this.graph;
+	}
+	
+	public Range getRange()
+	{
+		return this.range;
 	}
 	
 	// TODO: Restrict to precision
-	public String getNumber(int i)
+	// Get number for ith tick
+	public String getNumberString(int i)
 	{
-		return String.format("%d", this.range.getNumber(i / (this.numTicks() - 1)));
+		return String.format("%f", this.range.getNumber((double) i / (this.numTicks() - 1)));
 	}
 	
-	public abstract int numTicks();
+	public int numTicks()
+	{
+		return this.range.size() + 1;
+	}
 
 	public abstract boolean isOverlapping();
+	
+	public void scaleFont()
+	{
+		this.font = this.font.deriveFont(this.MAX_FONT);
+		while (this.isOverlapping())
+		{
+			this.font = this.font.deriveFont(this.font.getSize() - 1);
+		}
+	}
 
 	@Override
 	public Dimension getPreferredSize()
@@ -59,11 +80,13 @@ public abstract class GraphAxisNumbers extends JComponent
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		g.setColor(Color.BLACK);
-		g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
-		g.drawString("-3.14159262", 0, 20);
+		//g.setColor(Color.RED);
 		//g.fillRect(0, 0, 2000, 2000);
+		g.setColor(Color.BLACK);
+		g.setFont(this.font);
+		// TODO: Fix this
+		this.paintNumbers(g, new Rectangle(this.graph.getWidth(), g.getFontMetrics().getHeight()));
 	}
 	
-	protected abstract void paintNumbers();
+	protected abstract void paintNumbers(Graphics g, Rectangle bounds);
 }

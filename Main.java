@@ -16,7 +16,6 @@ import graphs.GraphContainer;
 
 class Main {
 	public static void main(String[] args) {
-		System.out.println("foo");
 		/// Frame init
 		JFrame frame = new JFrame("Graph Demo");
 		frame.setSize(800, 800);
@@ -57,6 +56,9 @@ class Main {
 
 	public static Graph createGraph()
 	{
+		Range rangeX = new Range(0, 5);
+		Range rangeY = new Range(0, 10);
+		
 		MapFunctionData<Double, Integer> data = new MapFunctionData<>();
 		data.set(0.5, 1);
 		data.set(1.5, 2);
@@ -71,9 +73,9 @@ class Main {
 	
 		Graph graph = new Graph();
 		graph.setPreferredSize(new Dimension(300, 300));
-	
-		graph.setLinearPlane(new Range(0, 5), new Range(0, 10));
-		graph.setGrid(5, 10);
+		
+		graph.setLinearPlane(rangeX, rangeY);
+		graph.setGrid(rangeX.size(), rangeY.size());
 		graph.getDataList().addData(data);
 		graph.getDataList().getVisualsHandler(data).plotData();
 		graph.getDataList().getVisualsHandler(data).connectData();
