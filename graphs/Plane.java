@@ -4,9 +4,23 @@ import java.awt.Graphics;
 
 public abstract class Plane extends GraphComponent 
 {
-	public Plane(Graph graph)
+	private Range rangeX;
+	private Range rangeY;
+
+	public Plane(Graph graph, Range rangeX, Range rangeY)
 	{
 		super(graph);
+		this.rangeX = rangeX;
+		this.rangeY = rangeY;
+	}
+
+	public Range getRangeY() {
+		return rangeY;
+	}
+
+	public Range getRangeX()
+	{
+		return rangeX;
 	}
 
 	public abstract int posX(double x);

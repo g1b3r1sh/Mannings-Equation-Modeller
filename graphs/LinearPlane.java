@@ -9,9 +9,7 @@ public class LinearPlane extends Plane
 
 	public LinearPlane(Graph graph, Range rangeX, Range rangeY)
 	{
-		super(graph);
-		this.rangeX = rangeX;
-		this.rangeY = rangeY;
+		super(graph, rangeX, rangeY);
 	}
 
 	@Override
