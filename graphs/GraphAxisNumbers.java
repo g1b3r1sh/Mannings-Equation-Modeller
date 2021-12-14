@@ -7,12 +7,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
+// TODO: Write getter and setter functions for protected variables
 public abstract class GraphAxisNumbers extends JComponent
 {
 	private Graph graph;
 	private Range range;
 	protected int fontSize = 10;
 	protected int precision = 2; // How many digits after decimal point
+	protected int sidePadding = 3;
+	protected int padding = 5;
 
 	public GraphAxisNumbers(Graph graph, Range range)
 	{
@@ -25,12 +28,15 @@ public abstract class GraphAxisNumbers extends JComponent
 		return graph;
 	}
 	
+	// TODO: Restrict to precision
 	public String getNumber(int i)
 	{
-		return this.range.
+		return String.format("%d", this.range.getNumber(i / (this.numTicks() - 1)));
 	}
 	
 	public abstract int numTicks();
+
+	public abstract boolean isOverlapping();
 
 	@Override
 	public Dimension getPreferredSize()

@@ -4,9 +4,6 @@ package graphs;
 // Plane that uses linear scale
 public class LinearPlane extends Plane
 {
-	private Range rangeX;
-	private Range rangeY;
-
 	public LinearPlane(Graph graph, Range rangeX, Range rangeY)
 	{
 		super(graph, rangeX, rangeY);
@@ -15,28 +12,28 @@ public class LinearPlane extends Plane
 	@Override
 	public int posX(double x)
 	{
-		return (int) (this.cellWidth()  * (x - this.rangeX.getLower()));
+		return (int) (this.cellWidth()  * (x - this.getRangeX().getLower()));
 	}
 
 	@Override
 	public int posY(double y)
 	{
-		return (int) (this.cellHeight() * this.invertY(y - this.rangeY.getLower()));
+		return (int) (this.cellHeight() * this.invertY(y - this.getRangeY().getLower()));
 	}
 
 	// Since grid y is normally up-down, invertY makes it down-up
 	private double invertY(double y)
 	{
-		return this.rangeY.size() - y;
+		return this.getRangeY().size() - y;
 	}
 
 	private double cellWidth()
 	{
-		return (double) this.getWidth() / this.rangeX.size();
+		return (double) this.getWidth() / this.getRangeX().size();
 	}
 
 	private double cellHeight()
 	{
-		return (double) this.getHeight() / this.rangeY.size();
+		return (double) this.getHeight() / this.getRangeY().size();
 	}
 }
