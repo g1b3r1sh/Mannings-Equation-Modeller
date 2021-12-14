@@ -14,7 +14,8 @@ public abstract class Plane extends GraphComponent
 		this.rangeY = rangeY;
 	}
 
-	public Range getRangeY() {
+	public Range getRangeY()
+	{
 		return rangeY;
 	}
 

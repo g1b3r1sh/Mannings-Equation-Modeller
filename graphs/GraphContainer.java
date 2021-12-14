@@ -84,7 +84,14 @@ public class GraphContainer extends JComponent
 	{
 		if (this.containsAxis(direction) && !this.containsNumbers(direction))
 		{
-			this.addComponent(direction, new GraphAxisNumbers(this.graph, direction), 1);
+			if (this.horizontal(direction))
+			{
+				this.addComponent(direction, new GraphAxisNumbersHorizontal(this.graph, this.graph.getPlane().getRangeX()), 1);
+			}
+			else
+			{
+				this.addComponent(direction, new GraphAxisNumbersVertical(this.graph, this.graph.getPlane().getRangeY()), 1);
+			}
 		}
 	}
 
@@ -110,6 +117,11 @@ public class GraphContainer extends JComponent
 		{
 			this.removeComponent(direction);
 		}
+	}
+
+	public boolean horizontal(Direction direction)
+	{
+		return direction == Direction.BOTTOM || direction == Direction.TOP;
 	}
 
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center

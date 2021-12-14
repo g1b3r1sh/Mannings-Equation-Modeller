@@ -6,8 +6,8 @@ import graphs.GraphContainer.Direction;
 
 public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 {
-	public GraphAxisNumbersHorizontal(Graph graph) {
-		super(graph);
+	public GraphAxisNumbersHorizontal(Graph graph, Range range) {
+		super(graph, range);
 	}
 
 	@Override
