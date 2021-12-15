@@ -11,6 +11,12 @@ public class GraphAxisTop extends GraphAxis
 	}
 
 	@Override
+	public int getNumTicks()
+	{
+		return this.getGraph().getGrid().getNumCols() + 1;
+	}
+
+	@Override
 	public void modifyPreferredSize(Dimension size)
 	{
 		size.height = this.getTickLength() + 1;
@@ -25,9 +31,8 @@ public class GraphAxisTop extends GraphAxis
 	@Override
 	protected void drawTicks(Graphics g)
 	{
-		int cols = this.getGraph().getGrid().getNumCols();
-		double tickOffset = (double) (this.getGraph().getGrid().getWidth() - 1) / cols;
-		for (int i = 0; i <= cols; i++)
+		double tickOffset = (double) (this.getGraph().getGrid().getWidth() - 1) / (this.getNumTicks() - 1);
+		for (int i = 0; i < this.getNumTicks(); i++)
 		{
 			g.drawLine((int) (i * tickOffset), 0, (int) (i * tickOffset), this.getTickLength());
 		}

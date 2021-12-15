@@ -18,6 +18,8 @@ public abstract class GraphAxis extends JComponent
 		this.graph = graph;
 	}
 
+	public abstract int getNumTicks();
+
 	public double getScale()
 	{
 		return scale;
