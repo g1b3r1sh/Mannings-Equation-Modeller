@@ -15,7 +15,7 @@ public abstract class GraphAxisNumbers extends JComponent
 	private Range range;
 	private final int MAX_FONT = 100;
 	protected int precision = 2; // How many digits after decimal point
-	protected int padding = 5;
+	protected int padding = 50;
 
 	public GraphAxisNumbers(GraphAxis axis, Range range)
 	{
@@ -61,8 +61,12 @@ public abstract class GraphAxisNumbers extends JComponent
 		float size = this.MAX_FONT;
 		while (this.isOverlapping())
 		{
-			size -= 0.1f;
+			size -= 1f;
 			this.setFont(this.getFont().deriveFont(size));
+			if (this.getFont().getSize() < 0)
+			{
+				break;
+			}
 		}
 	}
 

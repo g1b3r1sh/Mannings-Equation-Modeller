@@ -17,7 +17,6 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 		return (int) (this.getWidth() * this.getGraphAxis().calcTickFraction(i));
 	}
 	
-	// TODO: Fix overlapping class
 	@Override
 	public boolean isOverlapping()
 	{
@@ -26,7 +25,7 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
 			int secondLeftX = this.getNumberLeftPos(metrics, i);
-			if (firstRightX < secondLeftX)
+			if (firstRightX > secondLeftX)
 			{
 				return true;
 			}
@@ -47,7 +46,10 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 		FontMetrics metrics = g.getFontMetrics();
 		// Special case for numbers on sides
 		g.drawString(this.getNumberString(0), 0, bounds.height - metrics.getDescent());
-		g.drawString(this.getNumberString(this.getRange().size()), bounds.width - metrics.stringWidth(this.getNumberString(this.getRange().size())), bounds.height - metrics.getDescent());
+		g.drawString(this.getNumberString(this.getRange().size()), 
+			bounds.width - metrics.stringWidth(this.getNumberString(this.getRange().size())), 
+			bounds.height - metrics.getDescent()
+		);
 		// Print numbers inbetween
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
