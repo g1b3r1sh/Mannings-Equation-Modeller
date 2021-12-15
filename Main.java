@@ -34,7 +34,12 @@ class Main {
 		container.addAxis(GraphContainer.Direction.LEFT);
 		container.addAxis(GraphContainer.Direction.TOP);
 		container.addAxis(GraphContainer.Direction.RIGHT);
+		container.addAxisName(GraphContainer.Direction.BOTTOM, "bottom");
+		container.addAxisName(GraphContainer.Direction.TOP, "top");
+		container.addAxisName(GraphContainer.Direction.BOTTOM, "bottom2");
+		container.addAxisName(GraphContainer.Direction.TOP, "top2");
 		container.addNumbers(GraphContainer.Direction.BOTTOM);
+		container.addNumbers(GraphContainer.Direction.TOP);
 		panel.add(container, BorderLayout.CENTER);
 	
 		frame.setVisible(true);

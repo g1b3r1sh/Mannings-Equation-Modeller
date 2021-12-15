@@ -235,7 +235,7 @@ public class GraphContainer extends JComponent
 	{
 		this.directionPanelMethodVoid(direction, 
 			(panel) -> panel.add(component, index), 
-			(panel) -> panel.add(component, panel.getComponentCount() - 1 - index)
+			(panel) -> panel.add(component, panel.getComponentCount() - index)
 		);
 	}
 
