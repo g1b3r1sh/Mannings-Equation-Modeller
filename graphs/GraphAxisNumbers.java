@@ -40,7 +40,7 @@ public abstract class GraphAxisNumbers extends JComponent
 	// Get number for ith tick
 	public String getNumberString(int i)
 	{
-		return String.format("%f", this.range.getNumber((double) i / (this.numTicks() - 1)));
+		return String.format("%." + this.precision + "f", this.range.getNumber((double) i / (this.numTicks() - 1)));
 	}
 	
 	public int numTicks()
@@ -84,8 +84,7 @@ public abstract class GraphAxisNumbers extends JComponent
 		//g.fillRect(0, 0, 2000, 2000);
 		g.setColor(Color.BLACK);
 		g.setFont(this.font);
-		// TODO: Fix this
-		this.paintNumbers(g, new Rectangle(this.graph.getWidth(), g.getFontMetrics().getHeight()));
+		this.paintNumbers(g, this.getBounds());
 	}
 	
 	protected abstract void paintNumbers(Graphics g, Rectangle bounds);

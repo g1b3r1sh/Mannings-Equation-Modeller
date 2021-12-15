@@ -20,10 +20,10 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	@Override
 	protected void paintNumbers(Graphics g, Rectangle bounds)
 	{
-		System.out.println(bounds);
 		// Special case for numbers on sides
 		g.drawString(this.getNumberString(0), 0, bounds.height);
 		g.drawString(this.getNumberString(this.getRange().size()), bounds.width - g.getFontMetrics().stringWidth(this.getNumberString(1)), bounds.height);
+		// Print numbers inbetween
 	}
 	
 	@Override
