@@ -31,7 +31,7 @@ public class GraphAxisRight extends GraphAxis
 	@Override
 	protected void drawTicks(Graphics g)
 	{
-		double tickOffset = (double) (this.getGraph().getGrid().getHeight() - 1) / (this.getNumTicks() - 1);
+		double tickOffset = (double) (this.getHeight() - 1) / (this.getNumTicks() - 1);
 		for (int i = 0; i < this.getNumTicks(); i++)
 		{
 			g.drawLine(0, (int) (i * tickOffset), this.getTickLength(), (int) (i * tickOffset));
