@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.awt.GridBagConstraints;
 import java.awt.Component;
 
@@ -60,12 +61,34 @@ public class GraphContainer extends JComponent
 		return this.graph;
 	}
 
+	public boolean containsAxis(Direction direction)
+	{
+		for (Component c : this.getPanel(direction).getComponents())
+		{
+			if (c instanceof GraphAxis)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void addAxis(Direction direction)
 	{
 		if (!this.containsAxis(direction))
 		{
 			this.addComponent(direction, this.createAxis(direction), 0);
 		}
+	}
+
+	// Returns null if axis doesn't exist
+	public GraphAxis getAxis(Direction direction)
+	{
+		if (this.containsAxis(direction))
+		{
+			return (GraphAxis) this.getComponent(direction, 0);
+		}
+		return null;
 	}
 
 	public void removeAxis(Direction direction)
@@ -79,6 +102,18 @@ public class GraphContainer extends JComponent
 			}
 		}
 	}
+	
+	public boolean containsNumbers(Direction direction)
+	{
+		for (Component c : this.getPanel(direction).getComponents())
+		{
+			if (c instanceof GraphAxisNumbers)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void addNumbers(Direction direction)
 	{
@@ -86,11 +121,11 @@ public class GraphContainer extends JComponent
 		{
 			if (this.horizontal(direction))
 			{
-				this.addComponent(direction, new GraphAxisNumbersHorizontal(this.graph, this.graph.getPlane().getRangeX()), 1);
+				this.addComponent(direction, new GraphAxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX()), 1);
 			}
 			else
 			{
-				//this.addComponent(direction, new GraphAxisNumbersVertical(this.graph, this.graph.getPlane().getRangeY()), 1);
+				//this.addComponent(direction, new GraphAxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY()), 1);
 			}
 		}
 	}
@@ -122,6 +157,11 @@ public class GraphContainer extends JComponent
 	public boolean horizontal(Direction direction)
 	{
 		return direction == Direction.BOTTOM || direction == Direction.TOP;
+	}
+
+	public boolean forwardSequential(Direction direction)
+	{
+		return direction == Direction.BOTTOM || direction == Direction.RIGHT;
 	}
 
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center
@@ -164,25 +204,36 @@ public class GraphContainer extends JComponent
 		return panel;
 	}
 
-	private void directionPanelMethod(Direction direction, Consumer<JPanel> normal, Consumer<JPanel> inverse)
+	private <T> T directionPanelMethod(Direction direction, Function<JPanel, T> normal, Function<JPanel, T> inverse)
 	{
 		JPanel panel = this.getPanel(direction);
-		switch (direction)
+		if (this.forwardSequential(direction))
 		{
-			case BOTTOM:
-			case RIGHT:
-				normal.accept(panel);
-				return;
-			case LEFT:
-			case TOP:
-				inverse.accept(panel);
-				return;
+			return normal.apply(panel);
+		}
+		else
+		{
+			return inverse.apply(panel);
+		}
+	}
+
+	// Since java can't deduce void >:(
+	private void directionPanelMethodVoid(Direction direction, Consumer<JPanel> normal, Consumer<JPanel> inverse)
+	{
+		JPanel panel = this.getPanel(direction);
+		if (this.forwardSequential(direction))
+		{
+			normal.accept(panel);
+		}
+		else
+		{
+			inverse.accept(panel);
 		}
 	}
 
 	private void addComponent(Direction direction, JComponent component, int index)
 	{
-		this.directionPanelMethod(direction, 
+		this.directionPanelMethodVoid(direction, 
 			(panel) -> panel.add(component, index), 
 			(panel) -> panel.add(component, panel.getComponentCount() - 1 - index)
 		);
@@ -191,29 +242,32 @@ public class GraphContainer extends JComponent
 	// Adds component to last
 	private void addComponent(Direction direction, JComponent component)
 	{
-		this.directionPanelMethod(direction, 
+		this.directionPanelMethodVoid(direction, 
 			(panel) -> panel.add(component), 
 			(panel) -> panel.add(component, 0)
+		);
+	}
+
+	private Component getComponent(Direction direction, int index)
+	{
+		return this.directionPanelMethod(direction,
+			(panel) -> panel.getComponent(index),
+			(panel) -> panel.getComponent(panel.getComponentCount() - 1 - index)
 		);
 	}
 
 	// Gets last component
 	private Component getComponent(Direction direction)
 	{
-		JPanel panel = this.getPanel(direction);
-		if (direction == Direction.BOTTOM || direction == Direction.RIGHT)
-		{
-			return panel.getComponent(panel.getComponentCount() - 1);
-		}
-		else
-		{
-			return panel.getComponent(0);
-		}
+		return this.directionPanelMethod(direction,
+			(panel) -> panel.getComponent(panel.getComponentCount() - 1),
+			(panel) -> panel.getComponent(0)
+		);
 	}
 
 	private void removeComponent(Direction direction, int index)
 	{
-		this.directionPanelMethod(direction,
+		this.directionPanelMethodVoid(direction,
 			(panel) -> panel.remove(index), 
 			(panel) -> panel.remove(panel.getComponentCount() - 1 - index)
 		);
@@ -222,34 +276,10 @@ public class GraphContainer extends JComponent
 	// Removes last component
 	private void removeComponent(Direction direction)
 	{
-		this.directionPanelMethod(direction,
+		this.directionPanelMethodVoid(direction,
 			(panel) -> panel.remove(panel.getComponentCount() - 1), 
 			(panel) -> panel.remove(0)
 		);
-	}
-
-	private boolean containsAxis(Direction direction)
-	{
-		for (Component c : this.getPanel(direction).getComponents())
-		{
-			if (c instanceof GraphAxis)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean containsNumbers(Direction direction)
-	{
-		for (Component c : this.getPanel(direction).getComponents())
-		{
-			if (c instanceof GraphAxisNumbers)
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private JPanel getPanel(Direction direction)
