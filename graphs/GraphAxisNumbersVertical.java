@@ -7,8 +7,11 @@ import java.awt.Rectangle;
 
 public class GraphAxisNumbersVertical extends GraphAxisNumbers
 {
-	public GraphAxisNumbersVertical(GraphAxis axis, Range range) {
+	boolean alignRight;
+
+	public GraphAxisNumbersVertical(GraphAxis axis, Range range, boolean alignRight) {
 		super(axis, range);
+		this.alignRight = alignRight;
 	}
 
 	@Override
@@ -69,6 +72,25 @@ public class GraphAxisNumbersVertical extends GraphAxisNumbers
 		}
 	}
 
+	private int getNumberHeight(FontMetrics metrics)
+	{
+		return metrics.getHeight() - metrics.getDescent();
+	}
+
+	private int getNumberLeftPos(FontMetrics metrics, int i)
+	{
+
+	}
+
+	private int getNumberTopPos(FontMetrics metrics, int i)
+	{
+		return this.getTickPos(i) - (this.getNumberHeight(metrics) / 2);
+	}
+
+	private int getNumberBottomPos(FontMetrics metrics, int i)
+	{
+		return this.getTickPos(i) + (this.getNumberHeight(metrics) / 2);
+	}
 	private double invertY(double pos, double max)
 	{
 		return max - pos;
