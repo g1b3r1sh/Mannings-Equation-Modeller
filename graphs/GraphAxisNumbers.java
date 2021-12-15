@@ -11,24 +11,22 @@ import java.awt.Font;
 // TODO: Write getter and setter functions for protected variables
 public abstract class GraphAxisNumbers extends JComponent
 {
-	private Graph graph;
+	private GraphAxis axis;
 	private Range range;
 	private final int MAX_FONT = 20;
-	protected Font font;
 	protected int precision = 2; // How many digits after decimal point
-	protected int sidePadding = 3;
 	protected int padding = 5;
 
-	public GraphAxisNumbers(Graph graph, Range range)
+	public GraphAxisNumbers(GraphAxis axis, Range range)
 	{
-		this.graph = graph;
+		this.axis = axis;
 		this.range = range;
-		this.font = new Font(Font.SANS_SERIF, Font.PLAIN, this.MAX_FONT);
+		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.MAX_FONT));
 	}
 
-	public Graph getGraph()
+	public GraphAxis getGraphAxis()
 	{
-		return this.graph;
+		return this.axis;
 	}
 	
 	public Range getRange()
@@ -36,26 +34,33 @@ public abstract class GraphAxisNumbers extends JComponent
 		return this.range;
 	}
 	
-	// TODO: Restrict to precision
+	// Get number for (i + 1)th tick
+	public double getNumber(int i)
+	{
+		return this.range.getNumber((double) i / (this.getNumTicks() - 1));
+	}
+
 	// Get number for ith tick
 	public String getNumberString(int i)
 	{
-		return String.format("%." + this.precision + "f", this.range.getNumber((double) i / (this.numTicks() - 1)));
+		return String.format("%." + this.precision + "f", this.getNumber(i));
 	}
 	
-	public int numTicks()
+	public int getNumTicks()
 	{
-		return this.range.size() + 1;
+		return this.getGraphAxis().getNumTicks();
 	}
 
 	public abstract boolean isOverlapping();
 	
 	public void scaleFont()
 	{
-		this.font = this.font.deriveFont(this.MAX_FONT);
+		this.setFont(this.getFont().deriveFont(this.MAX_FONT));
+		float size = this.MAX_FONT;
 		while (this.isOverlapping())
 		{
-			this.font = this.font.deriveFont(this.font.getSize() - 1);
+			size -= 0.1f;
+			this.setFont(this.getFont().deriveFont(size));
 		}
 	}
 
@@ -76,14 +81,13 @@ public abstract class GraphAxisNumbers extends JComponent
 
 	protected abstract void modifyPreferredSize(Dimension size);
 
-	// TODO: Scale font
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 		//g.setColor(Color.RED);
 		//g.fillRect(0, 0, 2000, 2000);
 		g.setColor(Color.BLACK);
-		g.setFont(this.font);
+		g.setFont(this.getFont());
 		this.paintNumbers(g, this.getBounds());
 	}
 	
