@@ -7,13 +7,16 @@ import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ComponentListener;
+import java.awt.event.ComponentEvent;
 
 // TODO: Write getter and setter functions for protected variables
-public abstract class GraphAxisNumbers extends JComponent
+public abstract class GraphAxisNumbers extends JComponent implements ComponentListener
 {
 	private GraphAxis axis;
 	private Range range;
-	private final int MAX_FONT = 100;
+	private final int MAX_FONT = 30;
+	private final int MIN_FONT = 10;
 	protected int precision = 2; // How many digits after decimal point
 	protected int padding = 50;
 
@@ -22,7 +25,24 @@ public abstract class GraphAxisNumbers extends JComponent
 		this.axis = axis;
 		this.range = range;
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.MAX_FONT));
+
+		this.addComponentListener(this);
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e)
+	{
+		this.scaleFont();
+	}
+	
+	@Override
+    public void componentHidden(ComponentEvent e) {}
+
+	@Override
+    public void componentMoved(ComponentEvent e) {}
+
+	@Override
+    public void componentShown(ComponentEvent e) {}
 
 	public GraphAxis getGraphAxis()
 	{
@@ -59,9 +79,9 @@ public abstract class GraphAxisNumbers extends JComponent
 	{
 		this.setFont(this.getFont().deriveFont((float) this.MAX_FONT));
 		float size = this.MAX_FONT;
-		while (this.isOverlapping())
+		while (this.isOverlapping() && size > this.MIN_FONT)
 		{
-			size -= 1f;
+			size -= 0.1f;
 			this.setFont(this.getFont().deriveFont(size));
 			if (this.getFont().getSize() < 0)
 			{
@@ -72,7 +92,7 @@ public abstract class GraphAxisNumbers extends JComponent
 
 	@Override
 	public Dimension getPreferredSize()
-	{		
+	{
 		Dimension size = super.getPreferredSize();
 		this.modifyPreferredSize(size);
 		return size;
@@ -93,7 +113,6 @@ public abstract class GraphAxisNumbers extends JComponent
 		//g.setColor(Color.RED);
 		//g.fillRect(0, 0, 2000, 2000);
 		g.setColor(Color.BLACK);
-		this.scaleFont();
 		g.setFont(this.getFont());
 		this.paintNumbers(g, this.getBounds());
 	}
