@@ -15,20 +15,18 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	@Override
 	public boolean isOverlapping()
 	{
-		/*FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
+		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
 		int sum = (this.getNumTicks() - 1) * this.padding;
 		for (int i = 0; i < this.getNumTicks(); i++)
 		{
 			sum += metrics.stringWidth(this.getNumberString(i));
 		}
-		return sum > this.getWidth();*/
-		return false;
+		return sum > this.getWidth();
 	}
 
 	@Override
 	protected void modifyPreferredSize(Dimension size)
 	{
-		this.scaleFont();
 		size.height = this.getGraphics().getFontMetrics(this.getFont()).getHeight();
 	}
 
@@ -37,9 +35,8 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	{
 		FontMetrics metrics = g.getFontMetrics();
 		// Special case for numbers on sides
-		g.drawString(this.getNumberString(0), 0, bounds.height);
-		g.setFont(this.getFont().deriveFont(19f));
-		g.drawString(this.getNumberString(this.getRange().size()), bounds.width - metrics.stringWidth(this.getNumberString(1)), bounds.height);
+		g.drawString(this.getNumberString(0), 0, bounds.height - metrics.getDescent());
+		g.drawString(this.getNumberString(this.getRange().size()), bounds.width - metrics.stringWidth(this.getNumberString(this.getRange().size())), bounds.height - metrics.getDescent());
 		// Print numbers inbetween
 		/*for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{

@@ -13,7 +13,7 @@ public abstract class GraphAxisNumbers extends JComponent
 {
 	private GraphAxis axis;
 	private Range range;
-	private final int MAX_FONT = 20;
+	private final int MAX_FONT = 100;
 	protected int precision = 2; // How many digits after decimal point
 	protected int padding = 5;
 
@@ -55,7 +55,7 @@ public abstract class GraphAxisNumbers extends JComponent
 	
 	public void scaleFont()
 	{
-		this.setFont(this.getFont().deriveFont(this.MAX_FONT));
+		this.setFont(this.getFont().deriveFont((float) this.MAX_FONT));
 		float size = this.MAX_FONT;
 		while (this.isOverlapping())
 		{
@@ -87,6 +87,7 @@ public abstract class GraphAxisNumbers extends JComponent
 		//g.setColor(Color.RED);
 		//g.fillRect(0, 0, 2000, 2000);
 		g.setColor(Color.BLACK);
+		this.scaleFont();
 		g.setFont(this.getFont());
 		this.paintNumbers(g, this.getBounds());
 	}
