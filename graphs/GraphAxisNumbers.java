@@ -32,7 +32,7 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 	@Override
 	public void componentResized(ComponentEvent e)
 	{
-		this.scaleFont();
+		this.fitFont();
 	}
 	
 	@Override
@@ -75,7 +75,7 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 
 	public abstract boolean isOverlapping();
 	
-	public void scaleFont()
+	public void fitFont()
 	{
 		this.setFont(this.getFont().deriveFont((float) this.MAX_FONT));
 		float size = this.MAX_FONT;
