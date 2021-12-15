@@ -86,7 +86,7 @@ class Main {
 		data2.set(new BigDecimal("2.55"), 3);
 		data2.set(new BigDecimal("3.55"), 3);
 	
-		Graph graph = new Graph();
+		Graph graph = new Graph(2, 2);
 		graph.setPreferredSize(new Dimension(300, 300));
 		
 		graph.setLinearPlane(rangeX, rangeY);

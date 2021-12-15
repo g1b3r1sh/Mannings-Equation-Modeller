@@ -13,18 +13,19 @@ import java.awt.event.ComponentEvent;
 // TODO: Write getter and setter functions for protected variables
 public abstract class GraphAxisNumbers extends JComponent implements ComponentListener
 {
-	private GraphAxis axis;
-	private Range range;
 	private final int MAX_FONT = 20;
 	private final int MIN_FONT = 10;
-	protected int precision = 5; // How many digits after decimal point
+	private GraphAxis axis;
+	private Range range;
+	private int precision; // How many digits after decimal point
 	protected int paddingHorizontal = 10;
 	protected int paddingVertical = 10;
 
-	public GraphAxisNumbers(GraphAxis axis, Range range)
+	public GraphAxisNumbers(GraphAxis axis, Range range, int precision)
 	{
 		this.axis = axis;
 		this.range = range;
+		this.precision = precision;
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.MAX_FONT));
 
 		this.addComponentListener(this);

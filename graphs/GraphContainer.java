@@ -121,11 +121,11 @@ public class GraphContainer extends JComponent
 		{
 			if (this.horizontal(direction))
 			{
-				this.addComponent(direction, new GraphAxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX()), 1);
+				this.addComponent(direction, new GraphAxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.graph.getPrecisionX()), 1);
 			}
 			else
 			{
-				this.addComponent(direction, new GraphAxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), direction == GraphContainer.Direction.LEFT), 1);
+				this.addComponent(direction, new GraphAxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.graph.getPrecisionY(), direction == GraphContainer.Direction.LEFT), 1);
 			}
 		}
 	}

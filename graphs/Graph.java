@@ -28,12 +28,26 @@ public class Graph extends JComponent
 	private Grid grid;
 	private GraphComponentCollection components;
 	private GraphDataCollection dataList;
+	private int precisionX;
+	private int precisionY;
 
-	public Graph()
+	public Graph(int precisionX, int precisionY)
 	{
 		this.grid = new Grid(this, 1, 1);
 		this.components = new GraphComponentCollection();
 		this.dataList = new GraphDataCollection(this);
+		this.precisionX = precisionX;
+		this.precisionY = precisionY;
+	}
+	
+	public int getPrecisionX()
+	{
+		return this.precisionX;
+	}
+	
+	public int getPrecisionY()
+	{
+		return this.precisionY;
 	}
 
 	public void setLinearPlane(Range rangeX, Range rangeY)

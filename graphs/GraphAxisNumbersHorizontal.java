@@ -7,9 +7,9 @@ import java.awt.Rectangle;
 
 public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 {
-	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range)
+	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range, int precision)
 	{
-		super(axis, range);
+		super(axis, range, precision);
 	}
 
 	@Override
