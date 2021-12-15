@@ -10,18 +10,29 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range) {
 		super(axis, range);
 	}
+
+	@Override
+	public int getTickPos(int i)
+	{
+		return (int) (this.getWidth() * this.getGraphAxis().calcTickFraction(i));
+	}
 	
 	// TODO: Fix overlapping class
 	@Override
 	public boolean isOverlapping()
 	{
 		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
-		int sum = (this.getNumTicks() - 1) * this.padding;
-		for (int i = 0; i < this.getNumTicks(); i++)
+		int firstRightX = metrics.stringWidth(this.getNumberString(0)) + this.padding;
+		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
-			sum += metrics.stringWidth(this.getNumberString(i));
+			int secondLeftX = this.getNumberLeftPos(metrics, i);
+			if (firstRightX < secondLeftX)
+			{
+				return true;
+			}
+			firstRightX = this.getNumberRightPos(metrics, i) + padding;
 		}
-		return sum > this.getWidth();
+		return firstRightX > this.getWidth() - metrics.stringWidth(this.getNumberString(this.getNumTicks() - 1));
 	}
 
 	@Override
@@ -38,9 +49,19 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 		g.drawString(this.getNumberString(0), 0, bounds.height - metrics.getDescent());
 		g.drawString(this.getNumberString(this.getRange().size()), bounds.width - metrics.stringWidth(this.getNumberString(this.getRange().size())), bounds.height - metrics.getDescent());
 		// Print numbers inbetween
-		/*for (int i = 1; i < this.getNumTicks() - 1; i++)
+		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
-			int middleX = (int) (bounds.width * this.getGraphAxis().calcTickFraction(i));
-		}*/
+			g.drawString(this.getNumberString(i), this.getNumberLeftPos(metrics, i), bounds.height - metrics.getDescent());
+		}
+	}
+
+	private int getNumberLeftPos(FontMetrics metrics, int i)
+	{
+		return this.getTickPos(i) - (metrics.stringWidth(this.getNumberString(i)) / 2);
+	}
+	
+	private int getNumberRightPos(FontMetrics metrics, int i)
+	{
+		return this.getTickPos(i) + (metrics.stringWidth(this.getNumberString(i)) / 2);
 	}
 }

@@ -37,7 +37,7 @@ public abstract class GraphAxis extends JComponent
 
 	public double calcTickFraction(int tick)
 	{
-		return tick / (this.getNumTicks() - 1);
+		return ((double) tick) / (this.getNumTicks() - 1);
 	}
 
 	public int getTickLength()

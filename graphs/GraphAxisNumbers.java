@@ -37,7 +37,7 @@ public abstract class GraphAxisNumbers extends JComponent
 	// Get number for (i + 1)th tick
 	public double getNumber(int i)
 	{
-		return this.range.getNumber((double) i / (this.getNumTicks() - 1));
+		return this.range.getNumber((double) i / (this.axis.getNumTicks() - 1));
 	}
 
 	// Get number for ith tick
@@ -45,11 +45,13 @@ public abstract class GraphAxisNumbers extends JComponent
 	{
 		return String.format("%." + this.precision + "f", this.getNumber(i));
 	}
-	
+
 	public int getNumTicks()
 	{
 		return this.getGraphAxis().getNumTicks();
 	}
+
+	public abstract int getTickPos(int i);
 
 	public abstract boolean isOverlapping();
 	
