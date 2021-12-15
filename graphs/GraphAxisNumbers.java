@@ -15,10 +15,11 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 {
 	private GraphAxis axis;
 	private Range range;
-	private final int MAX_FONT = 30;
+	private final int MAX_FONT = 20;
 	private final int MIN_FONT = 10;
-	protected int precision = 2; // How many digits after decimal point
-	protected int padding = 50;
+	protected int precision = 5; // How many digits after decimal point
+	protected int paddingHorizontal = 10;
+	protected int paddingVertical = 10;
 
 	public GraphAxisNumbers(GraphAxis axis, Range range)
 	{

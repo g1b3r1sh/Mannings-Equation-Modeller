@@ -7,7 +7,8 @@ import java.awt.Rectangle;
 
 public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 {
-	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range) {
+	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range)
+	{
 		super(axis, range);
 	}
 
@@ -21,7 +22,7 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	public boolean isOverlapping()
 	{
 		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
-		int firstRightX = metrics.stringWidth(this.getNumberString(0)) + this.padding;
+		int firstRightX = metrics.stringWidth(this.getNumberString(0)) + this.paddingHorizontal;
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
 			int secondLeftX = this.getNumberLeftPos(metrics, i);
@@ -29,7 +30,7 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 			{
 				return true;
 			}
-			firstRightX = this.getNumberRightPos(metrics, i) + padding;
+			firstRightX = this.getNumberRightPos(metrics, i) + this.paddingHorizontal;
 		}
 		return firstRightX > this.getWidth() - metrics.stringWidth(this.getNumberString(this.getNumTicks() - 1));
 	}
@@ -44,17 +45,22 @@ public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 	protected void paintNumbers(Graphics g, Rectangle bounds)
 	{
 		FontMetrics metrics = g.getFontMetrics();
+		
 		// Special case for numbers on sides
-		g.drawString(this.getNumberString(0), 0, bounds.height - metrics.getDescent());
-		g.drawString(this.getNumberString(this.getRange().size()), 
-			bounds.width - metrics.stringWidth(this.getNumberString(this.getRange().size())), 
-			bounds.height - metrics.getDescent()
-		);
+		g.drawString(this.getNumberString(0), 0, this.getNumberBottomPos(metrics, bounds));
+		String lastString = this.getNumberString(this.getNumTicks() - 1);
+		g.drawString(lastString, bounds.width - metrics.stringWidth(lastString), this.getNumberBottomPos(metrics, bounds));
+		
 		// Print numbers inbetween
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
-			g.drawString(this.getNumberString(i), this.getNumberLeftPos(metrics, i), bounds.height - metrics.getDescent());
+			g.drawString(this.getNumberString(i), this.getNumberLeftPos(metrics, i), this.getNumberBottomPos(metrics, bounds));
 		}
+	}
+	
+	private int getNumberBottomPos(FontMetrics metrics, Rectangle bounds)
+	{
+		return bounds.height - metrics.getDescent();
 	}
 
 	private int getNumberLeftPos(FontMetrics metrics, int i)
