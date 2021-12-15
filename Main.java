@@ -39,7 +39,17 @@ class Main {
 		container.addAxisName(GraphContainer.Direction.BOTTOM, "bottom2");
 		container.addAxisName(GraphContainer.Direction.TOP, "top2");
 		container.addNumbers(GraphContainer.Direction.BOTTOM);
-		container.addNumbers(GraphContainer.Direction.TOP);
+		container.addNumbers(GraphContainer.Direction.RIGHT);
+		container.addAxis(GraphContainer.Direction.LEFT);
+		container.addAxis(GraphContainer.Direction.LEFT);
+		container.addAxis(GraphContainer.Direction.RIGHT);
+		container.addAxis(GraphContainer.Direction.RIGHT);
+		container.addAxisName(GraphContainer.Direction.LEFT, "left");
+		container.addAxisName(GraphContainer.Direction.RIGHT, "right");
+		container.addAxisName(GraphContainer.Direction.LEFT, "left2");
+		container.addAxisName(GraphContainer.Direction.RIGHT, "right2");
+		container.addNumbers(GraphContainer.Direction.LEFT);
+		container.addNumbers(GraphContainer.Direction.RIGHT);
 		panel.add(container, BorderLayout.CENTER);
 	
 		frame.setVisible(true);
