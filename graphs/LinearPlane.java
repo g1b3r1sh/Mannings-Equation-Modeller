@@ -12,7 +12,7 @@ public class LinearPlane extends Plane
 	@Override
 	public int posX(double x)
 	{
-		return (int) (this.cellWidth()  * (x - this.getRangeX().getLower()));
+		return (int) (this.cellWidth() * (x - this.getRangeX().getLower()));
 	}
 
 	@Override

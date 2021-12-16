@@ -38,13 +38,13 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 	}
 	
 	@Override
-    public void componentHidden(ComponentEvent e) {}
+	public void componentHidden(ComponentEvent e) {}
 
 	@Override
-    public void componentMoved(ComponentEvent e) {}
+	public void componentMoved(ComponentEvent e) {}
 
 	@Override
-    public void componentShown(ComponentEvent e) {}
+	public void componentShown(ComponentEvent e) {}
 
 	public GraphAxis getGraphAxis()
 	{
