@@ -10,6 +10,8 @@ import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
+import hydraulics.WaterLevelCalculator;
+import hydraulics.WaterLevelVisualiser;
 import graphs.MapFunctionData;
 import graphs.Graph;
 import graphs.GraphContainer;
@@ -31,25 +33,13 @@ class Main {
 	
 		GraphContainer container = new GraphContainer(graph);
 		container.addAxis(GraphContainer.Direction.BOTTOM);
-		container.addAxis(GraphContainer.Direction.LEFT);
-		container.addAxis(GraphContainer.Direction.TOP);
-		container.addAxis(GraphContainer.Direction.RIGHT);
-		container.addAxisName(GraphContainer.Direction.BOTTOM, "bottom");
-		container.addAxisName(GraphContainer.Direction.TOP, "top");
-		container.addAxisName(GraphContainer.Direction.BOTTOM, "bottom2");
-		container.addAxisName(GraphContainer.Direction.TOP, "top2");
 		container.addNumbers(GraphContainer.Direction.BOTTOM);
-		container.addNumbers(GraphContainer.Direction.TOP);
+		container.addAxisName(GraphContainer.Direction.BOTTOM, "Distance from bank (m)");
 		container.addAxis(GraphContainer.Direction.LEFT);
-		container.addAxis(GraphContainer.Direction.LEFT);
-		container.addAxis(GraphContainer.Direction.RIGHT);
-		container.addAxis(GraphContainer.Direction.RIGHT);
-		container.addAxisName(GraphContainer.Direction.LEFT, "left");
-		container.addAxisName(GraphContainer.Direction.RIGHT, "right");
-		container.addAxisName(GraphContainer.Direction.LEFT, "left2");
-		container.addAxisName(GraphContainer.Direction.RIGHT, "right2");
 		container.addNumbers(GraphContainer.Direction.LEFT);
-		container.addNumbers(GraphContainer.Direction.RIGHT);
+		container.addAxisName(GraphContainer.Direction.LEFT, "Water level (m)");
+		container.addAxisName(GraphContainer.Direction.TOP, "Cross-section of River Bank");
+
 		panel.add(container, BorderLayout.CENTER);
 	
 		frame.setVisible(true);
@@ -71,20 +61,18 @@ class Main {
 
 	public static Graph createGraph()
 	{
-		Range rangeX = new Range(0, 5);
-		Range rangeY = new Range(0, 10);
+		Range rangeX = new Range(0, 10);
+		Range rangeY = new Range(0, 5);
 		
-		MapFunctionData<Double, Integer> data = new MapFunctionData<>();
-		data.set(0.5, 1);
-		data.set(1.5, 2);
-		data.set(2.5, 3);
-		data.set(3.5, 3);
-		
-		MapFunctionData<BigDecimal, Integer> data2 = new MapFunctionData<>();
-		data2.set(new BigDecimal("0.55"), 1);
-		data2.set(new BigDecimal("1.55"), 2);
-		data2.set(new BigDecimal("2.55"), 3);
-		data2.set(new BigDecimal("3.55"), 3);
+		MapFunctionData<BigDecimal, BigDecimal> data = new MapFunctionData<>();
+		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
+		data.set(new BigDecimal("1.124"), new BigDecimal("1.21"));
+		data.set(new BigDecimal("2.523"), new BigDecimal("2.72"));
+		data.set(new BigDecimal("4.234"), new BigDecimal("0.26"));
+		data.set(new BigDecimal("5.723"), new BigDecimal("3.26"));
+		data.set(new BigDecimal("6.320"), new BigDecimal("4.55"));
+		data.set(new BigDecimal("8.242"), new BigDecimal("2.16"));
+		data.set(new BigDecimal("9.121"), new BigDecimal("4.80"));
 	
 		Graph graph = new Graph(2, 2);
 		graph.setPreferredSize(new Dimension(300, 300));
@@ -94,9 +82,7 @@ class Main {
 		graph.getDataList().addData(data);
 		graph.getDataList().getVisualsHandler(data).plotData();
 		graph.getDataList().getVisualsHandler(data).connectData();
-		graph.getDataList().addData(data2);
-		graph.getDataList().getVisualsHandler(data2).plotData().setColor(Color.GREEN);
-		graph.getDataList().getVisualsHandler(data2).connectData().setColor(Color.GREEN);
+		graph.getGraphComponents().add(new WaterLevelVisualiser(graph, new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("4.12"))));
 	
 		return graph;
 	}
