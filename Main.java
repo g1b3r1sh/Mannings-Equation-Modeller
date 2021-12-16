@@ -4,17 +4,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
-import hydraulics.WaterLevelCalculator;
-import hydraulics.WaterLevelVisualiser;
 import graphs.MapFunctionData;
 import graphs.Graph;
 import graphs.GraphContainer;
+
+import hydraulics.WaterLevelCalculator;
+import hydraulics.WaterLevelVisualiser;
 
 class Main {
 	public static void main(String[] args) {
@@ -80,9 +80,10 @@ class Main {
 		graph.setLinearPlane(rangeX, rangeY);
 		graph.setGrid(rangeX.size(), rangeY.size());
 		graph.getDataList().addData(data);
+		graph.getGraphComponents().add(new WaterLevelVisualiser(graph, new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("2.50"))));
 		graph.getDataList().getVisualsHandler(data).plotData();
 		graph.getDataList().getVisualsHandler(data).connectData();
-		graph.getGraphComponents().add(new WaterLevelVisualiser(graph, new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("4.12"))));
+
 	
 		return graph;
 	}

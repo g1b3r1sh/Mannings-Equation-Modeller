@@ -1,41 +1,51 @@
 package graphs;
 
 import java.util.Iterator;
-import java.util.Map;
 
 // Continuous function for connected data, inclusive
 public class MapFunctionDataConnected<N extends Number, M extends Number> extends MapFunctionData<N, M>
 {
+	public MapFunctionDataConnected(DiscreteData<N, M> data)
+	{
+		super(data);
+	}
+
 	@Override
 	public boolean hasY(N x)
 	{
-		return this.getMap().firstKey().doubleValue() <= x.doubleValue() && x.doubleValue() <= this.getMap().lastKey().doubleValue();
+		return this.getXSet().first().doubleValue() <= x.doubleValue() && x.doubleValue() <= this.getXSet().last().doubleValue();
 	}
 
 	@Override
 	public double yDouble(Number x)
 	{
-		Iterator<Map.Entry<N, M>> itFront = this.getMap().entrySet().iterator();
-		Map.Entry<N, M> first = itFront.next();
-		if (first.getKey().doubleValue() > x.doubleValue())
+		Iterator<N> it = this.getXSet().iterator();
+		N pointX = it.next();
+		if (pointX.doubleValue() > x.doubleValue())
 		{
 			throw new IllegalArgumentException("Number x is not within bounds of data.");
 		}
-		Iterator<Map.Entry<N, M>> itBack = this.getMap().entrySet().iterator();
-		while (itFront.hasNext())
+		while (it.hasNext())
 		{
-			Map.Entry<N, M> front = itFront.next();
-			Map.Entry<N, M> back = itBack.next();
-			if (front.getKey().doubleValue() <= x.doubleValue())
+			pointX = it.next();
+			if (pointX.doubleValue() >= x.doubleValue())
 			{
-				return (x.doubleValue() - front.getKey().doubleValue()) / this.getSlope(front.getKey(), back.getKey()) + front.getValue().doubleValue();
+				return ((x.doubleValue() - pointX.doubleValue()) * this.getSlope(pointX, this.getXSet().lower(pointX))) + this.y(pointX).doubleValue();
 			}
 		}
 		throw new IllegalArgumentException("Number x is not within bounds of data.");
 	}
 
+	// Slope equation
 	public double getSlope(N x1, N x2)
 	{
 		return (this.y(x2).doubleValue() - this.y(x1).doubleValue()) / (x2.doubleValue() - x1.doubleValue());
+	}
+
+	// Returns point x of intersection between line created by two points and flat line
+	// Point form equation
+	public double xDouble(N x1, N x2, M y)
+	{
+		return ((y.doubleValue() - this.y(x1).doubleValue()) / this.getSlope(x1, x2)) + x1.doubleValue();
 	}
 }

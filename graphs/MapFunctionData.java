@@ -1,13 +1,13 @@
 package graphs;
 
-import java.util.SortedMap;
-import java.util.SortedSet;
+import java.util.NavigableMap;
+import java.util.NavigableSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MapFunctionData<N extends Number, M extends Number> implements DiscreteData<N, M>
 {
-	private SortedMap<N, M> data;
+	private NavigableMap<N, M> data;
 
 	public MapFunctionData()
 	{
@@ -23,39 +23,40 @@ public class MapFunctionData<N extends Number, M extends Number> implements Disc
 		}
 	}
 	
+	@Override
 	public void set(N x, M y)
 	{
 		this.data.put(x, y);
 	}
 
+	@Override
 	public void remove(N x)
 	{
 		this.data.remove(x);
 	}
 
+	@Override
 	public boolean hasY(N x)
 	{
 		return this.data.containsKey(x);
 	}
 
+	@Override
 	public double yDouble(Number x)
 	{
 		return this.data.get(x).doubleValue();
 	}
 
+	@Override
 	public M y(N x)
 	{
 		return this.data.get(x);
 	}
 
 	// Note: Any modifications to set will also modify data
-	public SortedSet<N> getXSet()
+	@Override
+	public NavigableSet<N> getXSet()
 	{
 		return new TreeSet<N>(this.data.keySet());
-	}
-
-	protected SortedMap<N, M> getMap()
-	{
-		return this.data;
 	}
 }
