@@ -53,7 +53,7 @@ public class WaterLevelVisualiser extends DataVisualiser
 		it.currentSegment(coords);
 		it.next();
 		transformed.moveTo(plane.posX(coords[0]), plane.posY(coords[1]));
-		while (it.currentSegment(coords) != PathIterator.SEG_CLOSE && !it.isDone())
+		while (it.currentSegment(coords) != PathIterator.SEG_CLOSE)
 		{
 			transformed.lineTo(plane.posX(coords[0]), plane.posY(coords[1]));
 			it.next();
