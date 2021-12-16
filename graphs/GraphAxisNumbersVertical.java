@@ -74,7 +74,7 @@ public class GraphAxisNumbersVertical extends GraphAxisNumbers
 
 	private int getNumberHeight(FontMetrics metrics)
 	{
-		return metrics.getHeight() - metrics.getDescent();
+		return metrics.getHeight() - metrics.getDescent() - metrics.getDescent();
 	}
 
 	private int getNumberLeftPos(FontMetrics metrics, Rectangle bounds, int i)

@@ -1,6 +1,7 @@
 package graphs;
 
 // Inclusive lower, exclusive upper
+// TODO: Allow more precise numbers
 public class Range
 {
 	private int lower;

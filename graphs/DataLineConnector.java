@@ -26,9 +26,9 @@ public class DataLineConnector extends DataVisualiser
 			Number n2 = itSecond.next();
 			g.drawLine(
 				plane.posX(n1), 
-				plane.posY(this.getData().y(n1)), 
+				plane.posY(this.getData().yDouble(n1)), 
 				plane.posX(n2), 
-				plane.posY(this.getData().y(n2))
+				plane.posY(this.getData().yDouble(n2))
 			);
 		}
 	}

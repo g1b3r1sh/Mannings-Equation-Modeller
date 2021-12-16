@@ -1,16 +1,26 @@
 package graphs;
 
-import java.util.Set;
-import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class MapFunctionData<N extends Number, M extends Number> implements DiscreteData<N, M>
 {
-	private Map<N, M> data;
+	private SortedMap<N, M> data;
 
 	public MapFunctionData()
 	{
 		this.data = new TreeMap<>();
+	}
+
+	public MapFunctionData(DiscreteData<N, M> data)
+	{
+		this();
+		for (N x : data.getXSet())
+		{
+			this.set(x, data.y(x));
+		}
 	}
 	
 	public void set(N x, M y)
@@ -28,14 +38,24 @@ public class MapFunctionData<N extends Number, M extends Number> implements Disc
 		return this.data.containsKey(x);
 	}
 
-	public M y(Number x)
+	public double yDouble(Number x)
+	{
+		return this.data.get(x).doubleValue();
+	}
+
+	public M y(N x)
 	{
 		return this.data.get(x);
 	}
 
 	// Note: Any modifications to set will also modify data
-	public Set<N> getXSet()
+	public SortedSet<N> getXSet()
 	{
-		return this.data.keySet();
+		return new TreeSet<N>(this.data.keySet());
+	}
+
+	protected SortedMap<N, M> getMap()
+	{
+		return this.data;
 	}
 }

@@ -20,7 +20,7 @@ public class DataPlotter extends DataVisualiser
 		for (Number x : this.getData().getXSet())
 		{
 			int xPos = plane.posX(x) - this.circleSize / 2;
-			int yPos = plane.posY(this.getData().y(x)) - this.circleSize / 2;
+			int yPos = plane.posY(this.getData().yDouble(x)) - this.circleSize / 2;
 			g.fillOval(xPos, yPos, this.circleSize, this.circleSize);
 		}
 	}

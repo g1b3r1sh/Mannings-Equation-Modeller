@@ -1,10 +1,11 @@
 package graphs;
 
-import java.util.Set;
+import java.util.SortedSet;
 
 public interface DiscreteData<N extends Number, M extends Number> extends FunctionData<N, M>
 {
 	public void set(N x, M y);
 	public void remove(N x);
-	public Set<N> getXSet();
+	// Returns ordered set of x values
+	public SortedSet<N> getXSet();
 }
