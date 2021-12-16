@@ -28,19 +28,19 @@ public class WaterLevelVisualiser extends DataVisualiser
 	protected void paintComponent(Graphics g)
 	{
 		g.setColor(this.getColor());
-		drawWater(g);
+		if (this.calculator.withinBounds())
+		{
+			drawWater(g);
+		}
 	}
 	
 	private void drawWater(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
 
-		if (this.calculator.withinBounds())
+		for (Path2D.Double poly : this.calculator.generateWaterPolygons())
 		{
-			for (Path2D.Double poly : this.calculator.generateWaterPolygons())
-			{
-				g2.fill(this.transformPolygon(poly));
-			}
+			g2.fill(this.transformPolygon(poly));
 		}
 	}
 

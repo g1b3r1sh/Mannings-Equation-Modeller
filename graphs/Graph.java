@@ -22,6 +22,8 @@ Tooltip for data points showing values
 Restrictions on scrolling
 */
 
+// TODO: Set precision when loading data
+// TODO: Check support for no data and very little data (ex. one data point)
 public class Graph extends JComponent
 {
 	private Plane plane;
@@ -62,7 +64,23 @@ public class Graph extends JComponent
 
 	public void setGrid(int numCols, int numRows)
 	{
-		this.grid = new Grid(this, numCols, numRows);
+		this.grid.setNumCols(numCols);
+		this.grid.setNumCols(numRows);
+	}
+	
+	public boolean fitGridPlane(double scaleX, double scaleY)
+	{
+		try
+		{
+			this.grid.setNumCols((int) (this.plane.getRangeX().size() / scaleX));
+			this.grid.setNumRows((int) (this.plane.getRangeY().size() / scaleY));
+			return true;
+		}
+		catch (IllegalArgumentException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public Grid getGrid()

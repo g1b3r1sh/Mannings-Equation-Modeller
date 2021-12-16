@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 
+// TODO: Separate numticks from grid
 public abstract class GraphAxis extends JComponent
 {
 	private Graph graph;
