@@ -1,6 +1,9 @@
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
@@ -22,7 +25,7 @@ class ExampleProgram
 	{
 		/// Frame init
 		JFrame frame = new JFrame("Graph Demo");
-		frame.setSize(800, 800);
+		frame.setSize(1200, 800);
 		frame.setLocation(10, 10);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
@@ -44,6 +47,7 @@ class ExampleProgram
 
 		panel.add(container, BorderLayout.CENTER);
 	
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 	}
 
@@ -88,5 +92,13 @@ class ExampleProgram
 
 	
 		return graph;
+	}
+	
+	public static void addMenuBar(JFrame frame)
+	{
+		JMenuBar menu = new JMenuBar();
+		menu.add(new JMenu("JMenu"));
+		menu.add(new JMenuItem("JMenuItem"));
+		frame.setJMenuBar(menu);
 	}
 }
