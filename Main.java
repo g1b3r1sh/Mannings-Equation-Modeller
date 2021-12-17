@@ -1,7 +1,5 @@
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -10,13 +8,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
 import graphs.MapFunctionData;
 import graphs.DiscreteData;
+import graphs.DiscreteDataRenderer;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.GraphTableModel;
@@ -70,6 +68,8 @@ class Main
 	public static <N extends Number, M extends Number> JTable initTable(DiscreteData<N, M> data, int precisionX, int precisionY)
 	{
 		JTable table = new JTable(new GraphTableModel<N, M>(data, X_LABEL, Y_LABEL));
+		table.getColumnModel().getColumn(0).setCellRenderer(new DiscreteDataRenderer(data.getPrecisionX()));
+		table.getColumnModel().getColumn(1).setCellRenderer(new DiscreteDataRenderer(data.getPrecisionY()));
 		return table;
 	}
 	
