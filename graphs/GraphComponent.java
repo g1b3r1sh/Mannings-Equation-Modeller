@@ -18,12 +18,12 @@ public abstract class GraphComponent
 
 	public int getWidth()
 	{
-		return this.graph.getWidth();
+		return this.graph.getCanvasWidth();
 	}
 
 	public int getHeight()
 	{
-		return this.graph.getHeight();
+		return this.graph.getCanvasHeight();
 	}
 
 	protected abstract void paintComponent(Graphics g);

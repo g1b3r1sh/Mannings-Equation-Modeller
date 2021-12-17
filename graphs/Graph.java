@@ -98,6 +98,16 @@ public class Graph extends JComponent
 		return this.dataList;
 	}
 
+	public int getCanvasWidth()
+	{
+		return this.getWidth() - 1;
+	}
+
+	public int getCanvasHeight()
+	{
+		return this.getHeight() - 1;
+	}
+
 	@Override
 	protected void paintComponent(Graphics g)
 	{

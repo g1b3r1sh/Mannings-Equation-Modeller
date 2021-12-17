@@ -12,7 +12,7 @@ import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
-import graphs.MapFunctionData;
+import graphs.MapFunctionDataConnected;
 import graphs.DiscreteData;
 import graphs.DiscreteDataRenderer;
 import graphs.Graph;
@@ -30,16 +30,24 @@ class Main
 	
 	public static void main(String[] args)
 	{
+		// Init frame
 		JFrame frame = initFrame();
 		JPanel panel = initPanel();
 		frame.add(panel);
+
+		// Init data
+		MapFunctionDataConnected<BigDecimal, BigDecimal> data = retrieveData();
+		WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("2.00"));
 		
+		// Init components
 		GraphContainer graphContainer = initGraphContainer();
+		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		panel.add(graphContainer, BorderLayout.CENTER);
-		DiscreteData<BigDecimal, BigDecimal> data = retrieveData();
 		JTable table = initTable(data, 3, 2);
-		addVisualData(graphContainer, data);
 		panel.add(initSidePanel(table), BorderLayout.WEST);
+
+		// Connect data to components
+		addVisualData(graphContainer, data);
 
 		launchFrame(frame);
 	}
@@ -115,14 +123,14 @@ class Main
 		container.getGraph().getDataList().getVisualsHandler(data).connectData();
 	}
 	
-	public static DiscreteData<BigDecimal, BigDecimal> retrieveData()
+	public static MapFunctionDataConnected<BigDecimal, BigDecimal> retrieveData()
 	{
 
-		MapFunctionData<BigDecimal, BigDecimal> data = new MapFunctionData<>(3, 2);
+		MapFunctionDataConnected<BigDecimal, BigDecimal> data = new MapFunctionDataConnected<>(3, 2);
 		
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
-		data.set(new BigDecimal("1.124"), new BigDecimal("1.21"));
-		data.set(new BigDecimal("2.523"), new BigDecimal("2.72"));
+		data.set(new BigDecimal("1.000"), new BigDecimal("1.00"));
+		data.set(new BigDecimal("2.000"), new BigDecimal("3.00"));
 		data.set(new BigDecimal("4.234"), new BigDecimal("0.26"));
 		data.set(new BigDecimal("5.723"), new BigDecimal("3.26"));
 		data.set(new BigDecimal("6.320"), new BigDecimal("3.55"));

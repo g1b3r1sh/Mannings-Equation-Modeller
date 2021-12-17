@@ -66,22 +66,12 @@ public class Grid extends GraphComponent
 
 	protected double cellWidth()
 	{
-		return (double) this.getCanvasWidth() / this.numCols;
+		return (double) this.getWidth() / this.numCols;
 	}
 
 	protected double cellHeight()
 	{
-		return (double) this.getCanvasHeight() / this.numRows;
-	}
-
-	protected int getCanvasWidth()
-	{
-		return this.getWidth() - 1;
-	}
-
-	protected int getCanvasHeight()
-	{
-		return this.getHeight() - 1;
+		return (double) this.getHeight() / this.numRows;
 	}
 
 	@Override
@@ -91,19 +81,19 @@ public class Grid extends GraphComponent
 
 		// Paint background
 		g2.setColor(BACK_COLOR);
-		g2.fillRect(0, 0, this.getCanvasWidth(), this.getCanvasHeight());
+		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 		// Paint gridlines
 		g2.setColor(LINE_COLOR);
 		for (int i = 0; i <= this.numCols; i++)
 		{
 			int xPos = (int) (this.cellWidth() * (i + this.offsetCol));
-			g2.drawLine(xPos, 0, xPos, this.getCanvasHeight());
+			g2.drawLine(xPos, 0, xPos, this.getHeight());
 		}
 		for (int i = 0; i <= this.numRows; i++)
 		{
 			int yPos = (int) (this.cellHeight() * (i + this.offsetRow));
-			g2.drawLine(0, yPos, this.getCanvasWidth(), yPos);
+			g2.drawLine(0, yPos, this.getWidth(), yPos);
 		}
 	}
 }
