@@ -2,3 +2,4 @@
 *.project
 *.classpath
 *.code-workspace
+.vscode/settings.json

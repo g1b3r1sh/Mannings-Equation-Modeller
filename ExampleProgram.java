@@ -70,14 +70,14 @@ class ExampleProgram
 		Range rangeX = new Range(0, 10);
 		Range rangeY = new Range(0, 5);
 		
-		MapFunctionData<BigDecimal, BigDecimal> data = new MapFunctionData<>();
+		MapFunctionData<BigDecimal, BigDecimal> data = new MapFunctionData<>(3, 2);
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
 		data.set(new BigDecimal("1.124"), new BigDecimal("1.21"));
 		data.set(new BigDecimal("2.523"), new BigDecimal("2.72"));
 		data.set(new BigDecimal("4.234"), new BigDecimal("0.26"));
 		data.set(new BigDecimal("5.723"), new BigDecimal("3.26"));
-		data.set(new BigDecimal("6.320"), new BigDecimal("4.55"));
-		data.set(new BigDecimal("8.242"), new BigDecimal("2.16"));
+		data.set(new BigDecimal("6.320"), new BigDecimal("3.55"));
+		data.set(new BigDecimal("8.242"), new BigDecimal("4.16"));
 		data.set(new BigDecimal("9.121"), new BigDecimal("4.80"));
 	
 		Graph graph = new Graph(2, 2);

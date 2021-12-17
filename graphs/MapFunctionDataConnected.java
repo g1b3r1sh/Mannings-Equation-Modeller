@@ -5,9 +5,14 @@ import java.util.Iterator;
 // Continuous function for connected data, inclusive
 public class MapFunctionDataConnected<N extends Number, M extends Number> extends MapFunctionData<N, M>
 {
-	public MapFunctionDataConnected(DiscreteData<N, M> data)
+	public MapFunctionDataConnected(int precisionX, int precisionY)
 	{
-		super(data);
+		super(precisionX, precisionY);
+	}
+
+	public MapFunctionDataConnected(DiscreteData<N, M> data, int precisionX, int precisionY)
+	{
+		super(data, precisionX, precisionY);
 	}
 
 	@Override

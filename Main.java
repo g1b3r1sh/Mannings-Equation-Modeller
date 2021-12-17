@@ -19,7 +19,7 @@ import graphs.MapFunctionData;
 import graphs.DiscreteData;
 import graphs.Graph;
 import graphs.GraphContainer;
-import hydraulics.HydraulicsTableModel;
+import graphs.GraphTableModel;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 
@@ -27,7 +27,7 @@ class Main
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
 	private static final String X_LABEL = "Distance from bank (m)";
-	private static final String Y_LABEL = "Water level (m)";
+	private static final String Y_LABEL = "Elevation (m)";
 	private static final String GRAPH_TITLE = "Cross-section of River Bank";
 	
 	public static void main(String[] args)
@@ -69,7 +69,7 @@ class Main
 
 	public static <N extends Number, M extends Number> JTable initTable(DiscreteData<N, M> data, int precisionX, int precisionY)
 	{
-		JTable table = new JTable(new HydraulicsTableModel<N, M>(data, precisionX, precisionY));
+		JTable table = new JTable(new GraphTableModel<N, M>(data, X_LABEL, Y_LABEL));
 		return table;
 	}
 	
@@ -118,15 +118,15 @@ class Main
 	public static DiscreteData<BigDecimal, BigDecimal> retrieveData()
 	{
 
-		MapFunctionData<BigDecimal, BigDecimal> data = new MapFunctionData<>();
+		MapFunctionData<BigDecimal, BigDecimal> data = new MapFunctionData<>(3, 2);
 		
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
 		data.set(new BigDecimal("1.124"), new BigDecimal("1.21"));
 		data.set(new BigDecimal("2.523"), new BigDecimal("2.72"));
 		data.set(new BigDecimal("4.234"), new BigDecimal("0.26"));
 		data.set(new BigDecimal("5.723"), new BigDecimal("3.26"));
-		data.set(new BigDecimal("6.320"), new BigDecimal("4.55"));
-		data.set(new BigDecimal("8.242"), new BigDecimal("2.16"));
+		data.set(new BigDecimal("6.320"), new BigDecimal("3.55"));
+		data.set(new BigDecimal("8.242"), new BigDecimal("4.16"));
 		data.set(new BigDecimal("9.121"), new BigDecimal("4.80"));
 		
 		return data;
