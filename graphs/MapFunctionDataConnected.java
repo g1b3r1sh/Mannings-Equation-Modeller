@@ -10,9 +10,9 @@ public class MapFunctionDataConnected<N extends Number, M extends Number> extend
 		super(precisionX, precisionY);
 	}
 
-	public MapFunctionDataConnected(DiscreteData<N, M> data, int precisionX, int precisionY)
+	public MapFunctionDataConnected(DiscreteData<N, M> data)
 	{
-		super(data, precisionX, precisionY);
+		super(data, data.getPrecisionX(), data.getPrecisionY());
 	}
 
 	@Override
