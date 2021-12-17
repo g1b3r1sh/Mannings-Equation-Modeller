@@ -8,6 +8,10 @@ import java.awt.Graphics;
 import java.awt.Component;
 import java.math.BigDecimal;
 
+/**
+ * JLabel that displays area of water in waterCalculator
+**/
+
 public class Results extends JLabel
 {
 	private WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator;

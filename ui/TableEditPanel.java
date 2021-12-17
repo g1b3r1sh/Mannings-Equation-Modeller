@@ -12,6 +12,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
+/**
+ * Contains components for editing table as well as updating data connected to table.
+**/
+
 public class TableEditPanel extends JPanel implements ActionListener
 {
 	private JTable table;

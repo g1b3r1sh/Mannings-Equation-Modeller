@@ -12,6 +12,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
+/**
+ * Component that allows for switching of screens controlled by button menu at bottom of screen.
+**/
+
 public class ScreenSwitcher extends JPanel implements ActionListener
 {
 	private JPanel cards;
