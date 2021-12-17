@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.function.Predicate;
 
 /**
- * Responsible for handling how an instance of DiscreteData is drawn on a graph
+ * Stores DiscreteData and is responsible for handling how it is drawn on a graph
  * Handles drawing through DataVisualisers
 **/
 public class DataVisualsHandler
@@ -46,7 +46,8 @@ public class DataVisualsHandler
 	{
 		this.removeVisualisers(visualiser -> visualiser instanceof DataLineConnector);
 	}
-
+	
+	// Remove all visual components of data from graph
 	public void clearData()
 	{
 		Iterator<DataVisualiser> it = this.dataVisuals.iterator();
@@ -64,7 +65,9 @@ public class DataVisualsHandler
 		this.dataVisuals.add(visualiser);
 		return visualiser;
 	}
-
+	
+	// Remove all visual components of data based on condition
+	// Can be used for removing all instances of specific DataVisualiser class by passing "visualiser -> visualiser instanceof class" as parameter
 	private void removeVisualisers(Predicate<DataVisualiser> predicate)
 	{
 		Iterator<DataVisualiser> it = this.dataVisuals.iterator();

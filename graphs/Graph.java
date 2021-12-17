@@ -72,6 +72,7 @@ public class Graph extends JComponent
 		this.grid.setNumCols(numRows);
 	}
 	
+	// Fit gridpane for scales
 	public boolean fitGridPlane(double scaleX, double scaleY)
 	{
 		try
@@ -101,7 +102,8 @@ public class Graph extends JComponent
 	{
 		return this.dataList;
 	}
-
+	
+	// Get dimensions on which pixels are visible, since pixels on edge are not visible
 	public int getCanvasWidth()
 	{
 		return this.getWidth() - 1;

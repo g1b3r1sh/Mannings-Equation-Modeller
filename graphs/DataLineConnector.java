@@ -19,10 +19,12 @@ public class DataLineConnector extends DataVisualiser
 	protected void paintComponent(Graphics g)
 	{
 		Set<? extends Number> xSet = this.getData().getXSet();
+		// Can't paint connections if there is less than two points
 		if (xSet.size() > 1)
 		{
 			g.setColor(this.getColor());
 			Plane plane = this.getGraph().getPlane();
+			// Iterate through points in twos
 			Iterator<? extends Number> itFirst = xSet.iterator();
 			Iterator<? extends Number> itSecond = xSet.iterator();
 			itSecond.next();

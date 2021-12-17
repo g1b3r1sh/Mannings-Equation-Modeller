@@ -39,6 +39,7 @@ public class WaterLevelVisualiser extends DataVisualiser
 		g.drawLine(0, this.calcWaterY(), this.getWidth(), this.calcWaterY());
 	}
 	
+	// Get all water segments from calculator and paint them on the graph
 	private void drawWater(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
@@ -48,7 +49,8 @@ public class WaterLevelVisualiser extends DataVisualiser
 			g2.fill(this.transformPolygon(poly));
 		}
 	}
-
+	
+	// Transforms water segment from data plane to graph graphics plane
 	private Path2D.Double transformPolygon(Path2D.Double poly)
 	{
 		Path2D.Double transformed = new Path2D.Double();

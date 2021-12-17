@@ -2,6 +2,10 @@ package graphs;
 
 import java.awt.Color;
 
+/**
+ * Component that visualises data on Graph
+ */
+
 public abstract class DataVisualiser extends GraphComponent
 {
 	private DiscreteData<? extends Number, ? extends Number> data;

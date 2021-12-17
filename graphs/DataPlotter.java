@@ -2,6 +2,10 @@ package graphs;
 
 import java.awt.Graphics;
 
+/**
+ * Plots data on Graph
+ */
+
 public class DataPlotter extends DataVisualiser
 {
 	private int circleSize;
@@ -17,6 +21,7 @@ public class DataPlotter extends DataVisualiser
 	{
 		g.setColor(this.getColor());
 		Plane plane = this.getGraph().getPlane();
+		// Iterate through all data
 		for (Number x : this.getData().getXSet())
 		{
 			int xPos = plane.posX(x) - this.circleSize / 2;

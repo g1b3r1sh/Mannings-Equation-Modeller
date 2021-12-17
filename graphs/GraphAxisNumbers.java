@@ -81,6 +81,7 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 
 	public abstract boolean isOverlapping();
 	
+	// Repeatedly lower font until it fits
 	public void fitFont()
 	{
 		this.setFont(this.getFont().deriveFont((float) this.MAX_FONT));
