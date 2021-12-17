@@ -32,6 +32,7 @@ public class WaterLevelVisualiser extends DataVisualiser
 		{
 			drawWater(g);
 		}
+		g.drawLine(0, this.calcWaterY(), this.getWidth(), this.calcWaterY());
 	}
 	
 	private void drawWater(Graphics g)
@@ -60,5 +61,10 @@ public class WaterLevelVisualiser extends DataVisualiser
 		}
 		transformed.closePath();
 		return transformed;
+	}
+
+	private int calcWaterY()
+	{
+		return this.getGraph().getPlane().posY(this.calculator.getWaterLevel());
 	}
 }
