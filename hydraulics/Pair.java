@@ -1,5 +1,9 @@
 package hydraulics;
 
+/**
+ * A pair of two objects that can be different classes
+**/
+
 public class Pair<F, S>
 {
 	public F first;

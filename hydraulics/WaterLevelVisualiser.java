@@ -10,6 +10,10 @@ import graphs.DataVisualiser;
 import graphs.Graph;
 import graphs.Plane;
 
+/**
+ * Visualises water level in graph
+**/
+
 // Allow for adjusting out of bounds, but don't color anything
 public class WaterLevelVisualiser extends DataVisualiser
 {

@@ -8,6 +8,10 @@ import java.awt.geom.PathIterator;
 import graphs.ConnectedData;
 import graphs.DiscreteData;
 
+/**
+ * Stores water level and calculates hydraulic data based off of it
+**/
+
 public class WaterLevelCalculator<N extends Number, M extends Number>
 {
 	private ConnectedData<N, M> sectionData;

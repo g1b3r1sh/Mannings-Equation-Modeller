@@ -6,6 +6,10 @@ import javax.swing.event.ChangeListener;
 
 import graphs.Graph;
 
+/**
+ * Connects JSpinner to WaterLevelCalculator to allow the spinner to change the water level of the calculator.
+**/
+
 public class CalculatorSpinnerConnector implements ChangeListener
 {
 	private WaterLevelCalculator<?, ?> calculator;
