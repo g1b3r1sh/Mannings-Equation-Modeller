@@ -55,7 +55,7 @@ public class MapFunctionDataConnected<N extends Number, M extends Number> extend
 	// Returns point x of intersection between line created by two points and flat line
 	// Point form equation
 	@Override
-	public double xDouble(N x1, N x2, M y)
+	public double xDouble(N x1, N x2, Number y)
 	{
 		return ((y.doubleValue() - this.y(x1).doubleValue()) / this.getSlope(x1, x2)) + x1.doubleValue();
 	}

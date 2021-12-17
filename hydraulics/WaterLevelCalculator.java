@@ -11,20 +11,20 @@ import graphs.DiscreteData;
 public class WaterLevelCalculator<N extends Number, M extends Number>
 {
 	private ConnectedData<N, M> sectionData;
-	private M waterLevel;
+	private Number waterLevel;
 
-	public WaterLevelCalculator(ConnectedData<N, M> sectionData, M waterLevel)
+	public WaterLevelCalculator(ConnectedData<N, M> sectionData, Number waterLevel)
 	{
 		this.sectionData = sectionData;
 		this.setWaterLevel(waterLevel);
 	}
 
-	public M getWaterLevel()
+	public Number getWaterLevel()
 	{
 		return waterLevel;
 	}
 
-	public void setWaterLevel(M waterLevel)
+	public void setWaterLevel(Number waterLevel)
 	{
 		this.waterLevel = waterLevel;
 	}

@@ -6,7 +6,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.SpinnerNumberModel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,6 +21,7 @@ import graphs.DiscreteDataRenderer;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.GraphTableModel;
+import hydraulics.CalculatorSpinnerConnector;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.ScreenSwitcher;
@@ -66,12 +69,13 @@ class Main
 	public static JPanel initInputPanel(MapFunctionDataConnected<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
 	{
 		JPanel panel = new JPanel(new BorderLayout());
+
 		// Init components
 		GraphContainer graphContainer = initGraphContainer();
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		panel.add(graphContainer, BorderLayout.CENTER);
 		JTable table = initTable(data, 3, 2);
-		panel.add(initSidePanel(table), BorderLayout.WEST);
+		panel.add(initSidePanel(table, waterCalculator, data.getPrecisionY(), graphContainer.getGraph()), BorderLayout.WEST);
 
 		// Connect data to components
 		addVisualData(graphContainer, data);
@@ -94,12 +98,23 @@ class Main
 		return panel;
 	}
 	
-	public static JPanel initSidePanel(JTable table)
+	public static JPanel initSidePanel(JTable table, WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(initTablePane(table), BorderLayout.WEST);
+		panel.add(new JLabel("Water Level:"));
+		panel.add(initWaterSpinner(calculator, precision, graph));
 		return panel;
+	}
+
+	public static JSpinner initWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
+	{
+		// TODO: Set min and max
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(calculator.getWaterLevel().doubleValue(), 0d, 100d, Math.pow(0.1d, precision)));
+		spinner.addChangeListener(new CalculatorSpinnerConnector(calculator, graph));
+		// TODO: Format
+		return spinner;
 	}
 	
 	public static GraphContainer initGraphContainer()
