@@ -10,6 +10,10 @@ import java.awt.Font;
 import java.awt.event.ComponentListener;
 import java.awt.event.ComponentEvent;
 
+/**
+ * Represents the numbers displayed in intervals along the axis of a graph.
+**/
+
 // TODO: Write getter and setter functions for protected variables
 public abstract class GraphAxisNumbers extends JComponent implements ComponentListener
 {

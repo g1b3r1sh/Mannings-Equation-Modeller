@@ -5,6 +5,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+/**
+ * A horizontal instance of GraphAxisNumbers
+**/
+
 public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 {
 	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range, int precision)

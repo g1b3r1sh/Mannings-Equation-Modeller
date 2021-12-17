@@ -5,6 +5,11 @@ import java.util.NavigableSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+/**
+ * An instance of DiscreteData through a Map
+**/
+
+// TODO: For some reason this also contains precision??
 public class MapFunctionData<N extends Number, M extends Number> implements DiscreteData<N, M>
 {
 	private NavigableMap<N, M> data;

@@ -5,6 +5,10 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 
+/**
+ * Represents the physical instance of the axis (i.e. the tickmarks) of a graph.
+**/
+
 // TODO: Separate numticks from grid
 public abstract class GraphAxis extends JComponent
 {

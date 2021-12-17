@@ -2,6 +2,12 @@ package graphs;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * Handles rendering of Numbers with specified precision
+**/
+
+// TODO: Rename file to PrecisionNumberRenderer and move to ui package
+// TODO: Use the term scale instead of precision
 public class DiscreteDataRenderer extends DefaultTableCellRenderer
 {
 	private int precision;

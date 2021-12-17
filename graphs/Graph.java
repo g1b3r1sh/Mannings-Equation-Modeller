@@ -22,6 +22,10 @@ Tooltip for data points showing values
 Restrictions on scrolling
 */
 
+/**
+ * Represents a graph. Handling of responsibilities such as adding data and displaying it is delegated to contained objects, which is an example of encapsulation.
+**/
+
 // TODO: Set precision when loading data
 // TODO: Check support for no data and very little data (ex. one data point)
 public class Graph extends JComponent

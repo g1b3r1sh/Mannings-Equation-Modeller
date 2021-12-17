@@ -1,5 +1,9 @@
 package graphs;
 
+/**
+ * Represents numerical range
+**/
+
 // Inclusive lower, exclusive upper
 // TODO: Allow more precise numbers
 public class Range

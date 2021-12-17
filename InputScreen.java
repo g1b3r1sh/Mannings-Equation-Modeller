@@ -22,6 +22,10 @@ import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.TableEditPanel;
 
+/**
+ * Contains methods for constructing input screen
+**/
+
 public class InputScreen
 {
 	private static final String X_LABEL = "Distance from bank (m)";

@@ -2,6 +2,10 @@ package graphs;
 
 import java.util.LinkedList;
 
+/**
+ * Represents the data contained by a Graph. Allows for searching of data as well as retrieval of their VisualsHandlers
+**/
+
 public class GraphDataCollection
 {
 	private Graph graph; // Graph to contain data in

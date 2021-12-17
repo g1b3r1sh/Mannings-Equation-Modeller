@@ -3,6 +3,10 @@ package graphs;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+/**
+ * Represents a GraphAxis to the left of a graph
+**/
+
 public class GraphAxisLeft extends GraphAxis
 {
 	public GraphAxisLeft(Graph graph)

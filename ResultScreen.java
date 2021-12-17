@@ -11,6 +11,10 @@ import graphs.MapFunctionDataConnected;
 import hydraulics.WaterLevelCalculator;
 import ui.Results;
 
+/**
+ * Contains methods for constructing results screen
+**/
+
 public class ResultScreen
 {
 	public static JPanel initResultPanel(MapFunctionDataConnected<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)

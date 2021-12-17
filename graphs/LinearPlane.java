@@ -1,5 +1,9 @@
 package graphs;
 
+/**
+ * An instance of Plane where the scales are linear (i.e. Numbers scale up in increments rather than by logs or multiples)
+**/
+
 // Does not have any visual, essentially is a mathematical function (pass numbers, return numbers)
 // Plane that uses linear scale
 public class LinearPlane extends Plane

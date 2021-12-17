@@ -3,6 +3,10 @@ package graphs;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+/**
+ * Represents a GraphAxis at the top of a graph
+**/
+
 public class GraphAxisTop extends GraphAxis
 {
 	public GraphAxisTop(Graph graph)

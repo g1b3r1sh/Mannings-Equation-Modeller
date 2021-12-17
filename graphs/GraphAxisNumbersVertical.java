@@ -5,6 +5,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+/**
+ * A vertical instance of GraphAxisNumbers
+**/
+
 public class GraphAxisNumbersVertical extends GraphAxisNumbers
 {
 	boolean alignRight;

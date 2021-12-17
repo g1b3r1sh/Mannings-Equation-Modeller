@@ -4,6 +4,10 @@ import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * Paints connection between data points on graph
+**/
+
 public class DataLineConnector extends DataVisualiser
 {
 	public DataLineConnector(Graph graph, DiscreteData<?, ?> data)

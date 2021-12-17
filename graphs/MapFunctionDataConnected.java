@@ -2,6 +2,10 @@ package graphs;
 
 import java.util.Iterator;
 
+/**
+ * ConnectedData version of MapFunctionData. Allows for conversion from instance of MapFunctionData.
+**/
+
 // Continuous function for connected data, inclusive
 public class MapFunctionDataConnected<N extends Number, M extends Number> extends MapFunctionData<N, M> implements ConnectedData<N, M>
 {

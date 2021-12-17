@@ -3,6 +3,10 @@ package graphs;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+/**
+ * Represents a GraphAxis to the right of a graph
+**/
+
 public class GraphAxisRight extends GraphAxis
 {
 	public GraphAxisRight(Graph graph)

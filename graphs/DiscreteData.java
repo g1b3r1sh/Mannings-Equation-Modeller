@@ -2,6 +2,10 @@ package graphs;
 
 import java.util.NavigableSet;
 
+/**
+ * Represents a discrete data function
+**/
+
 public interface DiscreteData<N extends Number, M extends Number> extends FunctionData<N, M>, DataInformation
 {
 	public void set(N x, M y);

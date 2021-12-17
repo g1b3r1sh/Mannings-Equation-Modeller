@@ -13,6 +13,11 @@ import graphs.MapFunctionDataConnected;
 import hydraulics.WaterLevelCalculator;
 import ui.ScreenSwitcher;
 
+/**
+ * Main program
+ * Constructs and launches main window of application
+**/
+
 class Main
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";

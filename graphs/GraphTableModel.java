@@ -7,6 +7,10 @@ import javax.swing.table.AbstractTableModel;
 
 import hydraulics.Pair;
 
+/**
+ * The TableModel of the data of a graph. As such, it is restricted to two columns.
+**/
+
 // TODO: Make editable
 public class GraphTableModel <N extends Number, M extends Number> extends AbstractTableModel
 {

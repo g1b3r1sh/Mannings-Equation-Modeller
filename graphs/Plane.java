@@ -2,6 +2,10 @@ package graphs;
 
 import java.awt.Graphics;
 
+/**
+ * Represents the plane of a graph. Contains methods for retrieving graphic positions of points from points inside the plane.
+**/
+
 public abstract class Plane extends GraphComponent 
 {
 	private Range rangeX;

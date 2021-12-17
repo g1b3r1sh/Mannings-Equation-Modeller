@@ -2,6 +2,10 @@ package graphs;
 
 import java.awt.Graphics;
 
+/**
+ * A class wherein its instances are contained inside a Graph
+**/
+
 public abstract class GraphComponent
 {
 	private Graph graph;

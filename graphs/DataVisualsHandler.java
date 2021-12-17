@@ -4,7 +4,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
-// Responsible for handling interaction between data visualisers and graph
+/**
+ * Responsible for handling how an instance of DiscreteData is drawn on a graph
+ * Handles drawing through DataVisualisers
+**/
 public class DataVisualsHandler
 {
 	private Graph graph;

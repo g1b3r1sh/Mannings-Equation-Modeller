@@ -4,6 +4,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
+/**
+ * The visual Grid of a Graph. Contains methods for retrieving # of rows and cols which I heavily regret.
+**/
+
 public class Grid extends GraphComponent
 {
 	private final Color BACK_COLOR = new Color(0f, 0f, 0f, 0f);

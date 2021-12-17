@@ -1,6 +1,9 @@
 package graphs;
 
-// Interface for extrinsic data information
+/**
+ * Interface for extrinsic information about data
+**/
+
 public interface DataInformation
 {
 	public void setPrecisionX(int precisionX);

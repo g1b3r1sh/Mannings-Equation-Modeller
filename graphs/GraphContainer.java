@@ -13,6 +13,11 @@ import java.util.function.Function;
 import java.awt.GridBagConstraints;
 import java.awt.Component;
 
+/**
+ * Represents the container of a graph and handles the components that surround it, such as labels and axises
+ * Contains methods for adding components to every side of a Graph
+**/
+
 // Useful site: https://thebadprogrammer.com/swing-layout-manager-sizing/
 // FUTURE: Enable scrollpane (scale axis to pane, zoom in/zoom out features)
 public class GraphContainer extends JComponent
