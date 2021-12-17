@@ -1,5 +1,6 @@
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -20,6 +21,7 @@ import graphs.GraphContainer;
 import graphs.GraphTableModel;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
+import ui.ScreenSwitcher;
 
 class Main
 {
@@ -30,24 +32,18 @@ class Main
 	
 	public static void main(String[] args)
 	{
-		// Init frame
-		JFrame frame = initFrame();
-		JPanel panel = initPanel();
-		frame.add(panel);
-
 		// Init data
 		MapFunctionDataConnected<BigDecimal, BigDecimal> data = retrieveData();
 		WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("2.00"));
 		
-		// Init components
-		GraphContainer graphContainer = initGraphContainer();
-		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
-		panel.add(graphContainer, BorderLayout.CENTER);
-		JTable table = initTable(data, 3, 2);
-		panel.add(initSidePanel(table), BorderLayout.WEST);
+		// Init frame
+		JFrame frame = initFrame();
+		JPanel inputPanel = initInputPanel(data, waterCalculator);
 
-		// Connect data to components
-		addVisualData(graphContainer, data);
+		ScreenSwitcher switcher = new ScreenSwitcher(inputPanel);
+		switcher.addScreen(new JLabel("Foo"));
+
+		frame.add(switcher);
 
 		launchFrame(frame);
 	}
@@ -67,9 +63,19 @@ class Main
 		frame.setVisible(true);
 	}
 
-	public static JPanel initPanel()
+	public static JPanel initInputPanel(MapFunctionDataConnected<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
 	{
 		JPanel panel = new JPanel(new BorderLayout());
+		// Init components
+		GraphContainer graphContainer = initGraphContainer();
+		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
+		panel.add(graphContainer, BorderLayout.CENTER);
+		JTable table = initTable(data, 3, 2);
+		panel.add(initSidePanel(table), BorderLayout.WEST);
+
+		// Connect data to components
+		addVisualData(graphContainer, data);
+
 		return panel;
 	}
 
