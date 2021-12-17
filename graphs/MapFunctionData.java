@@ -77,6 +77,12 @@ public class MapFunctionData<N extends Number, M extends Number> implements Disc
 		return this.data.get(x);
 	}
 
+	@Override
+	public int size()
+	{
+		return this.data.size();
+	}
+
 	// Note: Any modifications to set will also modify data
 	@Override
 	public NavigableSet<N> getXSet()

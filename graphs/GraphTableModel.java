@@ -57,7 +57,7 @@ public class GraphTableModel <N extends Number, M extends Number> extends Abstra
 	{
 		this.data = new ArrayList<>();
 		Iterator<N> it = data.getXSet().iterator();
-		for (int i = 0; i < data.getXSet().size(); i++)
+		for (int i = 0; i < data.size(); i++)
 		{
 			N x = it.next();
 			this.data.add(new Pair<>(x, data.y(x)));

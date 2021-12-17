@@ -5,17 +5,17 @@ import java.util.LinkedList;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 
+import graphs.ConnectedData;
 import graphs.DiscreteData;
-import graphs.MapFunctionDataConnected;
 
 public class WaterLevelCalculator<N extends Number, M extends Number>
 {
-	private MapFunctionDataConnected<N, M> sectionData;
+	private ConnectedData<N, M> sectionData;
 	private M waterLevel;
 
-	public WaterLevelCalculator(DiscreteData<N, M> sectionData, M waterLevel)
+	public WaterLevelCalculator(ConnectedData<N, M> sectionData, M waterLevel)
 	{
-		this.sectionData = new MapFunctionDataConnected<N, M>(sectionData);
+		this.sectionData = sectionData;
 		this.setWaterLevel(waterLevel);
 	}
 
@@ -36,7 +36,14 @@ public class WaterLevelCalculator<N extends Number, M extends Number>
 	
 	public boolean withinBounds()
 	{
-		return this.aboveWater(sectionData.getXSet().first()) && this.aboveWater(sectionData.getXSet().last());
+		if (this.sectionData.size() > 1)
+		{
+			return this.aboveWater(this.sectionData.getXSet().first()) && this.aboveWater(this.sectionData.getXSet().last());
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	// Points at water level are considered out of water
