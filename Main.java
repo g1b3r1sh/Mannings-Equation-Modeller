@@ -102,7 +102,7 @@ class Main
 
 			private void popup(String message)
 			{
-				JOptionPane.showMessageDialog(menuBar, message);
+				JOptionPane.showMessageDialog(menuBar.getRootPane(), message);
 			}
 		};
 		help.add(helpItem("What is this?", "what", listener));
