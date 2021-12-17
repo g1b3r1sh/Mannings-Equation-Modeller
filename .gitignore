@@ -3,4 +3,5 @@
 *.classpath
 *.code-workspace
 .vscode/settings.json
+.breakpoints
 Java-Graphs.jar
