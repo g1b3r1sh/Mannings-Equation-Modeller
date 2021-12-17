@@ -40,8 +40,8 @@ class Main
 		JFrame frame = initFrame();
 		JPanel inputPanel = initInputPanel(data, waterCalculator);
 
-		ScreenSwitcher switcher = new ScreenSwitcher(inputPanel);
-		switcher.addScreen(new JLabel("Foo"));
+		ScreenSwitcher switcher = new ScreenSwitcher(inputPanel, "Input");
+		switcher.addScreen(new JLabel("Foo"), "Bar");
 
 		frame.add(switcher);
 

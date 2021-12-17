@@ -21,7 +21,7 @@ import hydraulics.WaterLevelVisualiser;
 
 class ExampleProgram
 {
-	public static void main(String[] args)
+	//public static void main(String[] args)
 	{
 		/// Frame init
 		JFrame frame = new JFrame("Graph Demo");
