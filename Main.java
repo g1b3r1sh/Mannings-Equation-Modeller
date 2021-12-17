@@ -18,7 +18,7 @@ import ui.ScreenSwitcher;
  * Constructs and launches main window of application
 **/
 
-class Main
+public class Main
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
 	
