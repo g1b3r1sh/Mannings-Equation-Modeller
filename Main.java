@@ -16,15 +16,16 @@ import java.math.BigDecimal;
 
 import graphs.Range;
 import graphs.MapFunctionDataConnected;
+import graphs.BigDecimalGraphTableModel;
 import graphs.DiscreteData;
 import graphs.DiscreteDataRenderer;
 import graphs.Graph;
 import graphs.GraphContainer;
-import graphs.GraphTableModel;
 import hydraulics.CalculatorSpinnerConnector;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.ScreenSwitcher;
+import ui.TableEditPanel;
 
 class Main
 {
@@ -75,7 +76,7 @@ class Main
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		panel.add(graphContainer, BorderLayout.CENTER);
 		JTable table = initTable(data, 3, 2);
-		panel.add(initSidePanel(table, waterCalculator, data.getPrecisionY(), graphContainer.getGraph()), BorderLayout.WEST);
+		panel.add(initSidePanel(table, waterCalculator, data.getPrecisionY(), graphContainer.getGraph(), data), BorderLayout.WEST);
 
 		// Connect data to components
 		addVisualData(graphContainer, data);
@@ -83,9 +84,9 @@ class Main
 		return panel;
 	}
 
-	public static <N extends Number, M extends Number> JTable initTable(DiscreteData<N, M> data, int precisionX, int precisionY)
+	public static JTable initTable(DiscreteData<BigDecimal, BigDecimal> data, int precisionX, int precisionY)
 	{
-		JTable table = new JTable(new GraphTableModel<N, M>(data, X_LABEL, Y_LABEL));
+		JTable table = new JTable(new BigDecimalGraphTableModel(data, X_LABEL, Y_LABEL));
 		table.getColumnModel().getColumn(0).setCellRenderer(new DiscreteDataRenderer(data.getPrecisionX()));
 		table.getColumnModel().getColumn(1).setCellRenderer(new DiscreteDataRenderer(data.getPrecisionY()));
 		return table;
@@ -98,15 +99,22 @@ class Main
 		return panel;
 	}
 	
-	public static JPanel initSidePanel(JTable table, WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
+	public static JPanel initSidePanel(JTable table, WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph, DiscreteData<BigDecimal, BigDecimal> data)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(tableEditPanel(table, data));
 		panel.add(initTablePane(table), BorderLayout.WEST);
 		panel.add(new JLabel("Water Level:"));
 		panel.add(initWaterSpinner(calculator, precision, graph));
 		return panel;
 	}
+
+	public static TableEditPanel tableEditPanel(JTable table, DiscreteData<BigDecimal, BigDecimal> data)
+	{
+		return new TableEditPanel(table, data);
+	}
+
 
 	public static JSpinner initWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{

@@ -2,6 +2,7 @@ package graphs;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Supplier;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -53,6 +54,11 @@ public class GraphTableModel <N extends Number, M extends Number> extends Abstra
 		return Number.class;
 	}
 	
+	protected ArrayList<Pair<N, M>> getData()
+	{
+		return this.data;
+	}
+
 	private void populate(DiscreteData<N, M> data)
 	{
 		this.data = new ArrayList<>();
