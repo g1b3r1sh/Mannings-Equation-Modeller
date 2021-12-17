@@ -65,32 +65,34 @@ public class WaterLevelCalculator<N extends Number, M extends Number>
 	// To generate shapes, go through all data
 	// If data is below water, add to list
 	// If data is above water, list is converted into shape (if it contains data, of course)
-	// Assumes that withinBounds() is true
 	public LinkedList<Path2D.Double> generateWaterPolygons()
 	{
 		LinkedList<Path2D.Double> list = new LinkedList<>();
-		Path2D.Double currentPolygon = null;
-		for (N x : this.sectionData.getXSet())
-		{
-			if (!this.aboveWater(x))
+			if (this.withinBounds())
 			{
-				if (currentPolygon == null)
+				Path2D.Double currentPolygon = null;
+				for (N x : this.sectionData.getXSet())
 				{
-					double xPos = this.waterIntersection(x);
-					currentPolygon = new Path2D.Double();
-					currentPolygon.moveTo(xPos, this.sectionData.yDouble(xPos));
+					if (!this.aboveWater(x))
+					{
+						if (currentPolygon == null)
+						{
+							double xPos = this.waterIntersection(x);
+							currentPolygon = new Path2D.Double();
+							currentPolygon.moveTo(xPos, this.sectionData.yDouble(xPos));
+						}
+						currentPolygon.lineTo(x.doubleValue(), this.sectionData.y(x).doubleValue());
+					}
+					else if (this.aboveWater(x) && currentPolygon != null)
+					{
+						double xPos = this.waterIntersection(x);
+						currentPolygon.lineTo(xPos, this.sectionData.yDouble(xPos));
+						currentPolygon.closePath();
+						list.add(currentPolygon);
+						currentPolygon = null;
+					}
 				}
-				currentPolygon.lineTo(x.doubleValue(), this.sectionData.y(x).doubleValue());
 			}
-			else if (this.aboveWater(x) && currentPolygon != null)
-			{
-				double xPos = this.waterIntersection(x);
-				currentPolygon.lineTo(xPos, this.sectionData.yDouble(xPos));
-				currentPolygon.closePath();
-				list.add(currentPolygon);
-				currentPolygon = null;
-			}
-		}
 		return list;
 	}
 
