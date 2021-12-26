@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import graphs.DiscreteData;
+import data.DiscreteData;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

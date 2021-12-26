@@ -1,4 +1,4 @@
-package graphs;
+package data;
 
 /**
  * Interface for extrinsic information about data

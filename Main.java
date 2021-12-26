@@ -4,12 +4,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import data.MapFunctionDataConnected;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.math.BigDecimal;
 
-import graphs.MapFunctionDataConnected;
 import hydraulics.WaterLevelCalculator;
 import ui.ScreenSwitcher;
 

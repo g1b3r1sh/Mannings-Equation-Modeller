@@ -3,6 +3,8 @@ package graphs;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import data.DiscreteData;
+
 /**
  * GraphTableModel that takes in BigDecimal as data
  * Overrides setValueAt method to allow for data to be changed

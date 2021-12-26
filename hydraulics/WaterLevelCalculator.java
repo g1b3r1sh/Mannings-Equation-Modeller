@@ -2,11 +2,11 @@ package hydraulics;
 
 import java.util.LinkedList;
 
+import data.ConnectedData;
+import data.DiscreteData;
+
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
-
-import graphs.ConnectedData;
-import graphs.DiscreteData;
 
 /**
  * Stores water level and calculates hydraulic data based off of it

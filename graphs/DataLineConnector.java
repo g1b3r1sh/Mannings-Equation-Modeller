@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.Set;
 
+import data.DiscreteData;
+
 /**
  * Paints connection between data points on graph
 **/

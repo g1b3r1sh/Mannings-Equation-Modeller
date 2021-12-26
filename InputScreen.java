@@ -6,14 +6,15 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 
+import data.DiscreteData;
+import data.MapFunctionDataConnected;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
-import graphs.MapFunctionDataConnected;
 import graphs.BigDecimalGraphTableModel;
-import graphs.DiscreteData;
 import graphs.DiscreteDataRenderer;
 import graphs.Graph;
 import graphs.GraphContainer;

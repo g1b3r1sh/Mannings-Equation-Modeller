@@ -6,13 +6,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import data.MapFunctionDataConnected;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
-import graphs.MapFunctionDataConnected;
 import graphs.Graph;
 import graphs.GraphContainer;
 

@@ -2,6 +2,8 @@ package graphs;
 
 import java.awt.Graphics;
 
+import data.DiscreteData;
+
 /**
  * Plots data on Graph
  */

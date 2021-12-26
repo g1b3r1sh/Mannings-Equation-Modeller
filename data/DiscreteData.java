@@ -1,4 +1,4 @@
-package graphs;
+package data;
 
 import java.util.NavigableSet;
 

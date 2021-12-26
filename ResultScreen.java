@@ -7,7 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import graphs.MapFunctionDataConnected;
+import data.MapFunctionDataConnected;
 import hydraulics.WaterLevelCalculator;
 import ui.Results;
 

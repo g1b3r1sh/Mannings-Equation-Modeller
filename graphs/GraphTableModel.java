@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import javax.swing.table.AbstractTableModel;
 
+import data.DiscreteData;
 import hydraulics.Pair;
 
 /**

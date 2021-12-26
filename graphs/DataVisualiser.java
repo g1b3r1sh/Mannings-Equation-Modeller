@@ -2,6 +2,8 @@ package graphs;
 
 import java.awt.Color;
 
+import data.DiscreteData;
+
 /**
  * Component that visualises data on Graph
  */

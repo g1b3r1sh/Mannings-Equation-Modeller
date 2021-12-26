@@ -1,4 +1,4 @@
-package graphs;
+package data;
 
 /**
  * Contains additional methods to represent continuous function constructed by connecting all points in DiscreteData

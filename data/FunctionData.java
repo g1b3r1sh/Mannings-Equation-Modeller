@@ -1,4 +1,4 @@
-package graphs;
+package data;
 
 /**
  * Represents a mathematical function. Contains methods for converting into double.

@@ -2,6 +2,8 @@ package graphs;
 
 import java.util.LinkedList;
 
+import data.DiscreteData;
+
 /**
  * Represents the data contained by a Graph. Allows for searching of data as well as retrieval of their VisualsHandlers
 **/

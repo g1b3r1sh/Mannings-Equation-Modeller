@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
+import data.DiscreteData;
+
 /**
  * Stores DiscreteData and is responsible for handling how it is drawn on a graph
  * Handles drawing through DataVisualisers
