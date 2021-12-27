@@ -8,7 +8,7 @@ import java.util.Set;
  * Represents a discrete data function
 **/
 
-public interface DiscreteData<M extends Number, N extends Number> extends Data<M, N>
+public interface DiscreteData<M extends Number, N extends Number> extends Function<M, N>
 {
 	public void set(M x, N y);
 	public void remove(M x);

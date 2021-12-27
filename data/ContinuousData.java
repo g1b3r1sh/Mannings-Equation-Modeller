@@ -6,7 +6,7 @@ import java.util.Iterator;
  * Represent continuous function constructed by connecting all points in DiscreteData
 **/
 
-public class ContinuousData<M extends Number, N extends Number> implements FunctionData
+public class ContinuousData<M extends Number, N extends Number> implements ContinuousFunction
 {
 	private DiscreteData<M, N> data;
 
