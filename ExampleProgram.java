@@ -71,7 +71,7 @@ class ExampleProgram
 		Range rangeX = new Range(0, 10);
 		Range rangeY = new Range(0, 5);
 		
-		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>(3, 2);
+		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>();
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
 		data.set(new BigDecimal("1.124"), new BigDecimal("1.21"));
 		data.set(new BigDecimal("2.523"), new BigDecimal("2.72"));

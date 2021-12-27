@@ -6,11 +6,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import data.DiscreteData;
+import hydraulics.DataPrecision;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Contains components for editing table as well as updating data connected to table.
@@ -19,12 +20,12 @@ import java.math.BigDecimal;
 public class TableEditPanel extends JPanel implements ActionListener
 {
 	private JTable table;
-	private DiscreteData<BigDecimal, BigDecimal> data;
+	private DataPrecision precision;
 	
-	public TableEditPanel(JTable table, DiscreteData<BigDecimal, BigDecimal> data)
+	public TableEditPanel(JTable table, DataPrecision precision)
 	{
 		this.table = table;
-		this.data = data;
+		this.precision = precision;
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(this.createEditButton());
@@ -56,7 +57,7 @@ public class TableEditPanel extends JPanel implements ActionListener
 			{
 				try
 				{
-					BigDecimal value = new BigDecimal(input).setScale(this.table.getSelectedColumn() == 0 ? this.data.getPrecisionX() : this.data.getPrecisionY());
+					BigDecimal value = new BigDecimal(input).setScale(this.table.getSelectedColumn() == 0 ? this.precision.getPrecisionX() : this.precision.getPrecisionY(), RoundingMode.HALF_UP);
 					this.table.setValueAt(value, this.table.getSelectedRow(), this.table.getSelectedColumn());
 					this.getRootPane().repaint();
 				}

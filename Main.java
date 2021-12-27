@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 import java.math.BigDecimal;
 
+import hydraulics.DataPrecision;
 import hydraulics.WaterLevelCalculator;
 import ui.ScreenSwitcher;
 
@@ -27,13 +28,14 @@ public class Main
 	{
 		// Init data
 		MapDiscreteData<BigDecimal, BigDecimal> data = defaultData();
+		DataPrecision precision = defaultPrecision();
 		WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("2.00"));
 		
 		// Init frame
 		JFrame frame = initFrame();
 		frame.setJMenuBar(initMenu());
 
-		ScreenSwitcher switcher = new ScreenSwitcher(InputScreen.initInputPanel(data, waterCalculator), "Input");
+		ScreenSwitcher switcher = new ScreenSwitcher(InputScreen.initInputPanel(data, precision, waterCalculator), "Input");
 		switcher.addScreen(ResultScreen.initResultPanel(data, waterCalculator), "Results");
 
 		frame.add(switcher);
@@ -59,7 +61,7 @@ public class Main
 	public static MapDiscreteData<BigDecimal, BigDecimal> defaultData()
 	{
 
-		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>(3, 2);
+		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>();
 		
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
 		data.set(new BigDecimal("1.000"), new BigDecimal("1.00"));
@@ -71,6 +73,11 @@ public class Main
 		data.set(new BigDecimal("9.121"), new BigDecimal("4.80"));
 		
 		return data;
+	}
+
+	public static DataPrecision defaultPrecision()
+	{
+		return new DataPrecision(3, 2);
 	}
 
 	public static JMenuBar initMenu()
