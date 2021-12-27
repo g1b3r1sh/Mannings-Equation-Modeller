@@ -69,7 +69,7 @@ public class ContinuousData<M extends Number, N extends Number> implements Funct
 
 	// Returns point x of intersection between line created by two points and flat line
 	// Point form equation
-	public double xDouble(M x1, M x2, Number y)
+	public double xIntersection(M x1, M x2, Number y)
 	{
 		return ((y.doubleValue() - this.data.y(x1).doubleValue()) / this.getSlope(x1, x2)) + x1.doubleValue();
 	}
