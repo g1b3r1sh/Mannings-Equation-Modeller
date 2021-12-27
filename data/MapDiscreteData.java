@@ -1,7 +1,9 @@
 package data;
 
+import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -10,20 +12,20 @@ import java.util.TreeSet;
 **/
 
 // TODO: For some reason this also contains precision??
-public class MapFunctionData<N extends Number, M extends Number> implements DiscreteData<N, M>
+public class MapDiscreteData<N extends Number, M extends Number> implements DiscreteData<N, M>
 {
 	private NavigableMap<N, M> data;
 	private int precisionX;
 	private int precisionY;
 
-	public MapFunctionData(int precisionX, int precisionY)
+	public MapDiscreteData(int precisionX, int precisionY)
 	{
 		this.precisionX = precisionX;
 		this.precisionY = precisionY;
 		this.data = new TreeMap<>();
 	}
 
-	public MapFunctionData(DiscreteData<N, M> data, int precisionX, int precisionY)
+	public MapDiscreteData(DiscreteData<N, M> data, int precisionX, int precisionY)
 	{
 		this(precisionX, precisionY);
 		for (N x : data.getXSet())
@@ -71,12 +73,6 @@ public class MapFunctionData<N extends Number, M extends Number> implements Disc
 	}
 
 	@Override
-	public double yDouble(Number x)
-	{
-		return this.data.get(x).doubleValue();
-	}
-
-	@Override
 	public M y(N x)
 	{
 		return this.data.get(x);
@@ -93,5 +89,11 @@ public class MapFunctionData<N extends Number, M extends Number> implements Disc
 	public NavigableSet<N> getXSet()
 	{
 		return new TreeSet<N>(this.data.keySet());
+	}
+
+	@Override
+	public Set<Entry<N, M>> getEntrySet()
+	{
+		return this.data.entrySet();
 	}
 }

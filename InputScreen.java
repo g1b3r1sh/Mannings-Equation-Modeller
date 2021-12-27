@@ -7,7 +7,7 @@ import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 
 import data.DiscreteData;
-import data.MapFunctionDataConnected;
+import data.MapDiscreteData;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -33,7 +33,7 @@ public class InputScreen
 	private static final String Y_LABEL = "Elevation (m)";
 	private static final String GRAPH_TITLE = "Cross-section of River Bank";
 
-	public static JPanel initInputPanel(MapFunctionDataConnected<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
+	public static JPanel initInputPanel(MapDiscreteData<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
 	{
 		JPanel panel = new JPanel(new BorderLayout());
 

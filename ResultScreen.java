@@ -7,7 +7,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import data.MapFunctionDataConnected;
+import data.MapDiscreteData;
 import hydraulics.WaterLevelCalculator;
 import ui.Results;
 
@@ -17,7 +17,7 @@ import ui.Results;
 
 public class ResultScreen
 {
-	public static JPanel initResultPanel(MapFunctionDataConnected<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
+	public static JPanel initResultPanel(MapDiscreteData<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

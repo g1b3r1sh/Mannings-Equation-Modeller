@@ -6,7 +6,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import data.MapFunctionDataConnected;
+import data.MapDiscreteData;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -71,7 +71,7 @@ class ExampleProgram
 		Range rangeX = new Range(0, 10);
 		Range rangeY = new Range(0, 5);
 		
-		MapFunctionDataConnected<BigDecimal, BigDecimal> data = new MapFunctionDataConnected<>(3, 2);
+		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>(3, 2);
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
 		data.set(new BigDecimal("1.124"), new BigDecimal("1.21"));
 		data.set(new BigDecimal("2.523"), new BigDecimal("2.72"));

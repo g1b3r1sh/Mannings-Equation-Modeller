@@ -4,7 +4,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import data.MapFunctionDataConnected;
+import data.MapDiscreteData;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +26,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		// Init data
-		MapFunctionDataConnected<BigDecimal, BigDecimal> data = defaultData();
+		MapDiscreteData<BigDecimal, BigDecimal> data = defaultData();
 		WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("2.00"));
 		
 		// Init frame
@@ -56,10 +56,10 @@ public class Main
 		frame.setVisible(true);
 	}
 
-	public static MapFunctionDataConnected<BigDecimal, BigDecimal> defaultData()
+	public static MapDiscreteData<BigDecimal, BigDecimal> defaultData()
 	{
 
-		MapFunctionDataConnected<BigDecimal, BigDecimal> data = new MapFunctionDataConnected<>(3, 2);
+		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>(3, 2);
 		
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
 		data.set(new BigDecimal("1.000"), new BigDecimal("1.00"));
