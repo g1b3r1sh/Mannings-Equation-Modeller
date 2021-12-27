@@ -27,7 +27,6 @@ Restrictions on scrolling
 **/
 
 // TODO: Set precision when loading data
-// TODO: Check support for no data and very little data (ex. one data point)
 public class Graph extends JComponent
 {
 	private Plane plane;
