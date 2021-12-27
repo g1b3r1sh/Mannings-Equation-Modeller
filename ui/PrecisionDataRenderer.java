@@ -1,4 +1,4 @@
-package graphs;
+package ui;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -6,13 +6,12 @@ import javax.swing.table.DefaultTableCellRenderer;
  * Handles rendering of Numbers with specified precision
 **/
 
-// TODO: Rename file to PrecisionNumberRenderer and move to ui package
 // TODO: Use the term scale instead of precision
-public class DiscreteDataRenderer extends DefaultTableCellRenderer
+public class PrecisionDataRenderer extends DefaultTableCellRenderer
 {
 	private int precision;
 
-	public DiscreteDataRenderer(int precision)
+	public PrecisionDataRenderer(int precision)
 	{
 		super();
 		this.precision = precision;

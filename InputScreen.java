@@ -14,7 +14,6 @@ import java.awt.Dimension;
 import java.math.BigDecimal;
 
 import graphs.Range;
-import graphs.DiscreteDataRenderer;
 import graphs.Graph;
 import graphs.GraphContainer;
 import hydraulics.CalculatorSpinnerConnector;
@@ -22,6 +21,7 @@ import hydraulics.DataPrecision;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.BigDecimalGraphTableModel;
+import ui.PrecisionDataRenderer;
 import ui.TableEditPanel;
 
 /**
@@ -54,8 +54,8 @@ public class InputScreen
 	public static JTable initTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, int precisionX, int precisionY)
 	{
 		JTable table = new JTable(new BigDecimalGraphTableModel(data, precision, X_LABEL, Y_LABEL));
-		table.getColumnModel().getColumn(0).setCellRenderer(new DiscreteDataRenderer(precision.getPrecisionX()));
-		table.getColumnModel().getColumn(1).setCellRenderer(new DiscreteDataRenderer(precision.getPrecisionY()));
+		table.getColumnModel().getColumn(0).setCellRenderer(new PrecisionDataRenderer(precision.getPrecisionX()));
+		table.getColumnModel().getColumn(1).setCellRenderer(new PrecisionDataRenderer(precision.getPrecisionY()));
 		return table;
 	}
 	
