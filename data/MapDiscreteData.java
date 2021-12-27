@@ -15,43 +15,19 @@ import java.util.TreeSet;
 public class MapDiscreteData<N extends Number, M extends Number> implements DiscreteData<N, M>
 {
 	private NavigableMap<N, M> data;
-	private int precisionX;
-	private int precisionY;
 
-	public MapDiscreteData(int precisionX, int precisionY)
+	public MapDiscreteData()
 	{
-		this.precisionX = precisionX;
-		this.precisionY = precisionY;
 		this.data = new TreeMap<>();
 	}
 
-	public MapDiscreteData(DiscreteData<N, M> data, int precisionX, int precisionY)
+	public MapDiscreteData(DiscreteData<N, M> data)
 	{
-		this(precisionX, precisionY);
+		this();
 		for (N x : data.getXSet())
 		{
 			this.set(x, data.y(x));
 		}
-	}
-
-	public int getPrecisionX()
-	{
-		return precisionX;
-	}
-
-	public void setPrecisionX(int precisionX)
-	{
-		this.precisionX = precisionX;
-	}
-	
-	public int getPrecisionY()
-	{
-		return precisionY;
-	}
-
-	public void setPrecisionY(int precisionY)
-	{
-		this.precisionY = precisionY;
 	}
 
 	@Override
