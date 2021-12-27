@@ -24,10 +24,10 @@ public class DataPlotter extends DataVisualiser
 		g.setColor(this.getColor());
 		Plane plane = this.getGraph().getPlane();
 		// Iterate through all data
-		for (Number x : this.getData().getXSet())
+		for (var e : this.getData().getEntrySet())
 		{
-			int xPos = plane.posX(x) - this.circleSize / 2;
-			int yPos = plane.posY(this.getData().yDouble(x)) - this.circleSize / 2;
+			int xPos = plane.posX(e.getKey()) - this.circleSize / 2;
+			int yPos = plane.posY(e.getValue()) - this.circleSize / 2;
 			g.fillOval(xPos, yPos, this.circleSize, this.circleSize);
 		}
 	}

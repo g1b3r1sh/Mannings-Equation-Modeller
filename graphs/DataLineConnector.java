@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.Set;
 
+import data.ContinuousData;
 import data.DiscreteData;
 
 /**
@@ -12,21 +13,24 @@ import data.DiscreteData;
 
 public class DataLineConnector extends DataVisualiser
 {
-	public DataLineConnector(Graph graph, DiscreteData<?, ?> data)
+	ContinuousData<? extends Number, ? extends Number> connectedData;
+
+	public <M extends Number, N extends Number> DataLineConnector(Graph graph, DiscreteData<M, N> data)
 	{
 		super(graph, data);
+		this.connectedData = new ContinuousData<M, N>(data);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		Set<? extends Number> xSet = this.getData().getXSet();
 		// Can't paint connections if there is less than two points
-		if (xSet.size() > 1)
+		if (this.getData().size() > 1)
 		{
 			g.setColor(this.getColor());
 			Plane plane = this.getGraph().getPlane();
 			// Iterate through points in twos
+			Set<? extends Number> xSet = this.getData().getXSet();
 			Iterator<? extends Number> itFirst = xSet.iterator();
 			Iterator<? extends Number> itSecond = xSet.iterator();
 			itSecond.next();
@@ -36,9 +40,9 @@ public class DataLineConnector extends DataVisualiser
 				Number n2 = itSecond.next();
 				g.drawLine(
 					plane.posX(n1), 
-					plane.posY(this.getData().yDouble(n1)), 
+					plane.posY(this.connectedData.y(n1.doubleValue())), 
 					plane.posX(n2), 
-					plane.posY(this.getData().yDouble(n2))
+					plane.posY(this.connectedData.y(n2.doubleValue()))
 				);
 			}
 		}

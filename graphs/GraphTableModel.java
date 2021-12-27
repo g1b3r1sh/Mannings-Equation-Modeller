@@ -1,7 +1,7 @@
 package graphs;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Map.Entry;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -13,13 +13,13 @@ import hydraulics.Pair;
 **/
 
 // TODO: Make editable
-public class GraphTableModel <N extends Number, M extends Number> extends AbstractTableModel
+public class GraphTableModel <M extends Number, N extends Number> extends AbstractTableModel
 {
-	private ArrayList<Pair<N, M>> data;
+	private ArrayList<Pair<M, N>> data;
 	private String nameX;
 	private String nameY;
 	
-	public GraphTableModel(DiscreteData<N, M> outsideData, String nameX, String nameY)
+	public GraphTableModel(DiscreteData<M, N> outsideData, String nameX, String nameY)
 	{
 		super();
 		this.nameX = nameX;
@@ -58,19 +58,17 @@ public class GraphTableModel <N extends Number, M extends Number> extends Abstra
 		return Number.class;
 	}
 	
-	protected ArrayList<Pair<N, M>> getData()
+	protected ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
 	}
 
-	private void populate(DiscreteData<N, M> data)
+	private void populate(DiscreteData<M, N> outsideData)
 	{
 		this.data = new ArrayList<>();
-		Iterator<N> it = data.getXSet().iterator();
-		for (int i = 0; i < data.size(); i++)
+		for (Entry<M, N> e : outsideData.getEntrySet())
 		{
-			N x = it.next();
-			this.data.add(new Pair<>(x, data.y(x)));
+			this.data.add(new Pair<>(e.getKey(), e.getValue()));
 		}
 	}
 }

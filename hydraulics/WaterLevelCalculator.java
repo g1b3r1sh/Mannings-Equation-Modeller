@@ -1,6 +1,7 @@
 package hydraulics;
 
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import data.ContinuousData;
 import data.DiscreteData;
@@ -12,14 +13,14 @@ import java.awt.geom.PathIterator;
  * Stores water level and calculates hydraulic data based off of it
 **/
 
-public class WaterLevelCalculator<N extends Number, M extends Number>
+public class WaterLevelCalculator<M extends Number, N extends Number>
 {
-	private ContinuousData<N, M> sectionData;
+	private ContinuousData<M, N> sectionData;
 	private Number waterLevel;
 
-	public WaterLevelCalculator(ContinuousData<N, M> sectionData, Number waterLevel)
+	public WaterLevelCalculator(DiscreteData<M, N> sectionData, Number waterLevel)
 	{
-		this.sectionData = sectionData;
+		this.sectionData = new ContinuousData<M, N>(sectionData);
 		this.setWaterLevel(waterLevel);
 	}
 
@@ -33,16 +34,16 @@ public class WaterLevelCalculator<N extends Number, M extends Number>
 		this.waterLevel = waterLevel;
 	}
 	
-	public DiscreteData<N, M> getSectionData()
+	public DiscreteData<M, N> getSectionData()
 	{
-		return this.sectionData;
+		return this.sectionData.getData();
 	}
 	
 	public boolean withinBounds()
 	{
-		if (this.sectionData.size() > 1)
+		if (this.sectionData.getData().size() > 1)
 		{
-			return this.aboveWater(this.sectionData.getXSet().first()) && this.aboveWater(this.sectionData.getXSet().last());
+			return this.aboveWater(this.sectionData.getData().getXSet().first()) && this.aboveWater(this.sectionData.getData().getXSet().last());
 		}
 		else
 		{
@@ -51,9 +52,9 @@ public class WaterLevelCalculator<N extends Number, M extends Number>
 	}
 
 	// Points at water level are considered out of water
-	public boolean aboveWater(N x)
+	public boolean aboveWater(M x)
 	{
-		return this.sectionData.y(x).doubleValue() >= this.waterLevel.doubleValue();
+		return this.sectionData.getData().y(x).doubleValue() >= this.waterLevel.doubleValue();
 	}
 
 	public double crossSectionArea()
@@ -75,22 +76,24 @@ public class WaterLevelCalculator<N extends Number, M extends Number>
 			if (this.withinBounds())
 			{
 				Path2D.Double currentPolygon = null;
-				for (N x : this.sectionData.getXSet())
+				for (Entry<M, N> e : this.sectionData.getData().getEntrySet())
 				{
+					M x = e.getKey();
+					N y = e.getValue();
 					if (!this.aboveWater(x))
 					{
 						if (currentPolygon == null)
 						{
 							double xPos = this.waterIntersection(x);
 							currentPolygon = new Path2D.Double();
-							currentPolygon.moveTo(xPos, this.sectionData.yDouble(xPos));
+							currentPolygon.moveTo(xPos, this.sectionData.y(xPos));
 						}
-						currentPolygon.lineTo(x.doubleValue(), this.sectionData.y(x).doubleValue());
+						currentPolygon.lineTo(x.doubleValue(), y.doubleValue());
 					}
 					else if (this.aboveWater(x) && currentPolygon != null)
 					{
 						double xPos = this.waterIntersection(x);
-						currentPolygon.lineTo(xPos, this.sectionData.yDouble(xPos));
+						currentPolygon.lineTo(xPos, this.sectionData.y(xPos));
 						currentPolygon.closePath();
 						list.add(currentPolygon);
 						currentPolygon = null;
@@ -101,9 +104,9 @@ public class WaterLevelCalculator<N extends Number, M extends Number>
 	}
 
 	// Calculate x position of point where water intersects with line between given point and point before it
-	private double waterIntersection(N rightX)
+	private double waterIntersection(M rightX)
 	{
-		return this.sectionData.xDouble(this.sectionData.getXSet().lower(rightX), rightX, this.waterLevel);
+		return this.sectionData.xIntersection(this.sectionData.getData().getXSet().lower(rightX), rightX, this.waterLevel);
 	}
 
 	// Take advantage of the fact that water level is constant - area between two points makes a sideways trapezoid
