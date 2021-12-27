@@ -4,9 +4,8 @@ package data;
  * Represents a mathematical function. Contains methods for converting into double.
 **/
 
-public interface Data<N extends Number, M extends Number>
+public interface Data<M extends Number, N extends Number>
 {
-	public boolean hasY(N x);
-	public double yDouble(Number x);
-	public M y(N x);
+	public boolean hasY(M x);
+	public N y(M x) throws IllegalArgumentException;
 }

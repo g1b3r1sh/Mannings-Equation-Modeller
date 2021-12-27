@@ -6,11 +6,11 @@ import java.util.NavigableSet;
  * Represents a discrete data function
 **/
 
-public interface DiscreteData<N extends Number, M extends Number> extends Data<N, M>, DataInformation
+public interface DiscreteData<M extends Number, N extends Number> extends Data<M, N>, DataInformation
 {
-	public void set(N x, M y);
-	public void remove(N x);
+	public void set(M x, N y);
+	public void remove(M x);
 	public int size();
 	// Returns ordered set of x values
-	public NavigableSet<N> getXSet();
+	public NavigableSet<M> getXSet();
 }

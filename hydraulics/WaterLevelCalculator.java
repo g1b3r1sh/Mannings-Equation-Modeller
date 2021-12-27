@@ -2,7 +2,7 @@ package hydraulics;
 
 import java.util.LinkedList;
 
-import data.ConnectedData;
+import data.ContinuousData;
 import data.DiscreteData;
 
 import java.awt.geom.Path2D;
@@ -14,10 +14,10 @@ import java.awt.geom.PathIterator;
 
 public class WaterLevelCalculator<N extends Number, M extends Number>
 {
-	private ConnectedData<N, M> sectionData;
+	private ContinuousData<N, M> sectionData;
 	private Number waterLevel;
 
-	public WaterLevelCalculator(ConnectedData<N, M> sectionData, Number waterLevel)
+	public WaterLevelCalculator(ContinuousData<N, M> sectionData, Number waterLevel)
 	{
 		this.sectionData = sectionData;
 		this.setWaterLevel(waterLevel);
