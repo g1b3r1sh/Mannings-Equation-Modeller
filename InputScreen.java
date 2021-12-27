@@ -43,7 +43,7 @@ public class InputScreen
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		panel.add(graphContainer, BorderLayout.CENTER);
 		JTable table = initTable(data, precision, 3, 2);
-		panel.add(initSidePanel(table, waterCalculator, precision.getPrecisionY(), graphContainer.getGraph(), precision), BorderLayout.WEST);
+		panel.add(initSidePanel(table, waterCalculator, precision.getY(), graphContainer.getGraph(), precision), BorderLayout.WEST);
 
 		// Connect data to components
 		addVisualData(graphContainer, data);
@@ -54,8 +54,8 @@ public class InputScreen
 	public static JTable initTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, int precisionX, int precisionY)
 	{
 		JTable table = new JTable(new BigDecimalGraphTableModel(data, precision, X_LABEL, Y_LABEL));
-		table.getColumnModel().getColumn(0).setCellRenderer(new PrecisionDataRenderer(precision.getPrecisionX()));
-		table.getColumnModel().getColumn(1).setCellRenderer(new PrecisionDataRenderer(precision.getPrecisionY()));
+		table.getColumnModel().getColumn(0).setCellRenderer(new PrecisionDataRenderer(precision.getX()));
+		table.getColumnModel().getColumn(1).setCellRenderer(new PrecisionDataRenderer(precision.getY()));
 		return table;
 	}
 	

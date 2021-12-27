@@ -34,7 +34,7 @@ public class BigDecimalGraphTableModel extends GraphTableModel<BigDecimal, BigDe
 			{
 				// To replace x data, remove x from Data object and add new x to it
 				this.outsideData.remove(this.getData().get(rowIndex).first);
-				BigDecimal x = decimal.setScale(this.precision.getPrecisionX(), RoundingMode.HALF_UP);
+				BigDecimal x = decimal.setScale(this.precision.getX(), RoundingMode.HALF_UP);
 				BigDecimal y = this.getData().get(rowIndex).second;
 				this.getData().get(rowIndex).first = x;
 				this.outsideData.set(x, y);
@@ -43,7 +43,7 @@ public class BigDecimalGraphTableModel extends GraphTableModel<BigDecimal, BigDe
 			{
 				// To replace y data, simply set the y value in data
 				BigDecimal x = this.getData().get(rowIndex).first;
-				BigDecimal y = decimal.setScale(this.precision.getPrecisionY(), RoundingMode.HALF_UP);
+				BigDecimal y = decimal.setScale(this.precision.getY(), RoundingMode.HALF_UP);
 				this.getData().get(rowIndex).second = y;
 				this.outsideData.set(x, y);
 			}

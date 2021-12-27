@@ -57,7 +57,7 @@ public class TableEditPanel extends JPanel implements ActionListener
 			{
 				try
 				{
-					BigDecimal value = new BigDecimal(input).setScale(this.table.getSelectedColumn() == 0 ? this.precision.getPrecisionX() : this.precision.getPrecisionY(), RoundingMode.HALF_UP);
+					BigDecimal value = new BigDecimal(input).setScale(this.table.getSelectedColumn() == 0 ? this.precision.getX() : this.precision.getY(), RoundingMode.HALF_UP);
 					this.table.setValueAt(value, this.table.getSelectedRow(), this.table.getSelectedColumn());
 					this.getRootPane().repaint();
 				}

@@ -2,32 +2,32 @@ package hydraulics;
 
 public class DataPrecision
 {
-	private int precisionX;
-	private int precisionY;
+	private int x;
+	private int y;
 
 	public DataPrecision(int precisionX, int precisionY)
 	{
-		this.precisionX = precisionX;
-		this.precisionY = precisionY;
+		this.x = precisionX;
+		this.y = precisionY;
 	}
 	
-	public int getPrecisionX()
+	public int getX()
 	{
-		return precisionX;
+		return x;
 	}
 
-	public void setPrecisionX(int precisionX)
+	public void setX(int precisionX)
 	{
-		this.precisionX = precisionX;
+		this.x = precisionX;
 	}
 	
-	public int getPrecisionY()
+	public int getY()
 	{
-		return precisionY;
+		return y;
 	}
 
-	public void setPrecisionY(int precisionY)
+	public void setY(int precisionY)
 	{
-		this.precisionY = precisionY;
+		this.y = precisionY;
 	}
 }
