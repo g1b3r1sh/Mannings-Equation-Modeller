@@ -85,10 +85,8 @@ public class InputScreen
 
 	public static JSpinner initWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{
-		// TODO: Set min and max
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(calculator.getWaterLevel().doubleValue(), 0d, 100d, Math.pow(0.1d, precision)));
 		spinner.addChangeListener(new CalculatorSpinnerConnector(calculator, graph));
-		// TODO: Format
 		return spinner;
 	}
 	
