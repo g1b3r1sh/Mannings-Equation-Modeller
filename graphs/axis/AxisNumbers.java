@@ -2,6 +2,7 @@ package graphs.axis;
 
 import javax.swing.JComponent;
 
+import data.DataPrecision;
 import graphs.Range;
 
 import java.awt.Graphics;
@@ -23,11 +24,11 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	private final int MIN_FONT = 10;
 	private AxisTickmarks axis;
 	private Range range;
-	private int precision; // How many digits after decimal point
+	protected DataPrecision precision;
 	protected int paddingHorizontal = 10;
 	protected int paddingVertical = 10;
 
-	public AxisNumbers(AxisTickmarks axis, Range range, int precision)
+	public AxisNumbers(AxisTickmarks axis, Range range, DataPrecision precision)
 	{
 		this.axis = axis;
 		this.range = range;
@@ -71,7 +72,7 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	// Get number for ith tick
 	public String getNumberString(int i)
 	{
-		return String.format("%." + this.precision + "f", this.getNumber(i));
+		return String.format("%." + this.getPrecision() + "f", this.getNumber(i));
 	}
 
 	public int getNumTicks()
@@ -82,6 +83,8 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	public abstract int getTickPos(int i);
 
 	public abstract boolean isOverlapping();
+
+	public abstract int getPrecision();
 	
 	// Repeatedly lower font until it fits
 	public void fitFont()

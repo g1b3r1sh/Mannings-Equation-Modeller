@@ -71,6 +71,7 @@ public class GraphContainer extends JComponent
 
 		//this.containerPanel.add(this.scrollPane, graphConstraints);
 		this.containerPanel.add(this.graph, graphConstraints);
+
 		this.add(this.containerPanel);
 	}
 
@@ -105,7 +106,7 @@ public class GraphContainer extends JComponent
 	{
 		if (!this.containsAxis(direction))
 		{
-			this.addComponent(direction, this.createAxis(direction), 0);
+			this.addComponent(direction, this.createTickmarks(direction), 0);
 		}
 	}
 
@@ -149,11 +150,11 @@ public class GraphContainer extends JComponent
 		{
 			if (this.horizontal(direction))
 			{
-				this.addComponent(direction, new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.precision.getX()), 1);
+				this.addComponent(direction, new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.precision), 1);
 			}
 			else
 			{
-				this.addComponent(direction, new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.precision.getY(), direction == GraphContainer.Direction.LEFT), 1);
+				this.addComponent(direction, new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.precision, direction == GraphContainer.Direction.LEFT), 1);
 			}
 		}
 	}
@@ -327,7 +328,7 @@ public class GraphContainer extends JComponent
 		}
 	}
 
-	private AxisTickmarks createAxis(Direction direction)
+	private AxisTickmarks createTickmarks(Direction direction)
 	{
 		switch (direction)
 		{

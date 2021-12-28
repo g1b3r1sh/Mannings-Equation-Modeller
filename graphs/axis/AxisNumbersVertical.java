@@ -5,6 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import data.DataPrecision;
 import graphs.Range;
 
 /**
@@ -15,7 +16,7 @@ public class AxisNumbersVertical extends AxisNumbers
 {
 	boolean alignRight;
 
-	public AxisNumbersVertical(AxisTickmarks axis, Range range, int precision, boolean alignRight)
+	public AxisNumbersVertical(AxisTickmarks axis, Range range, DataPrecision precision, boolean alignRight)
 	{
 		super(axis, range, precision);
 		this.alignRight = alignRight;
@@ -43,6 +44,12 @@ public class AxisNumbersVertical extends AxisNumbers
 			firstTopX = this.getNumberTopPos(metrics, i) - paddingVertical;
 		}
 		return firstTopX < this.getNumberHeight(metrics);
+	}
+
+	@Override
+	public int getPrecision()
+	{
+		return super.precision.getY();
 	}
 
 	@Override
