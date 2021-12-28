@@ -13,7 +13,7 @@ import java.awt.Dimension;
 **/
 
 // TODO: Separate numticks from grid
-public abstract class GraphAxis extends JComponent
+public abstract class AxisTickmarks extends JComponent
 {
 	private Graph graph;
 	
@@ -21,7 +21,7 @@ public abstract class GraphAxis extends JComponent
 	private double scale = 1;
 	private Color color;
 
-	public GraphAxis(Graph graph)
+	public AxisTickmarks(Graph graph)
 	{
 		this.graph = graph;
 	}

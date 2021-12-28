@@ -9,9 +9,9 @@ import graphs.Graph;
  * Represents a GraphAxis to the right of a graph
 **/
 
-public class GraphAxisRight extends GraphAxis
+public class AxisTickmarksRight extends AxisTickmarks
 {
-	public GraphAxisRight(Graph graph)
+	public AxisTickmarksRight(Graph graph)
 	{
 		super(graph);
 	}

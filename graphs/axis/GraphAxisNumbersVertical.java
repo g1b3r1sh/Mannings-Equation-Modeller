@@ -15,7 +15,7 @@ public class GraphAxisNumbersVertical extends GraphAxisNumbers
 {
 	boolean alignRight;
 
-	public GraphAxisNumbersVertical(GraphAxis axis, Range range, int precision, boolean alignRight)
+	public GraphAxisNumbersVertical(AxisTickmarks axis, Range range, int precision, boolean alignRight)
 	{
 		super(axis, range, precision);
 		this.alignRight = alignRight;

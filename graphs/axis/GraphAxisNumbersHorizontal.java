@@ -13,7 +13,7 @@ import graphs.Range;
 
 public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
 {
-	public GraphAxisNumbersHorizontal(GraphAxis axis, Range range, int precision)
+	public GraphAxisNumbersHorizontal(AxisTickmarks axis, Range range, int precision)
 	{
 		super(axis, range, precision);
 	}

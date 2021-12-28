@@ -6,14 +6,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import graphs.axis.GraphAxis;
-import graphs.axis.GraphAxisBottom;
-import graphs.axis.GraphAxisLeft;
+import graphs.axis.AxisTickmarks;
+import graphs.axis.AxisTickmarksBottom;
+import graphs.axis.AxisTickmarksLeft;
 import graphs.axis.GraphAxisNumbers;
 import graphs.axis.GraphAxisNumbersHorizontal;
 import graphs.axis.GraphAxisNumbersVertical;
-import graphs.axis.GraphAxisRight;
-import graphs.axis.GraphAxisTop;
+import graphs.axis.AxisTickmarksRight;
+import graphs.axis.AxisTickmarksTop;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
@@ -79,7 +79,7 @@ public class GraphContainer extends JComponent
 	{
 		for (Component c : this.getPanel(direction).getComponents())
 		{
-			if (c instanceof GraphAxis)
+			if (c instanceof AxisTickmarks)
 			{
 				return true;
 			}
@@ -96,11 +96,11 @@ public class GraphContainer extends JComponent
 	}
 
 	// Returns null if axis doesn't exist
-	public GraphAxis getAxis(Direction direction)
+	public AxisTickmarks getAxis(Direction direction)
 	{
 		if (this.containsAxis(direction))
 		{
-			return (GraphAxis) this.getComponent(direction, 0);
+			return (AxisTickmarks) this.getComponent(direction, 0);
 		}
 		return null;
 	}
@@ -162,7 +162,7 @@ public class GraphContainer extends JComponent
 
 	public void removeAxisName(Direction direction)
 	{
-		if (!(this.getComponent(direction) instanceof GraphAxis))
+		if (!(this.getComponent(direction) instanceof AxisTickmarks))
 		{
 			this.removeComponent(direction);
 		}
@@ -313,18 +313,18 @@ public class GraphContainer extends JComponent
 		}
 	}
 
-	private GraphAxis createAxis(Direction direction)
+	private AxisTickmarks createAxis(Direction direction)
 	{
 		switch (direction)
 		{
 			case BOTTOM:
-				return new GraphAxisBottom(graph);
+				return new AxisTickmarksBottom(graph);
 			case LEFT:
-				return new GraphAxisLeft(graph);
+				return new AxisTickmarksLeft(graph);
 			case RIGHT:
-				return new GraphAxisRight(graph);
+				return new AxisTickmarksRight(graph);
 			case TOP:
-				return new GraphAxisTop(graph);
+				return new AxisTickmarksTop(graph);
 			default:
 				return null;
 		}

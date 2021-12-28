@@ -6,16 +6,16 @@ import java.awt.Graphics;
 import graphs.Graph;
 
 /**
- * Represents a GraphAxis at the top of a graph
+ * Represents a GraphAxis at the bottom of a graph
 **/
 
-public class GraphAxisTop extends GraphAxis
+public class AxisTickmarksBottom extends AxisTickmarks
 {
-	public GraphAxisTop(Graph graph)
+	public AxisTickmarksBottom(Graph graph)
 	{
 		super(graph);
 	}
-
+	
 	@Override
 	public int getNumTicks()
 	{
@@ -31,7 +31,7 @@ public class GraphAxisTop extends GraphAxis
 	@Override
 	protected void drawLine(Graphics g)
 	{
-		g.drawLine(0, this.getTickLength(), this.getGraph().getWidth(), this.getTickLength());
+		g.drawLine(0, 0, this.getGraph().getWidth(), 0);
 	}
 
 	@Override
@@ -43,4 +43,5 @@ public class GraphAxisTop extends GraphAxis
 			g.drawLine((int) (i * tickOffset), 0, (int) (i * tickOffset), this.getTickLength());
 		}
 	}
+
 }

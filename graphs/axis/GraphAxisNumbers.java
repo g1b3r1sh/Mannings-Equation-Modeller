@@ -21,13 +21,13 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 {
 	private final int MAX_FONT = 20;
 	private final int MIN_FONT = 10;
-	private GraphAxis axis;
+	private AxisTickmarks axis;
 	private Range range;
 	private int precision; // How many digits after decimal point
 	protected int paddingHorizontal = 10;
 	protected int paddingVertical = 10;
 
-	public GraphAxisNumbers(GraphAxis axis, Range range, int precision)
+	public GraphAxisNumbers(AxisTickmarks axis, Range range, int precision)
 	{
 		this.axis = axis;
 		this.range = range;
@@ -52,7 +52,7 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 	@Override
 	public void componentShown(ComponentEvent e) {}
 
-	public GraphAxis getGraphAxis()
+	public AxisTickmarks getGraphAxis()
 	{
 		return this.axis;
 	}

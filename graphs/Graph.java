@@ -69,7 +69,7 @@ public class Graph extends JComponent
 	{
 		return this.plane;
 	}
-
+	
 	public void setGrid(int numCols, int numRows)
 	{
 		this.grid.setNumCols(numCols);
