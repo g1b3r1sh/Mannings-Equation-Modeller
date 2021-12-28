@@ -6,9 +6,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.PathIterator;
 
-import graphs.DataVisualiser;
 import graphs.Graph;
 import graphs.Plane;
+import graphs.visualiser.DataVisualiser;
 
 /**
  * Visualises water level in graph

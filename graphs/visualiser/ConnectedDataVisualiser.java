@@ -1,4 +1,4 @@
-package graphs;
+package graphs.visualiser;
 
 import java.awt.Graphics;
 import java.util.Iterator;
@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import data.ContinuousData;
 import data.DiscreteData;
+import graphs.Graph;
+import graphs.Plane;
 
 /**
  * Paints connection between data points on graph

@@ -1,7 +1,9 @@
-package graphs;
+package graphs.axis;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+
+import graphs.Graph;
 
 /**
  * Represents a GraphAxis at the top of a graph

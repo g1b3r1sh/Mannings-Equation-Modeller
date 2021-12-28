@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.function.Predicate;
 
 import data.DiscreteData;
+import graphs.visualiser.ConnectedDataVisualiser;
+import graphs.visualiser.DataPlotter;
+import graphs.visualiser.DataVisualiser;
 
 /**
  * Stores DiscreteData and is responsible for handling how it is drawn on a graph

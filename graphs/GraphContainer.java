@@ -6,6 +6,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import graphs.axis.GraphAxis;
+import graphs.axis.GraphAxisBottom;
+import graphs.axis.GraphAxisLeft;
+import graphs.axis.GraphAxisNumbers;
+import graphs.axis.GraphAxisNumbersHorizontal;
+import graphs.axis.GraphAxisNumbersVertical;
+import graphs.axis.GraphAxisRight;
+import graphs.axis.GraphAxisTop;
+
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import java.util.function.Consumer;
