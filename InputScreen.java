@@ -98,14 +98,14 @@ public class InputScreen
 		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
 		graph.fitGridPlane(2d, 1d);
 		
-		GraphContainer container = new GraphContainer(graph, precision);
-		container.addAxis(GraphContainer.Direction.BOTTOM);
-		container.addNumbers(GraphContainer.Direction.BOTTOM);
-		container.addAxisName(GraphContainer.Direction.BOTTOM, X_LABEL);
-		container.addAxis(GraphContainer.Direction.LEFT);
-		container.addNumbers(GraphContainer.Direction.LEFT);
-		container.addAxisName(GraphContainer.Direction.LEFT, Y_LABEL);
-		container.addAxisName(GraphContainer.Direction.TOP, GRAPH_TITLE);
+		GraphContainer container = new GraphContainer(graph);
+		container.getAxis(GraphContainer.Direction.BOTTOM).addTickmarks();
+		container.getAxis(GraphContainer.Direction.BOTTOM).addNumbers();
+		container.getAxis(GraphContainer.Direction.BOTTOM).addName(X_LABEL);
+		container.getAxis(GraphContainer.Direction.LEFT).addTickmarks();
+		container.getAxis(GraphContainer.Direction.LEFT).addNumbers();
+		container.getAxis(GraphContainer.Direction.LEFT).addName(Y_LABEL);
+		container.getAxis(GraphContainer.Direction.TOP).addName(GRAPH_TITLE);
 		
 		return container;
 	}

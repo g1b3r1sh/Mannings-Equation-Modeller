@@ -1,27 +1,13 @@
 package graphs;
 
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
-import data.DataPrecision;
-import graphs.axis.AxisTickmarks;
-import graphs.axis.AxisTickmarksBottom;
-import graphs.axis.AxisTickmarksLeft;
-import graphs.axis.AxisNumbers;
-import graphs.axis.AxisNumbersHorizontal;
-import graphs.axis.AxisNumbersVertical;
-import graphs.axis.AxisTickmarksRight;
-import graphs.axis.AxisTickmarksTop;
+import graphs.axis.Axis;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.awt.GridBagConstraints;
-import java.awt.Component;
 
 /**
  * Represents the container of a graph and handles the components that surround it, such as labels and axises
@@ -39,27 +25,23 @@ public class GraphContainer extends JComponent
 		RIGHT,
 		BOTTOM
 	}
-
-	private final int DEFAULT_HORIZONTAL_PADDING = 10;
-	private final int DEFAULT_VERTICAL_PADDING = 10;
+	
 
 	private Graph graph;
-	private DataPrecision precision;
 
 	private JPanel containerPanel;
-	private JPanel topPanel;
-	private JPanel rightPanel;
-	private JPanel bottomPanel;
-	private JPanel leftPanel;
+	private Axis topAxis;
+	private Axis rightAxis;
+	private Axis bottomAxis;
+	private Axis leftAxis;
 
 	//private JScrollPane scrollPane;
 
-	public GraphContainer(Graph graph, DataPrecision precision)
+	public GraphContainer(Graph graph)
 	{
 		this.setLayout(new BorderLayout());
 		
 		this.graph = graph;
-		this.precision = precision;
 
 		this.containerPanel = createContainerPanel();
 		//this.scrollPane = new JScrollPane(this.graph);
@@ -78,126 +60,11 @@ public class GraphContainer extends JComponent
 		this.add(this.containerPanel);
 	}
 
-	public GraphContainer(Graph graph)
-	{
-		this(graph, new DataPrecision(2, 2));
-	}
-
 	public Graph getGraph()
 	{
 		return this.graph;
 	}
-
-	public DataPrecision getPrecision()
-	{
-		return this.precision;
-	}
-
-	public boolean containsAxis(Direction direction)
-	{
-		for (Component c : this.getPanel(direction).getComponents())
-		{
-			if (c instanceof AxisTickmarks)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void addAxis(Direction direction)
-	{
-		if (!this.containsAxis(direction))
-		{
-			this.addComponent(direction, this.createTickmarks(direction), 0);
-		}
-	}
-
-	// Returns null if axis doesn't exist
-	public AxisTickmarks getAxis(Direction direction)
-	{
-		if (this.containsAxis(direction))
-		{
-			return (AxisTickmarks) this.getComponent(direction, 0);
-		}
-		return null;
-	}
-
-	public void removeAxis(Direction direction)
-	{
-		if (this.containsAxis(direction))
-		{
-			this.removeComponent(direction, 0);
-			if (this.containsNumbers(direction))
-			{
-				this.removeComponent(direction, 1);
-			}
-		}
-	}
 	
-	public boolean containsNumbers(Direction direction)
-	{
-		for (Component c : this.getPanel(direction).getComponents())
-		{
-			if (c instanceof AxisNumbers)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void addNumbers(Direction direction)
-	{
-		if (this.containsAxis(direction) && !this.containsNumbers(direction))
-		{
-			AxisNumbers numbers;
-			if (this.horizontal(direction))
-			{
-				numbers = new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.precision, this.DEFAULT_HORIZONTAL_PADDING);
-			}
-			else
-			{
-				numbers = new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.precision, this.DEFAULT_VERTICAL_PADDING, direction == GraphContainer.Direction.LEFT);
-			}
-			this.addComponent(direction, numbers, 1);
-		}
-	}
-
-	public void removeNumbers(Direction direction)
-	{
-		if (this.containsNumbers(direction))
-		{
-			this.removeComponent(direction, 1);
-		}
-	}
-
-	public void addAxisName(Direction direction, String name)
-	{
-		JLabel label = new JLabel(name);
-		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		label.setAlignmentY(Component.CENTER_ALIGNMENT);
-		this.addComponent(direction, label);
-	}
-
-	public void removeAxisName(Direction direction)
-	{
-		if (!(this.getComponent(direction) instanceof AxisTickmarks))
-		{
-			this.removeComponent(direction);
-		}
-	}
-
-	public boolean horizontal(Direction direction)
-	{
-		return direction == Direction.BOTTOM || direction == Direction.TOP;
-	}
-
-	public boolean forwardSequential(Direction direction)
-	{
-		return direction == Direction.BOTTOM || direction == Direction.RIGHT;
-	}
-
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center
 	private JPanel createContainerPanel()
 	{
@@ -207,144 +74,35 @@ public class GraphContainer extends JComponent
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		this.bottomPanel = createSidePanel(true);
-		containerPanel.add(this.bottomPanel, constraints);
+		this.bottomAxis = new Axis(this.graph, Direction.BOTTOM);
+		containerPanel.add(this.bottomAxis, constraints);
 		constraints.gridy = 0;
-		this.topPanel = createSidePanel(true);
-		containerPanel.add(this.topPanel, constraints);
+		this.topAxis = new Axis(this.graph, Direction.TOP);
+		containerPanel.add(this.topAxis, constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.leftPanel = createSidePanel(false);
+		this.leftAxis = new Axis(this.graph, Direction.LEFT);
 		constraints.fill = GridBagConstraints.VERTICAL;
-		containerPanel.add(this.leftPanel, constraints);
+		containerPanel.add(this.leftAxis, constraints);
 		constraints.gridx = 2;
-		this.rightPanel = createSidePanel(false);
-		containerPanel.add(this.rightPanel, constraints);
+		this.rightAxis = new Axis(this.graph, Direction.RIGHT);
+		containerPanel.add(this.rightAxis, constraints);
 
 		return containerPanel;
 	}
 
-	private JPanel createSidePanel(boolean horizontal)
-	{
-		JPanel panel = new JPanel();
-		if (horizontal)
-		{
-			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		}
-		else
-		{
-			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		}
-		return panel;
-	}
-
-	private <T> T directionPanelMethod(Direction direction, Function<JPanel, T> normal, Function<JPanel, T> inverse)
-	{
-		JPanel panel = this.getPanel(direction);
-		if (this.forwardSequential(direction))
-		{
-			return normal.apply(panel);
-		}
-		else
-		{
-			return inverse.apply(panel);
-		}
-	}
-
-	// Since java can't deduce void >:(
-	private void directionPanelMethodVoid(Direction direction, Consumer<JPanel> normal, Consumer<JPanel> inverse)
-	{
-		JPanel panel = this.getPanel(direction);
-		if (this.forwardSequential(direction))
-		{
-			normal.accept(panel);
-		}
-		else
-		{
-			inverse.accept(panel);
-		}
-	}
-
-	private void addComponent(Direction direction, JComponent component, int index)
-	{
-		this.directionPanelMethodVoid(direction, 
-			(panel) -> panel.add(component, index), 
-			(panel) -> panel.add(component, panel.getComponentCount() - index)
-		);
-	}
-
-	// Adds component to last
-	private void addComponent(Direction direction, JComponent component)
-	{
-		this.directionPanelMethodVoid(direction, 
-			(panel) -> panel.add(component), 
-			(panel) -> panel.add(component, 0)
-		);
-	}
-
-	private Component getComponent(Direction direction, int index)
-	{
-		return this.directionPanelMethod(direction,
-			(panel) -> panel.getComponent(index),
-			(panel) -> panel.getComponent(panel.getComponentCount() - 1 - index)
-		);
-	}
-
-	// Gets last component
-	private Component getComponent(Direction direction)
-	{
-		return this.directionPanelMethod(direction,
-			(panel) -> panel.getComponent(panel.getComponentCount() - 1),
-			(panel) -> panel.getComponent(0)
-		);
-	}
-
-	private void removeComponent(Direction direction, int index)
-	{
-		this.directionPanelMethodVoid(direction,
-			(panel) -> panel.remove(index), 
-			(panel) -> panel.remove(panel.getComponentCount() - 1 - index)
-		);
-	}
-
-	// Removes last component
-	private void removeComponent(Direction direction)
-	{
-		this.directionPanelMethodVoid(direction,
-			(panel) -> panel.remove(panel.getComponentCount() - 1), 
-			(panel) -> panel.remove(0)
-		);
-	}
-
-	private JPanel getPanel(Direction direction)
+	public Axis getAxis(Direction direction)
 	{
 		switch (direction)
 		{
 			case BOTTOM:
-				return this.bottomPanel;
+				return this.bottomAxis;
 			case LEFT:
-				return this.leftPanel;
+				return this.leftAxis;
 			case RIGHT:
-				return this.rightPanel;
+				return this.rightAxis;
 			case TOP:
-				return this.topPanel;
-			default:
-				return null;
-		}
-	}
-
-	private AxisTickmarks createTickmarks(Direction direction)
-	{
-		switch (direction)
-		{
-			case BOTTOM:
-				return new AxisTickmarksBottom(graph);
-			case LEFT:
-				return new AxisTickmarksLeft(graph);
-			case RIGHT:
-				return new AxisTickmarksRight(graph);
-			case TOP:
-				return new AxisTickmarksTop(graph);
+				return this.topAxis;
 			default:
 				return null;
 		}

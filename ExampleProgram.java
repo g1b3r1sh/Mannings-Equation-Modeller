@@ -22,7 +22,7 @@ import hydraulics.WaterLevelVisualiser;
 
 class ExampleProgram
 {
-	//public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		/// Frame init
 		JFrame frame = new JFrame("Graph Demo");
@@ -38,13 +38,13 @@ class ExampleProgram
 		Graph graph = createGraph();
 	
 		GraphContainer container = new GraphContainer(graph);
-		container.addAxis(GraphContainer.Direction.BOTTOM);
-		container.addNumbers(GraphContainer.Direction.BOTTOM);
-		container.addAxisName(GraphContainer.Direction.BOTTOM, "Distance from bank (m)");
-		container.addAxis(GraphContainer.Direction.LEFT);
-		container.addNumbers(GraphContainer.Direction.LEFT);
-		container.addAxisName(GraphContainer.Direction.LEFT, "Water level (m)");
-		container.addAxisName(GraphContainer.Direction.TOP, "Cross-section of River Bank");
+		container.getAxis(GraphContainer.Direction.BOTTOM).addTickmarks();
+		container.getAxis(GraphContainer.Direction.BOTTOM).addNumbers();
+		container.getAxis(GraphContainer.Direction.BOTTOM).addName("Distance from bank (m)");
+		container.getAxis(GraphContainer.Direction.LEFT).addTickmarks();
+		container.getAxis(GraphContainer.Direction.LEFT).addNumbers();
+		container.getAxis(GraphContainer.Direction.LEFT).addName("Water level (m)");
+		container.getAxis(GraphContainer.Direction.TOP).addName("Cross-section of River Bank");
 
 		panel.add(container, BorderLayout.CENTER);
 	
