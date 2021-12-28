@@ -11,9 +11,9 @@ import graphs.Range;
  * A horizontal instance of GraphAxisNumbers
 **/
 
-public class GraphAxisNumbersHorizontal extends GraphAxisNumbers
+public class AxisNumbersHorizontal extends AxisNumbers
 {
-	public GraphAxisNumbersHorizontal(AxisTickmarks axis, Range range, int precision)
+	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, int precision)
 	{
 		super(axis, range, precision);
 	}

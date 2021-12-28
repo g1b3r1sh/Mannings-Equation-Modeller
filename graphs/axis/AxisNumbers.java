@@ -17,7 +17,7 @@ import java.awt.event.ComponentEvent;
 **/
 
 // TODO: Write getter and setter functions for protected variables
-public abstract class GraphAxisNumbers extends JComponent implements ComponentListener
+public abstract class AxisNumbers extends JComponent implements ComponentListener
 {
 	private final int MAX_FONT = 20;
 	private final int MIN_FONT = 10;
@@ -27,7 +27,7 @@ public abstract class GraphAxisNumbers extends JComponent implements ComponentLi
 	protected int paddingHorizontal = 10;
 	protected int paddingVertical = 10;
 
-	public GraphAxisNumbers(AxisTickmarks axis, Range range, int precision)
+	public AxisNumbers(AxisTickmarks axis, Range range, int precision)
 	{
 		this.axis = axis;
 		this.range = range;

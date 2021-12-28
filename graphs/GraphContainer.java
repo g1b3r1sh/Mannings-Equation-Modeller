@@ -9,9 +9,9 @@ import javax.swing.JScrollPane;
 import graphs.axis.AxisTickmarks;
 import graphs.axis.AxisTickmarksBottom;
 import graphs.axis.AxisTickmarksLeft;
-import graphs.axis.GraphAxisNumbers;
-import graphs.axis.GraphAxisNumbersHorizontal;
-import graphs.axis.GraphAxisNumbersVertical;
+import graphs.axis.AxisNumbers;
+import graphs.axis.AxisNumbersHorizontal;
+import graphs.axis.AxisNumbersVertical;
 import graphs.axis.AxisTickmarksRight;
 import graphs.axis.AxisTickmarksTop;
 
@@ -121,7 +121,7 @@ public class GraphContainer extends JComponent
 	{
 		for (Component c : this.getPanel(direction).getComponents())
 		{
-			if (c instanceof GraphAxisNumbers)
+			if (c instanceof AxisNumbers)
 			{
 				return true;
 			}
@@ -135,11 +135,11 @@ public class GraphContainer extends JComponent
 		{
 			if (this.horizontal(direction))
 			{
-				this.addComponent(direction, new GraphAxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.graph.getPrecisionX()), 1);
+				this.addComponent(direction, new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.graph.getPrecisionX()), 1);
 			}
 			else
 			{
-				this.addComponent(direction, new GraphAxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.graph.getPrecisionY(), direction == GraphContainer.Direction.LEFT), 1);
+				this.addComponent(direction, new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.graph.getPrecisionY(), direction == GraphContainer.Direction.LEFT), 1);
 			}
 		}
 	}

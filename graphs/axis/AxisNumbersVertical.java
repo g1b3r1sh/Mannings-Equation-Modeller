@@ -11,11 +11,11 @@ import graphs.Range;
  * A vertical instance of GraphAxisNumbers
 **/
 
-public class GraphAxisNumbersVertical extends GraphAxisNumbers
+public class AxisNumbersVertical extends AxisNumbers
 {
 	boolean alignRight;
 
-	public GraphAxisNumbersVertical(AxisTickmarks axis, Range range, int precision, boolean alignRight)
+	public AxisNumbersVertical(AxisTickmarks axis, Range range, int precision, boolean alignRight)
 	{
 		super(axis, range, precision);
 		this.alignRight = alignRight;
