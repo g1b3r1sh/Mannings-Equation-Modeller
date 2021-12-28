@@ -10,11 +10,21 @@ import data.DiscreteData;
 
 public class DataPlotter extends DataVisualiser
 {
-	private int circleSize;
+	private int circleSize = 10;
+
+	public DataPlotter(Graph graph, DiscreteData<? extends Number, ? extends Number> data)
+	{
+		super(graph, data);
+	}
 
 	public DataPlotter(Graph graph, DiscreteData<? extends Number, ? extends Number> data, int circleSize)
 	{
-		super(graph, data);
+		this(graph, data);
+		this.setCircleSize(circleSize);
+	}
+
+	public void setCircleSize(int circleSize)
+	{
 		this.circleSize = circleSize;
 	}
 
@@ -26,9 +36,12 @@ public class DataPlotter extends DataVisualiser
 		// Iterate through all data
 		for (var e : this.getData().getEntrySet())
 		{
-			int xPos = plane.posX(e.getKey()) - this.circleSize / 2;
-			int yPos = plane.posY(e.getValue()) - this.circleSize / 2;
-			g.fillOval(xPos, yPos, this.circleSize, this.circleSize);
+			this.paintPlotSymbol(g, plane.posX(e.getKey()), plane.posY(e.getValue()));
 		}
+	}
+
+	protected void paintPlotSymbol(Graphics g, int centerX, int centerY)
+	{
+		g.fillOval(centerX - this.circleSize / 2, centerY - this.circleSize / 2, this.circleSize, this.circleSize);
 	}
 }
