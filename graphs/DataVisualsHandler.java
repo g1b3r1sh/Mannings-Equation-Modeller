@@ -39,14 +39,14 @@ public class DataVisualsHandler
 		this.removeVisualisers(visualiser -> visualiser instanceof DataPlotter);
 	}
 
-	public DataLineConnector connectData()
+	public ConnectedDataVisualiser connectData()
 	{
-		return this.addVisualiser(new DataLineConnector(this.graph, this.data));
+		return this.addVisualiser(new ConnectedDataVisualiser(this.graph, this.data));
 	}
 
 	public void unconnectData()
 	{
-		this.removeVisualisers(visualiser -> visualiser instanceof DataLineConnector);
+		this.removeVisualisers(visualiser -> visualiser instanceof ConnectedDataVisualiser);
 	}
 	
 	// Remove all visual components of data from graph
