@@ -6,7 +6,7 @@ import data.DiscreteData;
 
 /**
  * Plots data on Graph
- */
+**/
 
 public class DataPlotter extends DataVisualiser
 {
@@ -33,7 +33,6 @@ public class DataPlotter extends DataVisualiser
 	{
 		g.setColor(this.getColor());
 		Plane plane = this.getGraph().getPlane();
-		// Iterate through all data
 		for (var e : this.getData().getEntrySet())
 		{
 			this.paintPlotSymbol(g, plane.posX(e.getKey()), plane.posY(e.getValue()));
