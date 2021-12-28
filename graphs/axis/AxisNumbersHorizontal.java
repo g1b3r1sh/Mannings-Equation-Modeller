@@ -5,7 +5,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import data.DataPrecision;
 import graphs.Range;
 
 /**
@@ -14,7 +13,7 @@ import graphs.Range;
 
 public class AxisNumbersHorizontal extends AxisNumbers
 {
-	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, DataPrecision precision, int padding)
+	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, int precision, int padding)
 	{
 		super(axis, range, precision, padding);
 	}
@@ -40,12 +39,6 @@ public class AxisNumbersHorizontal extends AxisNumbers
 			firstRightX = this.getNumberRightPos(metrics, i) + this.getPadding();
 		}
 		return firstRightX > this.getWidth() - metrics.stringWidth(this.getNumberString(this.getNumTicks() - 1));
-	}
-
-	@Override
-	public int getNumberPrecision()
-	{
-		return super.getPrecision().getX();
 	}
 
 	@Override
