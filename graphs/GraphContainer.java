@@ -40,16 +40,19 @@ public class GraphContainer extends JComponent
 		BOTTOM
 	}
 
-	Graph graph;
-	DataPrecision precision;
+	private final int DEFAULT_HORIZONTAL_PADDING = 10;
+	private final int DEFAULT_VERTICAL_PADDING = 10;
 
-	JPanel containerPanel;
-	JPanel topPanel;
-	JPanel rightPanel;
-	JPanel bottomPanel;
-	JPanel leftPanel;
+	private Graph graph;
+	private DataPrecision precision;
 
-	JScrollPane scrollPane;
+	private JPanel containerPanel;
+	private JPanel topPanel;
+	private JPanel rightPanel;
+	private JPanel bottomPanel;
+	private JPanel leftPanel;
+
+	//private JScrollPane scrollPane;
 
 	public GraphContainer(Graph graph, DataPrecision precision)
 	{
@@ -148,14 +151,16 @@ public class GraphContainer extends JComponent
 	{
 		if (this.containsAxis(direction) && !this.containsNumbers(direction))
 		{
+			AxisNumbers numbers;
 			if (this.horizontal(direction))
 			{
-				this.addComponent(direction, new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.precision), 1);
+				numbers = new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.precision, this.DEFAULT_HORIZONTAL_PADDING);
 			}
 			else
 			{
-				this.addComponent(direction, new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.precision, direction == GraphContainer.Direction.LEFT), 1);
+				numbers = new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.precision, this.DEFAULT_VERTICAL_PADDING, direction == GraphContainer.Direction.LEFT);
 			}
+			this.addComponent(direction, numbers, 1);
 		}
 	}
 

@@ -17,23 +17,26 @@ import java.awt.event.ComponentEvent;
  * Represents the numbers displayed in intervals along the axis of a graph.
 **/
 
-// TODO: Write getter and setter functions for protected variables
 public abstract class AxisNumbers extends JComponent implements ComponentListener
 {
-	private final int MAX_FONT = 20;
-	private final int MIN_FONT = 10;
+	private final float RESIZE_INCREMENT = 0.1f;
+
+	private Range fontRange;
+	private int padding;
+
 	private AxisTickmarks axis;
 	private Range range;
-	protected DataPrecision precision;
-	protected int paddingHorizontal = 10;
-	protected int paddingVertical = 10;
+	private DataPrecision precision;
 
-	public AxisNumbers(AxisTickmarks axis, Range range, DataPrecision precision)
+	public AxisNumbers(AxisTickmarks axis, Range range, DataPrecision precision, int padding)
 	{
+		this.fontRange = new Range(10, 20);
+
 		this.axis = axis;
 		this.range = range;
 		this.precision = precision;
-		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.MAX_FONT));
+		this.padding = padding;
+		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
 
 		this.addComponentListener(this);
 	}
@@ -43,15 +46,6 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	{
 		this.fitFont();
 	}
-	
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
 
 	public AxisTickmarks getGraphAxis()
 	{
@@ -61,6 +55,21 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	public Range getRange()
 	{
 		return this.range;
+	}
+
+	public DataPrecision getPrecision()
+	{
+		return this.precision;
+	}
+
+	public Range getFontRange()
+	{
+		return this.fontRange;
+	}
+
+	public int getPadding()
+	{
+		return this.padding;
 	}
 	
 	// Get number for (i + 1)th tick
@@ -72,7 +81,7 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	// Get number for ith tick
 	public String getNumberString(int i)
 	{
-		return String.format("%." + this.getPrecision() + "f", this.getNumber(i));
+		return String.format("%." + this.getNumberPrecision() + "f", this.getNumber(i));
 	}
 
 	public int getNumTicks()
@@ -84,16 +93,16 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 
 	public abstract boolean isOverlapping();
 
-	public abstract int getPrecision();
+	public abstract int getNumberPrecision();
 	
 	// Repeatedly lower font until it fits
 	public void fitFont()
 	{
-		this.setFont(this.getFont().deriveFont((float) this.MAX_FONT));
-		float size = this.MAX_FONT;
-		while (this.isOverlapping() && size > this.MIN_FONT)
+		this.setFont(this.getFont().deriveFont((float) this.fontRange.getUpper()));
+		float size = this.fontRange.getUpper();
+		while (this.isOverlapping() && size > this.fontRange.getLower())
 		{
-			size -= 0.1f;
+			size -= this.RESIZE_INCREMENT;
 			this.setFont(this.getFont().deriveFont(size));
 			if (this.getFont().getSize() < 0)
 			{
@@ -130,4 +139,13 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	}
 	
 	protected abstract void paintNumbers(Graphics g, Rectangle bounds);
+	
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 }

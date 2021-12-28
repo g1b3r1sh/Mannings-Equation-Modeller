@@ -14,9 +14,9 @@ import graphs.Range;
 
 public class AxisNumbersHorizontal extends AxisNumbers
 {
-	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, DataPrecision precision)
+	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, DataPrecision precision, int padding)
 	{
-		super(axis, range, precision);
+		super(axis, range, precision, padding);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class AxisNumbersHorizontal extends AxisNumbers
 	public boolean isOverlapping()
 	{
 		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
-		int firstRightX = metrics.stringWidth(this.getNumberString(0)) + this.paddingHorizontal;
+		int firstRightX = metrics.stringWidth(this.getNumberString(0)) + this.getPadding();
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
 			int secondLeftX = this.getNumberLeftPos(metrics, i);
@@ -37,15 +37,15 @@ public class AxisNumbersHorizontal extends AxisNumbers
 			{
 				return true;
 			}
-			firstRightX = this.getNumberRightPos(metrics, i) + this.paddingHorizontal;
+			firstRightX = this.getNumberRightPos(metrics, i) + this.getPadding();
 		}
 		return firstRightX > this.getWidth() - metrics.stringWidth(this.getNumberString(this.getNumTicks() - 1));
 	}
 
 	@Override
-	public int getPrecision()
+	public int getNumberPrecision()
 	{
-		return super.precision.getX();
+		return super.getPrecision().getX();
 	}
 
 	@Override

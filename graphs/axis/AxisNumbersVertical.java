@@ -16,9 +16,9 @@ public class AxisNumbersVertical extends AxisNumbers
 {
 	boolean alignRight;
 
-	public AxisNumbersVertical(AxisTickmarks axis, Range range, DataPrecision precision, boolean alignRight)
+	public AxisNumbersVertical(AxisTickmarks axis, Range range, DataPrecision precision, int padding, boolean alignRight)
 	{
-		super(axis, range, precision);
+		super(axis, range, precision, padding);
 		this.alignRight = alignRight;
 	}
 
@@ -33,7 +33,7 @@ public class AxisNumbersVertical extends AxisNumbers
 	{
 		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
 		// Vertical axis goes from bottom to top
-		int firstTopX = this.getHeight() - this.getNumberHeight(metrics) - this.paddingVertical;
+		int firstTopX = this.getHeight() - this.getNumberHeight(metrics) - this.getPadding();
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
 		{
 			int secondBottomX = this.getNumberBottomPos(metrics, i);
@@ -41,15 +41,15 @@ public class AxisNumbersVertical extends AxisNumbers
 			{
 				return true;
 			}
-			firstTopX = this.getNumberTopPos(metrics, i) - paddingVertical;
+			firstTopX = this.getNumberTopPos(metrics, i) - this.getPadding();
 		}
 		return firstTopX < this.getNumberHeight(metrics);
 	}
 
 	@Override
-	public int getPrecision()
+	public int getNumberPrecision()
 	{
-		return super.precision.getY();
+		return super.getPrecision().getY();
 	}
 
 	@Override
