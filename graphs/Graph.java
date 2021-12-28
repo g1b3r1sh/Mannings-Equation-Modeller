@@ -2,8 +2,6 @@ package graphs;
 
 import javax.swing.JComponent;
 
-import data.DataPrecision;
-
 import java.awt.Graphics;
 
 // NOTE: Graph should be able to implement bar graphs as well
@@ -35,29 +33,12 @@ public class Graph extends JComponent
 	private Grid grid;
 	private GraphComponentCollection components;
 	private GraphDataCollection dataList;
-	private DataPrecision precision;
 
-	public Graph(DataPrecision precision)
+	public Graph()
 	{
 		this.grid = new Grid(this, 1, 1);
 		this.components = new GraphComponentCollection();
 		this.dataList = new GraphDataCollection(this);
-		this.precision = precision;
-	}
-
-	public Graph()
-	{
-		this(new DataPrecision(2, 2));
-	}
-	
-	public int getPrecisionX()
-	{
-		return this.precision.getX();
-	}
-	
-	public int getPrecisionY()
-	{
-		return this.precision.getY();
 	}
 
 	public void setLinearPlane(Range rangeX, Range rangeY)

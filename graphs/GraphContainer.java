@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import data.DataPrecision;
 import graphs.axis.AxisTickmarks;
 import graphs.axis.AxisTickmarksBottom;
 import graphs.axis.AxisTickmarksLeft;
@@ -40,6 +41,7 @@ public class GraphContainer extends JComponent
 	}
 
 	Graph graph;
+	DataPrecision precision;
 
 	JPanel containerPanel;
 	JPanel topPanel;
@@ -49,11 +51,13 @@ public class GraphContainer extends JComponent
 
 	JScrollPane scrollPane;
 
-	public GraphContainer(Graph graph)
+	public GraphContainer(Graph graph, DataPrecision precision)
 	{
 		this.setLayout(new BorderLayout());
 		
 		this.graph = graph;
+		this.precision = precision;
+
 		this.containerPanel = createContainerPanel();
 		//this.scrollPane = new JScrollPane(this.graph);
 		//this.scrollPane.setPreferredSize(this.graph.getPreferredSize());
@@ -70,9 +74,19 @@ public class GraphContainer extends JComponent
 		this.add(this.containerPanel);
 	}
 
+	public GraphContainer(Graph graph)
+	{
+		this(graph, new DataPrecision(2, 2));
+	}
+
 	public Graph getGraph()
 	{
 		return this.graph;
+	}
+
+	public DataPrecision getPrecision()
+	{
+		return this.precision;
 	}
 
 	public boolean containsAxis(Direction direction)
@@ -135,11 +149,11 @@ public class GraphContainer extends JComponent
 		{
 			if (this.horizontal(direction))
 			{
-				this.addComponent(direction, new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.graph.getPrecisionX()), 1);
+				this.addComponent(direction, new AxisNumbersHorizontal(this.getAxis(direction), this.graph.getPlane().getRangeX(), this.precision.getX()), 1);
 			}
 			else
 			{
-				this.addComponent(direction, new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.graph.getPrecisionY(), direction == GraphContainer.Direction.LEFT), 1);
+				this.addComponent(direction, new AxisNumbersVertical(this.getAxis(direction), this.graph.getPlane().getRangeY(), this.precision.getY(), direction == GraphContainer.Direction.LEFT), 1);
 			}
 		}
 	}

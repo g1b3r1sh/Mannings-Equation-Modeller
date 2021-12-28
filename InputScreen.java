@@ -92,13 +92,13 @@ public class InputScreen
 	
 	public static GraphContainer initGraphContainer(DataPrecision precision)
 	{
-		Graph graph = new Graph(precision);
+		Graph graph = new Graph();
 		graph.setPreferredSize(new Dimension(500, 500));
 		// Default range
 		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
 		graph.fitGridPlane(2d, 1d);
 		
-		GraphContainer container = new GraphContainer(graph);
+		GraphContainer container = new GraphContainer(graph, precision);
 		container.addAxis(GraphContainer.Direction.BOTTOM);
 		container.addNumbers(GraphContainer.Direction.BOTTOM);
 		container.addAxisName(GraphContainer.Direction.BOTTOM, X_LABEL);
