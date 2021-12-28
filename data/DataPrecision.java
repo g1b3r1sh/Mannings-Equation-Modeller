@@ -1,4 +1,4 @@
-package hydraulics;
+package data;
 
 public class DataPrecision
 {

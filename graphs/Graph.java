@@ -1,6 +1,9 @@
 package graphs;
 
 import javax.swing.JComponent;
+
+import data.DataPrecision;
+
 import java.awt.Graphics;
 
 // NOTE: Graph should be able to implement bar graphs as well
@@ -26,33 +29,35 @@ Restrictions on scrolling
  * Represents a graph. Handling of responsibilities such as adding data and displaying it is delegated to contained objects, which is an example of encapsulation.
 **/
 
-// TODO: Set precision when loading data
 public class Graph extends JComponent
 {
 	private Plane plane;
 	private Grid grid;
 	private GraphComponentCollection components;
 	private GraphDataCollection dataList;
-	private int precisionX;
-	private int precisionY;
+	private DataPrecision precision;
 
-	public Graph(int precisionX, int precisionY)
+	public Graph(DataPrecision precision)
 	{
 		this.grid = new Grid(this, 1, 1);
 		this.components = new GraphComponentCollection();
 		this.dataList = new GraphDataCollection(this);
-		this.precisionX = precisionX;
-		this.precisionY = precisionY;
+		this.precision = precision;
+	}
+
+	public Graph()
+	{
+		this(new DataPrecision(2, 2));
 	}
 	
 	public int getPrecisionX()
 	{
-		return this.precisionX;
+		return this.precision.getX();
 	}
 	
 	public int getPrecisionY()
 	{
-		return this.precisionY;
+		return this.precision.getY();
 	}
 
 	public void setLinearPlane(Range rangeX, Range rangeY)

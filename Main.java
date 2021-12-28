@@ -4,6 +4,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import data.DataPrecision;
 import data.MapDiscreteData;
 
 import java.awt.event.ActionEvent;
@@ -11,7 +12,6 @@ import java.awt.event.ActionListener;
 
 import java.math.BigDecimal;
 
-import hydraulics.DataPrecision;
 import hydraulics.WaterLevelCalculator;
 import ui.ScreenSwitcher;
 

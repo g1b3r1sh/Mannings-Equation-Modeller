@@ -3,8 +3,8 @@ package ui;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import data.DataPrecision;
 import data.DiscreteData;
-import hydraulics.DataPrecision;
 
 /**
  * GraphTableModel that takes in BigDecimal as data

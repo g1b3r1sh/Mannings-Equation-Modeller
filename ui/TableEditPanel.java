@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import hydraulics.DataPrecision;
+import data.DataPrecision;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

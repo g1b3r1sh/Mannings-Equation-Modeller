@@ -6,6 +6,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import data.DataPrecision;
 import data.MapDiscreteData;
 
 import java.awt.BorderLayout;
@@ -81,7 +82,7 @@ class ExampleProgram
 		data.set(new BigDecimal("8.242"), new BigDecimal("4.16"));
 		data.set(new BigDecimal("9.121"), new BigDecimal("4.80"));
 	
-		Graph graph = new Graph(2, 2);
+		Graph graph = new Graph(new DataPrecision(2, 2));
 		graph.setPreferredSize(new Dimension(300, 300));
 		
 		graph.setLinearPlane(rangeX, rangeY);

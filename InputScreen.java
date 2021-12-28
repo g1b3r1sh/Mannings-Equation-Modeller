@@ -6,6 +6,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 
+import data.DataPrecision;
 import data.DiscreteData;
 import data.MapDiscreteData;
 
@@ -17,7 +18,6 @@ import graphs.Range;
 import graphs.Graph;
 import graphs.GraphContainer;
 import hydraulics.CalculatorSpinnerConnector;
-import hydraulics.DataPrecision;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.BigDecimalGraphTableModel;
@@ -39,7 +39,7 @@ public class InputScreen
 		JPanel panel = new JPanel(new BorderLayout());
 
 		// Init components
-		GraphContainer graphContainer = initGraphContainer();
+		GraphContainer graphContainer = initGraphContainer(precision);
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		panel.add(graphContainer, BorderLayout.CENTER);
 		JTable table = initTable(data, precision, 3, 2);
@@ -90,9 +90,9 @@ public class InputScreen
 		return spinner;
 	}
 	
-	public static GraphContainer initGraphContainer()
+	public static GraphContainer initGraphContainer(DataPrecision precision)
 	{
-		Graph graph = new Graph(3, 2);
+		Graph graph = new Graph(precision);
 		graph.setPreferredSize(new Dimension(500, 500));
 		// Default range
 		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
