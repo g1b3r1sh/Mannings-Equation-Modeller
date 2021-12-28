@@ -24,7 +24,7 @@ public class AxisNumbersVertical extends AxisNumbers
 	@Override
 	public int getTickPos(int i)
 	{
-		return (int) invertY(this.getHeight() * this.getGraphAxis().calcTickFraction(i), this.getHeight());
+		return (int) invertY(this.getHeight() * this.getTickmarks().calcTickFraction(i), this.getHeight());
 	}
 	
 	@Override
@@ -58,6 +58,18 @@ public class AxisNumbersVertical extends AxisNumbers
 			}
 		}
 		size.width = maxWidth;
+	}
+	
+	@Override
+	protected int getChangingLength()
+	{
+		return this.getSize().height;
+	}
+
+	@Override
+	protected int getConstantLength()
+	{
+		return this.getSize().width;
 	}
 	
 	@Override

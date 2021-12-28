@@ -21,7 +21,7 @@ public class AxisNumbersHorizontal extends AxisNumbers
 	@Override
 	public int getTickPos(int i)
 	{
-		return (int) (this.getWidth() * this.getGraphAxis().calcTickFraction(i));
+		return (int) (this.getWidth() * this.getTickmarks().calcTickFraction(i));
 	}
 	
 	@Override
@@ -45,6 +45,18 @@ public class AxisNumbersHorizontal extends AxisNumbers
 	protected void modifyPreferredSize(Dimension size)
 	{
 		size.height = this.getGraphics().getFontMetrics(this.getFont()).getHeight();
+	}
+	
+	@Override
+	protected int getChangingLength()
+	{
+		return this.getSize().width;
+	}
+
+	@Override
+	protected int getConstantLength()
+	{
+		return this.getSize().height;
 	}
 
 	@Override

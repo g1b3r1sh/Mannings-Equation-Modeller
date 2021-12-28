@@ -23,21 +23,25 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	private Range fontRange;
 	private int padding;
 
-	private AxisTickmarks axis;
+	private AxisTickmarks tickmarks;
 	private Range range;
 	private int precision;
 
-	public AxisNumbers(AxisTickmarks axis, Range range, int precision, int padding)
+	private int prevLength;
+
+	public AxisNumbers(AxisTickmarks tickmarks, Range range, int precision, int padding)
 	{
 		this.fontRange = new Range(10, 20);
 
-		this.axis = axis;
+		this.tickmarks = tickmarks;
 		this.range = range;
 		this.precision = precision;
 		this.padding = padding;
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
 
 		this.addComponentListener(this);
+
+		this.prevLength = this.getChangingLength();
 	}
 
 	@Override
@@ -46,9 +50,9 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 		this.fitFont();
 	}
 
-	public AxisTickmarks getGraphAxis()
+	public AxisTickmarks getTickmarks()
 	{
-		return this.axis;
+		return this.tickmarks;
 	}
 	
 	public Range getRange()
@@ -79,7 +83,7 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	// Get number for (i + 1)th tick
 	public double getNumber(int i)
 	{
-		return this.range.getNumber((double) i / (this.axis.getNumTicks() - 1));
+		return this.range.getNumber((double) i / (this.tickmarks.getNumTicks() - 1));
 	}
 
 	// Get number for ith tick
@@ -90,27 +94,36 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 
 	public int getNumTicks()
 	{
-		return this.getGraphAxis().getNumTicks();
+		return this.getTickmarks().getNumTicks();
 	}
 
 	public abstract int getTickPos(int i);
 
 	public abstract boolean isOverlapping();
 	
-	// Repeatedly lower font until it fits
 	public void fitFont()
 	{
-		this.setFont(this.getFont().deriveFont((float) this.fontRange.getUpper()));
-		float size = this.fontRange.getUpper();
-		while (this.isOverlapping() && size > this.fontRange.getLower())
+		int currLength = this.getChangingLength();
+		float size = this.getFont().getSize2D();
+		// Size has shrunk
+		if (currLength < this.prevLength)
 		{
-			size -= this.RESIZE_INCREMENT;
-			this.setFont(this.getFont().deriveFont(size));
-			if (this.getFont().getSize() < 0)
+			while (size > this.fontRange.getLower() && this.isOverlapping())
 			{
-				break;
+				size -= this.RESIZE_INCREMENT;
+				this.setFont(this.getFont().deriveFont(size));
 			}
 		}
+		// Size has grown
+		else if (currLength > this.prevLength)
+		{
+			while (size <= this.fontRange.getUpper() && !this.isOverlapping())
+			{
+				size += this.RESIZE_INCREMENT;
+				this.setFont(this.getFont().deriveFont(size));
+			}
+		}
+		this.prevLength = currLength;
 	}
 
 	@Override
@@ -129,6 +142,9 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	}
 
 	protected abstract void modifyPreferredSize(Dimension size);
+
+	protected abstract int getChangingLength();
+	protected abstract int getConstantLength();
 
 	@Override
 	protected void paintComponent(Graphics g)
