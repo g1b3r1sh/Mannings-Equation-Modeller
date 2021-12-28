@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import data.DiscreteData;
-import graphs.GraphTableModel;
 import hydraulics.DataPrecision;
 
 /**
@@ -12,7 +11,7 @@ import hydraulics.DataPrecision;
  * Overrides setValueAt method to allow for data to be changed
 **/
 
-public class BigDecimalGraphTableModel extends GraphTableModel<BigDecimal, BigDecimal>
+public class BigDecimalGraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
 {
 	private DiscreteData<BigDecimal, BigDecimal> outsideData;
 	private DataPrecision precision;

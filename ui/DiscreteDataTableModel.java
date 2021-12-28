@@ -1,4 +1,4 @@
-package graphs;
+package ui;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -9,17 +9,17 @@ import data.DiscreteData;
 import hydraulics.Pair;
 
 /**
- * The TableModel of the data of a graph. As such, it is restricted to two columns.
+ * The TableModel of DiscreteData. As such, it is restricted to two columns.
 **/
 
 // TODO: Make editable
-public class GraphTableModel <M extends Number, N extends Number> extends AbstractTableModel
+public class DiscreteDataTableModel<M extends Number, N extends Number> extends AbstractTableModel
 {
 	private ArrayList<Pair<M, N>> data;
 	private String nameX;
 	private String nameY;
 	
-	public GraphTableModel(DiscreteData<M, N> outsideData, String nameX, String nameY)
+	public DiscreteDataTableModel(DiscreteData<M, N> outsideData, String nameX, String nameY)
 	{
 		super();
 		this.nameX = nameX;
