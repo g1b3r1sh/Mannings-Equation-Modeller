@@ -16,18 +16,18 @@ import graphs.visualiser.DataVisualiser;
 public class DataVisualsHandler
 {
 	private Graph graph;
-	private DiscreteData<?, ?> data;
-	private LinkedList<DataVisualiser> dataVisuals;
+	private DiscreteData<? extends Number, ? extends Number> data;
+	private LinkedList<DataVisualiser> visualisers;
 
-	public DataVisualsHandler(Graph graph, DiscreteData<?, ?> data)
+	public DataVisualsHandler(Graph graph, DiscreteData<? extends Number, ? extends Number> data)
 	{
 		this.graph = graph;
 		this.data = data;
 
-		this.dataVisuals = new LinkedList<>();
+		this.visualisers = new LinkedList<>();
 	}
 
-	public DiscreteData<?, ?> getData()
+	public DiscreteData<? extends Number, ? extends Number> getData()
 	{
 		return this.data;
 	}
@@ -55,27 +55,20 @@ public class DataVisualsHandler
 	// Remove all visual components of data from graph
 	public void clearData()
 	{
-		Iterator<DataVisualiser> it = this.dataVisuals.iterator();
-		while (it.hasNext())
-		{
-			DataVisualiser visualiser = it.next();
-			this.graph.getGraphComponents().remove(visualiser);
-			it.remove();
-		}
+		this.removeVisualisers(visualiser -> true);
 	}
 
 	private <V extends DataVisualiser> V addVisualiser(V visualiser)
 	{
 		this.graph.getGraphComponents().add(visualiser);
-		this.dataVisuals.add(visualiser);
+		this.visualisers.add(visualiser);
 		return visualiser;
 	}
 	
-	// Remove all visual components of data based on condition
-	// Can be used for removing all instances of specific DataVisualiser class by passing "visualiser -> visualiser instanceof class" as parameter
+	// Remove all visual components of data based on predicate that takes in the visualiser
 	private void removeVisualisers(Predicate<DataVisualiser> predicate)
 	{
-		Iterator<DataVisualiser> it = this.dataVisuals.iterator();
+		Iterator<DataVisualiser> it = this.visualisers.iterator();
 		while (it.hasNext())
 		{
 			DataVisualiser visualiser = it.next();
