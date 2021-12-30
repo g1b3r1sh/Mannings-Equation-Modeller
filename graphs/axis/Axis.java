@@ -19,26 +19,23 @@ public class Axis extends JPanel
 	private final static int DEFAULT_HORIZONTAL_PADDING = 10;
 	private final static int DEFAULT_VERTICAL_PADDING = 10;
 	private final static int DEFAULT_PRECISION = 2;
-	private final static double DEFAULT_SCALE = 2.0;
 
 	private GraphContainer graphContainer;
 	private Direction direction;
 	private int precision;
-	private double scale;
 
-	public Axis(GraphContainer graphContainer, Direction direction, int precision, double scale)
+	public Axis(GraphContainer graphContainer, Direction direction, int precision)
 	{
 		this.graphContainer = graphContainer;
 		this.direction = direction;
 		this.precision = precision;
-		this.scale = scale;
 
 		this.setLayout(new BoxLayout(this, this.horizontal() ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS));
 	}
 
 	public Axis(GraphContainer graphContainer, Direction direction)
 	{
-		this(graphContainer, direction, Axis.DEFAULT_PRECISION, Axis.DEFAULT_SCALE);
+		this(graphContainer, direction, Axis.DEFAULT_PRECISION);
 	}
 
 	public Graph getGraph()
@@ -55,16 +52,6 @@ public class Axis extends JPanel
 	{
 		this.precision = precision;
 		// Update precision of Numbers and repaint it
-	}
-
-	public double getScale()
-	{
-		return this.scale;
-	}
-
-	public void setScale(double scale)
-	{
-		this.scale = scale;
 	}
 
 	public boolean containsTickmarks()
