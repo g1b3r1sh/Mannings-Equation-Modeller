@@ -18,7 +18,6 @@ public class Grid extends GraphComponent
 	private double offsetRow;
 	private double offsetCol;
 
-	// TODO: Move this to util class
 	static double floorMod(double a, double n)
 	{
 		return a < 0 ? (a % n + n) % n : a % n;

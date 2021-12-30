@@ -6,7 +6,6 @@ import javax.swing.table.DefaultTableCellRenderer;
  * Handles rendering of Numbers with specified precision
 **/
 
-// TODO: Use the term scale instead of precision
 public class PrecisionDataRenderer extends DefaultTableCellRenderer
 {
 	private int precision;
