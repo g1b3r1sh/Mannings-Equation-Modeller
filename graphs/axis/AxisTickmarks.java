@@ -15,7 +15,6 @@ public abstract class AxisTickmarks extends JComponent
 	private int numTicks;
 	
 	private int tickLength = 10;
-	private double scale = 1;
 	private Color color;
 
 	public AxisTickmarks(int numTicks)
@@ -31,16 +30,6 @@ public abstract class AxisTickmarks extends JComponent
 	public int getNumTicks()
 	{
 		return this.numTicks;
-	}
-
-	public double getScale()
-	{
-		return scale;
-	}
-
-	public void setScale(double scale)
-	{
-		this.scale = scale;
 	}
 
 	public void setTickLength(int tickLength)
