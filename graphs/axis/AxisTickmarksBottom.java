@@ -3,17 +3,15 @@ package graphs.axis;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import graphs.Graph;
-
 /**
  * Represents a GraphAxis at the bottom of a graph
 **/
 
 public class AxisTickmarksBottom extends AxisTickmarks
 {
-	public AxisTickmarksBottom(Graph graph)
+	public AxisTickmarksBottom(Axis axis)
 	{
-		super(graph);
+		super(axis);
 	}
 	
 	@Override

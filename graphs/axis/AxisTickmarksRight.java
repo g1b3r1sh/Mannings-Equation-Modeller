@@ -3,17 +3,15 @@ package graphs.axis;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import graphs.Graph;
-
 /**
  * Represents a GraphAxis to the right of a graph
 **/
 
 public class AxisTickmarksRight extends AxisTickmarks
 {
-	public AxisTickmarksRight(Graph graph)
+	public AxisTickmarksRight(Axis axis)
 	{
-		super(graph);
+		super(axis);
 	}
 
 	@Override

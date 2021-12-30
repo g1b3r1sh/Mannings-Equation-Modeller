@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import graphs.Graph;
+import graphs.GraphContainer;
 import graphs.GraphContainer.Direction;
 
 import java.awt.Component;
@@ -20,14 +21,14 @@ public class Axis extends JPanel
 	private final static int DEFAULT_PRECISION = 2;
 	private final static double DEFAULT_SCALE = 2.0;
 
-	private Graph graph;
+	private GraphContainer graphContainer;
 	private Direction direction;
 	private int precision;
 	private double scale;
 
-	public Axis(Graph graph, Direction direction, int precision, double scale)
+	public Axis(GraphContainer graphContainer, Direction direction, int precision, double scale)
 	{
-		this.graph = graph;
+		this.graphContainer = graphContainer;
 		this.direction = direction;
 		this.precision = precision;
 		this.scale = scale;
@@ -35,9 +36,14 @@ public class Axis extends JPanel
 		this.setLayout(new BoxLayout(this, this.horizontal() ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS));
 	}
 
-	public Axis(Graph graph, Direction direction)
+	public Axis(GraphContainer graphContainer, Direction direction)
 	{
-		this(graph, direction, Axis.DEFAULT_PRECISION, Axis.DEFAULT_SCALE);
+		this(graphContainer, direction, Axis.DEFAULT_PRECISION, Axis.DEFAULT_SCALE);
+	}
+
+	public Graph getGraph()
+	{
+		return this.graphContainer.getGraph();
 	}
 
 	public int getPrecision()
@@ -122,11 +128,11 @@ public class Axis extends JPanel
 			AxisNumbers numbers;
 			if (this.horizontal())
 			{
-				numbers = new AxisNumbersHorizontal(this.getTickmarks(), this.graph.getPlane().getRangeX(), this.precision, Axis.DEFAULT_HORIZONTAL_PADDING);
+				numbers = new AxisNumbersHorizontal(this.getTickmarks(), this.getGraph().getPlane().getRangeX(), this.precision, Axis.DEFAULT_HORIZONTAL_PADDING);
 			}
 			else
 			{
-				numbers = new AxisNumbersVertical(this.getTickmarks(), this.graph.getPlane().getRangeY(), this.precision, Axis.DEFAULT_VERTICAL_PADDING, direction == Direction.LEFT);
+				numbers = new AxisNumbersVertical(this.getTickmarks(), this.getGraph().getPlane().getRangeY(), this.precision, Axis.DEFAULT_VERTICAL_PADDING, direction == Direction.LEFT);
 			}
 			this.addAxisComponent(numbers, 1);
 		}
@@ -161,13 +167,13 @@ public class Axis extends JPanel
 		switch (direction)
 		{
 			case BOTTOM:
-				return new AxisTickmarksBottom(this.graph);
+				return new AxisTickmarksBottom(this);
 			case LEFT:
-				return new AxisTickmarksLeft(this.graph);
+				return new AxisTickmarksLeft(this);
 			case RIGHT:
-				return new AxisTickmarksRight(this.graph);
+				return new AxisTickmarksRight(this);
 			case TOP:
-				return new AxisTickmarksTop(this.graph);
+				return new AxisTickmarksTop(this);
 			default:
 				return null;
 		}

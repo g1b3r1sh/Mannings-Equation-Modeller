@@ -15,15 +15,15 @@ import java.awt.Dimension;
 // TODO: Separate numticks from grid
 public abstract class AxisTickmarks extends JComponent
 {
-	private Graph graph;
+	private Axis axis;
 	
 	private int tickLength = 10;
 	private double scale = 1;
 	private Color color;
 
-	public AxisTickmarks(Graph graph)
+	public AxisTickmarks(Axis axis)
 	{
-		this.graph = graph;
+		this.axis = axis;
 	}
 
 	public abstract int getNumTicks();
@@ -65,7 +65,7 @@ public abstract class AxisTickmarks extends JComponent
 
 	public Graph getGraph()
 	{
-		return this.graph;
+		return this.axis.getGraph();
 	}
 	
 	@Override

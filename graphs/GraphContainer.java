@@ -74,18 +74,18 @@ public class GraphContainer extends JComponent
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		this.bottomAxis = new Axis(this.graph, Direction.BOTTOM);
+		this.bottomAxis = new Axis(this, Direction.BOTTOM);
 		containerPanel.add(this.bottomAxis, constraints);
 		constraints.gridy = 0;
-		this.topAxis = new Axis(this.graph, Direction.TOP);
+		this.topAxis = new Axis(this, Direction.TOP);
 		containerPanel.add(this.topAxis, constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.leftAxis = new Axis(this.graph, Direction.LEFT);
+		this.leftAxis = new Axis(this, Direction.LEFT);
 		constraints.fill = GridBagConstraints.VERTICAL;
 		containerPanel.add(this.leftAxis, constraints);
 		constraints.gridx = 2;
-		this.rightAxis = new Axis(this.graph, Direction.RIGHT);
+		this.rightAxis = new Axis(this, Direction.RIGHT);
 		containerPanel.add(this.rightAxis, constraints);
 
 		return containerPanel;
