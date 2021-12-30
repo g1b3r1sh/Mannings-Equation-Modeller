@@ -2,8 +2,6 @@ package graphs.axis;
 
 import javax.swing.JComponent;
 
-import graphs.Graph;
-
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,19 +10,16 @@ import java.awt.Dimension;
  * Represents the tickmarks that surround a graph.
 **/
 
-// TODO: Eliminate axis
 public abstract class AxisTickmarks extends JComponent
 {
-	private Axis axis;
 	private int numTicks;
 	
 	private int tickLength = 10;
 	private double scale = 1;
 	private Color color;
 
-	public AxisTickmarks(Axis axis, int numTicks)
+	public AxisTickmarks(int numTicks)
 	{
-		this.axis = axis;
 		this.numTicks = numTicks;
 	}
 
@@ -71,11 +66,6 @@ public abstract class AxisTickmarks extends JComponent
 	public Color getColor()
 	{
 		return this.color;
-	}
-
-	public Graph getGraph()
-	{
-		return this.axis.getGraph();
 	}
 	
 	@Override

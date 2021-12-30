@@ -9,9 +9,9 @@ import java.awt.Graphics;
 
 public class AxisTickmarksRight extends AxisTickmarks
 {
-	public AxisTickmarksRight(Axis axis, int numTicks)
+	public AxisTickmarksRight(int numTicks)
 	{
-		super(axis, numTicks);
+		super(numTicks);
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class AxisTickmarksRight extends AxisTickmarks
 	@Override
 	protected void drawLine(Graphics g)
 	{
-		g.drawLine(0, 0, 0, this.getGraph().getHeight());
+		g.drawLine(0, 0, 0, this.getHeight());
 	}
 
 	@Override
