@@ -3,6 +3,7 @@ package graphs;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import data.DataPrecision;
 import graphs.axis.Axis;
 
 import java.awt.BorderLayout;
@@ -25,9 +26,9 @@ public class GraphContainer extends JComponent
 		RIGHT,
 		BOTTOM
 	}
-	
 
 	private Graph graph;
+	private DataPrecision defaultPrecision;
 
 	private JPanel containerPanel;
 	private Axis topAxis;
@@ -37,11 +38,12 @@ public class GraphContainer extends JComponent
 
 	//private JScrollPane scrollPane;
 
-	public GraphContainer(Graph graph)
+	public GraphContainer(Graph graph, DataPrecision defaultPrecision)
 	{
 		this.setLayout(new BorderLayout());
 		
 		this.graph = graph;
+		this.defaultPrecision = defaultPrecision;
 
 		this.containerPanel = createContainerPanel();
 		//this.scrollPane = new JScrollPane(this.graph);
@@ -74,18 +76,18 @@ public class GraphContainer extends JComponent
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		this.bottomAxis = new Axis(this, Direction.BOTTOM);
+		this.bottomAxis = new Axis(this, Direction.BOTTOM, this.defaultPrecision.getX());
 		containerPanel.add(this.bottomAxis, constraints);
 		constraints.gridy = 0;
-		this.topAxis = new Axis(this, Direction.TOP);
+		this.topAxis = new Axis(this, Direction.TOP, this.defaultPrecision.getX());
 		containerPanel.add(this.topAxis, constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.leftAxis = new Axis(this, Direction.LEFT);
+		this.leftAxis = new Axis(this, Direction.LEFT, this.defaultPrecision.getY());
 		constraints.fill = GridBagConstraints.VERTICAL;
 		containerPanel.add(this.leftAxis, constraints);
 		constraints.gridx = 2;
-		this.rightAxis = new Axis(this, Direction.RIGHT);
+		this.rightAxis = new Axis(this, Direction.RIGHT, this.defaultPrecision.getY());
 		containerPanel.add(this.rightAxis, constraints);
 
 		return containerPanel;

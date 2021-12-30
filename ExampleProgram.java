@@ -6,6 +6,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import data.DataPrecision;
 import data.MapDiscreteData;
 
 import java.awt.BorderLayout;
@@ -37,7 +38,7 @@ class ExampleProgram
 		/// Graph init
 		Graph graph = createGraph();
 	
-		GraphContainer container = new GraphContainer(graph);
+		GraphContainer container = new GraphContainer(graph, new DataPrecision(3, 2));
 		container.getAxis(GraphContainer.Direction.BOTTOM).addTickmarks();
 		container.getAxis(GraphContainer.Direction.BOTTOM).addNumbers();
 		container.getAxis(GraphContainer.Direction.BOTTOM).addName("Distance from bank (m)");

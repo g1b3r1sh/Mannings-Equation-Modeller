@@ -98,7 +98,7 @@ public class InputScreen
 		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
 		graph.fitGridPlane(2d, 0.5d);
 		
-		GraphContainer container = new GraphContainer(graph);
+		GraphContainer container = new GraphContainer(graph, precision);
 		container.getAxis(GraphContainer.Direction.BOTTOM).addTickmarks();
 		container.getAxis(GraphContainer.Direction.BOTTOM).addNumbers();
 		container.getAxis(GraphContainer.Direction.BOTTOM).addName(X_LABEL);

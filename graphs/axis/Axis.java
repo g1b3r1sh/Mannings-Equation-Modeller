@@ -18,7 +18,6 @@ public class Axis extends JPanel
 {
 	private final static int DEFAULT_HORIZONTAL_PADDING = 10;
 	private final static int DEFAULT_VERTICAL_PADDING = 10;
-	private final static int DEFAULT_PRECISION = 2;
 
 	private GraphContainer graphContainer;
 	private Direction direction;
@@ -31,11 +30,6 @@ public class Axis extends JPanel
 		this.precision = precision;
 
 		this.setLayout(new BoxLayout(this, this.horizontal() ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS));
-	}
-
-	public Axis(GraphContainer graphContainer, Direction direction)
-	{
-		this(graphContainer, direction, Axis.DEFAULT_PRECISION);
 	}
 
 	public Graph getGraph()
