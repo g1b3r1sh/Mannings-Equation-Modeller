@@ -9,15 +9,9 @@ import java.awt.Graphics;
 
 public class AxisTickmarksLeft extends AxisTickmarks
 {
-	public AxisTickmarksLeft(Axis axis)
+	public AxisTickmarksLeft(Axis axis, int numTicks)
 	{
-		super(axis);
-	}
-
-	@Override
-	public int getNumTicks()
-	{
-		return this.getGraph().getGrid().getNumRows() + 1;
+		super(axis, numTicks);
 	}
 
 	@Override

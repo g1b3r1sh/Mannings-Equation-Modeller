@@ -9,24 +9,34 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 /**
- * Represents the physical instance of the axis (i.e. the tickmarks) of a graph.
+ * Represents the tickmarks that surround a graph.
 **/
 
-// TODO: Separate numticks from grid
+// TODO: Eliminate axis
 public abstract class AxisTickmarks extends JComponent
 {
 	private Axis axis;
+	private int numTicks;
 	
 	private int tickLength = 10;
 	private double scale = 1;
 	private Color color;
 
-	public AxisTickmarks(Axis axis)
+	public AxisTickmarks(Axis axis, int numTicks)
 	{
 		this.axis = axis;
+		this.numTicks = numTicks;
 	}
 
-	public abstract int getNumTicks();
+	public void getNumTicks(int numTicks)
+	{
+		this.numTicks = numTicks;
+	}
+
+	public int getNumTicks()
+	{
+		return this.numTicks;
+	}
 
 	public double getScale()
 	{
@@ -52,7 +62,7 @@ public abstract class AxisTickmarks extends JComponent
 	{
 		return this.tickLength;
 	}
-
+	
 	public void setColor(Color color)
 	{
 		this.color = color;

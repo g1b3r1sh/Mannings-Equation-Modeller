@@ -167,15 +167,27 @@ public class Axis extends JPanel
 		switch (direction)
 		{
 			case BOTTOM:
-				return new AxisTickmarksBottom(this);
+				return new AxisTickmarksBottom(this, this.defaultNumTicks());
 			case LEFT:
-				return new AxisTickmarksLeft(this);
+				return new AxisTickmarksLeft(this, this.defaultNumTicks());
 			case RIGHT:
-				return new AxisTickmarksRight(this);
+				return new AxisTickmarksRight(this, this.defaultNumTicks());
 			case TOP:
-				return new AxisTickmarksTop(this);
+				return new AxisTickmarksTop(this, this.defaultNumTicks());
 			default:
 				return null;
+		}
+	}
+	
+	public int defaultNumTicks()
+	{
+		if (this.horizontal())
+		{
+			return this.getGraph().getGrid().getNumCols() + 1;
+		}
+		else
+		{
+			return this.getGraph().getGrid().getNumRows() + 1;
 		}
 	}
 

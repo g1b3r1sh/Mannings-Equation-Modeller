@@ -9,17 +9,11 @@ import java.awt.Graphics;
 
 public class AxisTickmarksBottom extends AxisTickmarks
 {
-	public AxisTickmarksBottom(Axis axis)
+	public AxisTickmarksBottom(Axis axis, int numTicks)
 	{
-		super(axis);
+		super(axis, numTicks);
 	}
 	
-	@Override
-	public int getNumTicks()
-	{
-		return this.getGraph().getGrid().getNumCols() + 1;
-	}
-
 	@Override
 	public void modifyPreferredSize(Dimension size)
 	{

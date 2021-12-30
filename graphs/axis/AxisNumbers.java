@@ -29,6 +29,7 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 
 	private int prevLength;
 
+	// Make fontRange parameter
 	public AxisNumbers(AxisTickmarks tickmarks, Range range, int precision, int padding)
 	{
 		this.fontRange = new Range(10, 20);

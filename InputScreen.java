@@ -96,7 +96,7 @@ public class InputScreen
 		graph.setPreferredSize(new Dimension(500, 500));
 		// Default range
 		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
-		graph.fitGridPlane(2d, 1d);
+		graph.fitGridPlane(2d, 0.5d);
 		
 		GraphContainer container = new GraphContainer(graph);
 		container.getAxis(GraphContainer.Direction.BOTTOM).addTickmarks();
