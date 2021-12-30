@@ -69,6 +69,7 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	public void setPrecision(int precision)
 	{
 		this.precision = precision;
+		this.repaint();
 	}
 
 	public Range getFontRange()

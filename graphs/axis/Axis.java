@@ -45,7 +45,10 @@ public class Axis extends JPanel
 	public void setPrecision(int precision)
 	{
 		this.precision = precision;
-		// Update precision of Numbers and repaint it
+		if (this.containsNumbers())
+		{
+			this.getNumbers().setPrecision(precision);
+		}
 	}
 
 	public boolean containsTickmarks()
@@ -117,6 +120,15 @@ public class Axis extends JPanel
 			}
 			this.addAxisComponent(numbers, 1);
 		}
+	}
+
+	public AxisNumbers getNumbers()
+	{
+		if (this.containsNumbers())
+		{
+			return (AxisNumbers) this.getAxisComponent(1);
+		}
+		return null;
 	}
 
 	public void removeNumbers()
