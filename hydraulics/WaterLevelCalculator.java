@@ -39,6 +39,8 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 		return this.sectionData.getData();
 	}
 	
+	// Returns whether water is contained within data (i.e. No water is spilling out of left or right side)
+	// WARNING: Does not return whether data allows for water to exist 
 	public boolean withinBounds()
 	{
 		if (this.sectionData.getData().size() > 1)
@@ -109,7 +111,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 		return this.sectionData.xIntersection(this.sectionData.getData().getXSet().lower(rightX), rightX, this.waterLevel);
 	}
 
-	// Take advantage of the fact that water level is constant - area between two points makes a sideways trapezoid
+	// Area between two points makes a sideways trapezoid
 	// Therefore, from x0 to x1, A = (y - y0 + y - y1) / 2 * (x1 - x0)
 	private double calcArea(Path2D.Double poly)
 	{

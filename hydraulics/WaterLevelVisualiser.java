@@ -36,7 +36,7 @@ public class WaterLevelVisualiser extends DataVisualiser
 		{
 			drawWater(g);
 		}
-		g.drawLine(0, this.calcWaterY(), this.getWidth(), this.calcWaterY());
+		g.drawLine(0, this.waterYConversion(), this.getWidth(), this.waterYConversion());
 	}
 	
 	// Get all water segments from calculator and paint them on the graph
@@ -69,7 +69,7 @@ public class WaterLevelVisualiser extends DataVisualiser
 		return transformed;
 	}
 
-	private int calcWaterY()
+	private int waterYConversion()
 	{
 		return this.getGraph().getPlane().posY(this.calculator.getWaterLevel());
 	}
