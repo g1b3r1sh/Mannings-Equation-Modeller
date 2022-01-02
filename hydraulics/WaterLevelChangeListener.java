@@ -10,12 +10,12 @@ import graphs.Graph;
  * Connects JSpinner to WaterLevelCalculator to allow the spinner to change the water level of the calculator.
 **/
 
-public class CalculatorSpinnerConnector implements ChangeListener
+public class WaterLevelChangeListener implements ChangeListener
 {
 	private WaterLevelCalculator<?, ?> calculator;
 	private Graph graph;
 
-	public CalculatorSpinnerConnector(WaterLevelCalculator<?, ?> calculator, Graph graph)
+	public WaterLevelChangeListener(WaterLevelCalculator<?, ?> calculator, Graph graph)
 	{
 		this.calculator = calculator;
 		this.graph = graph;
