@@ -17,11 +17,10 @@ import java.math.BigDecimal;
 import graphs.Range;
 import graphs.Graph;
 import graphs.GraphContainer;
-import hydraulics.CalculatorSpinnerConnector;
+import hydraulics.WaterLevelChangeListener;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.BigDecimalGraphTableModel;
-import ui.PrecisionDataRenderer;
 import ui.TableEditPanel;
 
 /**
@@ -54,8 +53,6 @@ public class InputScreen
 	public static JTable initTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, int precisionX, int precisionY)
 	{
 		JTable table = new JTable(new BigDecimalGraphTableModel(data, precision, X_LABEL, Y_LABEL));
-		table.getColumnModel().getColumn(0).setCellRenderer(new PrecisionDataRenderer(precision.getX()));
-		table.getColumnModel().getColumn(1).setCellRenderer(new PrecisionDataRenderer(precision.getY()));
 		return table;
 	}
 	
@@ -86,7 +83,7 @@ public class InputScreen
 	public static JSpinner initWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(calculator.getWaterLevel().doubleValue(), 0d, 100d, Math.pow(0.1d, precision)));
-		spinner.addChangeListener(new CalculatorSpinnerConnector(calculator, graph));
+		spinner.addChangeListener(new WaterLevelChangeListener(calculator, graph));
 		return spinner;
 	}
 	
