@@ -9,14 +9,14 @@ import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ComponentListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentAdapter;
 
 /**
  * Represents the numbers displayed in intervals along the axis of a graph.
 **/
 
-public abstract class AxisNumbers extends JComponent implements ComponentListener
+public abstract class AxisNumbers extends JComponent
 {
 	private final float RESIZE_INCREMENT = 0.1f;
 
@@ -40,15 +40,16 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 		this.padding = padding;
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
 
-		this.addComponentListener(this);
+		this.addComponentListener(new ComponentAdapter()
+		{
+			@Override
+			public void componentResized(ComponentEvent e)
+			{
+				AxisNumbers.this.fitFont();
+			}
+		});
 
 		this.prevLength = this.getChangingLength();
-	}
-
-	@Override
-	public void componentResized(ComponentEvent e)
-	{
-		this.fitFont();
 	}
 
 	public AxisTickmarks getTickmarks()
@@ -159,13 +160,4 @@ public abstract class AxisNumbers extends JComponent implements ComponentListene
 	}
 	
 	protected abstract void paintNumbers(Graphics g, Rectangle bounds);
-	
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
 }
