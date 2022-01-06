@@ -28,13 +28,13 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		this.nameY = nameY;
 		
 		this.data = new ArrayList<>();
-		this.update();
+		this.refresh();
 	}
 
 	@Override
 	public abstract Class<?> getColumnClass(int columnIndex);
 	
-	public void update()
+	public void refresh()
 	{
 		this.data.clear();
 		for (Entry<M, N> e : this.outsideData.getEntrySet())
