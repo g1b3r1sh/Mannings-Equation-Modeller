@@ -55,7 +55,7 @@ public class InputScreen extends JPanel
 		return table;
 	}
 	
-	private JScrollPane initTablePane(JTable table)
+	private JScrollPane createTablePane(JTable table)
 	{
 		JScrollPane panel = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		// Default width: 200
@@ -69,9 +69,9 @@ public class InputScreen extends JPanel
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(this.tableEditPanel(table, precision));
-		panel.add(this.initTablePane(table), BorderLayout.WEST);
+		panel.add(this.createTablePane(table), BorderLayout.WEST);
 		panel.add(new JLabel("Water Level:"));
-		panel.add(this.initWaterSpinner(calculator, spinnerPrecision, graph));
+		panel.add(this.createWaterSpinner(calculator, spinnerPrecision, graph));
 
 		return panel;
 	}
@@ -82,7 +82,7 @@ public class InputScreen extends JPanel
 	}
 
 
-	private JSpinner initWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
+	private JSpinner createWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{
 		// Default range: 0 to 100
 		// Default increment: 0.1
