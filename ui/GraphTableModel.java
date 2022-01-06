@@ -11,11 +11,11 @@ import data.DiscreteData;
  * Overrides setValueAt method to allow for data to be changed
 **/
 
-public class BigDecimalGraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
+public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
 {
 	private DataPrecision precision;
 
-	public BigDecimalGraphTableModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision precision, String nameX, String nameY)
+	public GraphTableModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision precision, String nameX, String nameY)
 	{
 		super(outsideData, nameX, nameY);
 		this.precision = precision;
@@ -52,4 +52,9 @@ public class BigDecimalGraphTableModel extends DiscreteDataTableModel<BigDecimal
 	{
 		return BigDecimal.class;
 	}
+
+	public DataPrecision getPrecision()
+	{
+		return this.precision;
+	} 
 }

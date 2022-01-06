@@ -21,7 +21,7 @@ import graphs.GraphContainer;
 import hydraulics.WaterLevelChangeListener;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
-import ui.BigDecimalGraphTableModel;
+import ui.GraphTableModel;
 import ui.TableEditPanel;
 
 /**
@@ -51,7 +51,7 @@ public class InputScreen extends JPanel
 
 	private JTable createTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision)
 	{
-		JTable table = new JTable(new BigDecimalGraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
+		JTable table = new JTable(new GraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
 		return table;
 	}
 	
