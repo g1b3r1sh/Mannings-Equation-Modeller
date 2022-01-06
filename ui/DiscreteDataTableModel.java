@@ -12,9 +12,9 @@ import hydraulics.Pair;
  * The TableModel of DiscreteData. As such, it is restricted to two columns.
 **/
 
-// TODO: Make editable
-public class DiscreteDataTableModel<M extends Number, N extends Number> extends AbstractTableModel
+public abstract class DiscreteDataTableModel<M extends Number, N extends Number> extends AbstractTableModel
 {
+	private DiscreteData<M, N> outsideData;
 	private ArrayList<Pair<M, N>> data;
 	private String nameX;
 	private String nameY;
@@ -22,16 +22,22 @@ public class DiscreteDataTableModel<M extends Number, N extends Number> extends 
 	public DiscreteDataTableModel(DiscreteData<M, N> outsideData, String nameX, String nameY)
 	{
 		super();
+
+		this.outsideData = outsideData;
 		this.nameX = nameX;
 		this.nameY = nameY;
 		
-		this.update(outsideData);
-	}
-	
-	public void update(DiscreteData<M, N> outsideData)
-	{
 		this.data = new ArrayList<>();
-		for (Entry<M, N> e : outsideData.getEntrySet())
+		this.update();
+	}
+
+	@Override
+	public abstract Class<?> getColumnClass(int columnIndex);
+	
+	public void update()
+	{
+		this.data.clear();
+		for (Entry<M, N> e : this.outsideData.getEntrySet())
 		{
 			this.data.add(new Pair<>(e.getKey(), e.getValue()));
 		}
@@ -60,15 +66,14 @@ public class DiscreteDataTableModel<M extends Number, N extends Number> extends 
 	{
 		return column == 0 ? this.nameX : this.nameY;
 	}
-
-	@Override
-	public Class<?> getColumnClass(int columnIndex)
-	{
-		return Number.class;
-	}
 	
 	protected ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
+	}
+
+	protected DiscreteData<M, N> getOutsideData()
+	{
+		return this.outsideData;
 	}
 }
