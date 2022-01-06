@@ -11,7 +11,6 @@ import data.DataPrecision;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 /**
  * Contains components for editing table as well as updating data connected to table.
@@ -57,7 +56,7 @@ public class TableEditPanel extends JPanel implements ActionListener
 			{
 				try
 				{
-					BigDecimal value = new BigDecimal(input).setScale(this.table.getSelectedColumn() == 0 ? this.precision.getX() : this.precision.getY(), RoundingMode.HALF_UP);
+					BigDecimal value = this.table.getSelectedColumn() == 0 ? this.precision.fitPrecisionX(new BigDecimal(input)) : this.precision.fitPrecisionY(new BigDecimal(input));
 					this.table.setValueAt(value, this.table.getSelectedRow(), this.table.getSelectedColumn());
 					this.getRootPane().repaint();
 				}

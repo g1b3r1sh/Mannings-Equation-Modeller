@@ -1,7 +1,6 @@
 package ui;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import data.DataPrecision;
 import data.DiscreteData;
@@ -32,7 +31,7 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 			{
 				// To replace x data, remove x from Data object and add new x to it
 				this.getOutsideData().remove(this.getData().get(rowIndex).first);
-				BigDecimal newX = decimal.setScale(this.precision.getX(), RoundingMode.HALF_UP);
+				BigDecimal newX = this.precision.fitPrecisionX(decimal);
 				BigDecimal y = this.getData().get(rowIndex).second;
 				this.getOutsideData().set(newX, y);
 			}
@@ -40,7 +39,7 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 			{
 				// To replace y data, simply set the y value in data
 				BigDecimal x = this.getData().get(rowIndex).first;
-				BigDecimal newY = decimal.setScale(this.precision.getY(), RoundingMode.HALF_UP);
+				BigDecimal newY = this.precision.fitPrecisionY(decimal);
 				this.getOutsideData().set(x, newY);
 			}
 			this.refresh();

@@ -1,5 +1,8 @@
 package data;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class DataPrecision
 {
 	private int x;
@@ -29,5 +32,15 @@ public class DataPrecision
 	public void setY(int precisionY)
 	{
 		this.y = precisionY;
+	}
+
+	public BigDecimal fitPrecisionX(BigDecimal decimal)
+	{
+		return decimal.setScale(this.x, RoundingMode.HALF_UP);
+	}
+
+	public BigDecimal fitPrecisionY(BigDecimal decimal)
+	{
+		return decimal.setScale(this.y, RoundingMode.HALF_UP);
 	}
 }
