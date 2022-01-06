@@ -25,7 +25,16 @@ public class DiscreteDataTableModel<M extends Number, N extends Number> extends 
 		this.nameX = nameX;
 		this.nameY = nameY;
 		
-		this.populate(outsideData);
+		this.update(outsideData);
+	}
+	
+	public void update(DiscreteData<M, N> outsideData)
+	{
+		this.data = new ArrayList<>();
+		for (Entry<M, N> e : outsideData.getEntrySet())
+		{
+			this.data.add(new Pair<>(e.getKey(), e.getValue()));
+		}
 	}
 
 	@Override
@@ -61,14 +70,5 @@ public class DiscreteDataTableModel<M extends Number, N extends Number> extends 
 	protected ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
-	}
-
-	private void populate(DiscreteData<M, N> outsideData)
-	{
-		this.data = new ArrayList<>();
-		for (Entry<M, N> e : outsideData.getEntrySet())
-		{
-			this.data.add(new Pair<>(e.getKey(), e.getValue()));
-		}
 	}
 }
