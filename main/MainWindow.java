@@ -24,6 +24,6 @@ public class MainWindow extends JFrame
 	private void initializeFrame()
 	{
 		this.setJMenuBar(new MainWindowMenu());
-		this.add(new ProgramScreenSwitcher(this.model));
+		this.add(new ProgramScreenSwitcher(this, this.model));
 	}
 }

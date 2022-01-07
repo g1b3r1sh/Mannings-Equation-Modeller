@@ -1,5 +1,8 @@
 package main;
+import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,6 +16,7 @@ import data.MapDiscreteData;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 
 import graphs.Range;
@@ -34,9 +38,13 @@ public class InputScreen extends JPanel
 	private static final String Y_LABEL = "Elevation (m)";
 	private static final String GRAPH_TITLE = "Cross-section of River Bank";
 
-	public InputScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
+	private DataEditDialog editDialog;
+
+	public InputScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator, JFrame parent)
 	{
 		super(new BorderLayout());
+
+		this.editDialog = new DataEditDialog(null, new DataEditScreen(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
 
 		// Init components
 		GraphContainer graphContainer = this.createGraphContainer(this.createGraph(), precision);
@@ -68,7 +76,17 @@ public class InputScreen extends JPanel
 		JPanel panel = new JPanel();
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(this.tableEditPanel(table, precision));
+		panel.add(this.tableEditPanel(table));
+		JButton button = new JButton(new AbstractAction("Edit")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				InputScreen.this.editDialog.open();
+			}
+		});
+		button.setOpaque(false);
+		panel.add(button);
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
 		panel.add(new JLabel("Water Level:"));
 		panel.add(this.createWaterSpinner(calculator, spinnerPrecision, graph));
@@ -76,9 +94,9 @@ public class InputScreen extends JPanel
 		return panel;
 	}
 
-	private TableEditPanel tableEditPanel(JTable table, DataPrecision precision)
+	private TableEditPanel tableEditPanel(JTable table)
 	{
-		return new TableEditPanel(table, precision);
+		return new TableEditPanel(table);
 	}
 
 
