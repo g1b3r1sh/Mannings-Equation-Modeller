@@ -26,7 +26,6 @@ import hydraulics.WaterLevelChangeListener;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.GraphTableModel;
-import ui.TableEditPanel;
 
 /**
  * Contains methods for constructing input screen
@@ -44,7 +43,7 @@ public class InputScreen extends JPanel
 	{
 		super(new BorderLayout());
 
-		this.editDialog = new DataEditDialog(null, new DataEditScreen(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
+		this.editDialog = new DataEditDialog(parent, new DataEditScreen(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
 
 		// Init components
 		GraphContainer graphContainer = this.createGraphContainer(this.createGraph(), precision);
@@ -60,6 +59,7 @@ public class InputScreen extends JPanel
 	private JTable createTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision)
 	{
 		JTable table = new JTable(new GraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
+		table.setCellSelectionEnabled(true);
 		return table;
 	}
 	
@@ -76,7 +76,6 @@ public class InputScreen extends JPanel
 		JPanel panel = new JPanel();
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(this.tableEditPanel(table));
 		JButton button = new JButton(new AbstractAction("Edit")
 		{
 			@Override
@@ -92,11 +91,6 @@ public class InputScreen extends JPanel
 		panel.add(this.createWaterSpinner(calculator, spinnerPrecision, graph));
 
 		return panel;
-	}
-
-	private TableEditPanel tableEditPanel(JTable table)
-	{
-		return new TableEditPanel(table);
 	}
 
 
