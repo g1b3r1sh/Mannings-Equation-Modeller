@@ -20,29 +20,20 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 		this.precision = precision;
 	}
 	
-	// TODO: Use events to update data instead
 	@Override
 	public void setValueAt(Object value, int rowIndex, int colIndex)
 	{
-		if (value instanceof Number)
+		if (value instanceof BigDecimal)
 		{
-			BigDecimal decimal = new BigDecimal((((Number) value).doubleValue()));
+			BigDecimal decimal = (BigDecimal) value;
 			if (colIndex == 0)
 			{
-				// To replace x data, remove x from Data object and add new x to it
-				this.getOutsideData().remove(this.getData().get(rowIndex).first);
-				BigDecimal newX = this.precision.fitPrecisionX(decimal);
-				BigDecimal y = this.getData().get(rowIndex).second;
-				this.getOutsideData().set(newX, y);
+				this.getData().get(rowIndex).first = this.precision.fitPrecisionX(decimal);
 			}
 			else
 			{
-				// To replace y data, simply set the y value in data
-				BigDecimal x = this.getData().get(rowIndex).first;
-				BigDecimal newY = this.precision.fitPrecisionY(decimal);
-				this.getOutsideData().set(x, newY);
+				this.getData().get(rowIndex).second = this.precision.fitPrecisionY(decimal);
 			}
-			this.refresh();
 		}
 	}
 
