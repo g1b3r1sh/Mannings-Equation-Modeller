@@ -6,8 +6,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import data.DataPrecision;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -19,12 +17,10 @@ import java.math.BigDecimal;
 public class TableEditPanel extends JPanel implements ActionListener
 {
 	private JTable table;
-	private DataPrecision precision;
 	
-	public TableEditPanel(JTable table, DataPrecision precision)
+	public TableEditPanel(JTable table)
 	{
 		this.table = table;
-		this.precision = precision;
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(this.createEditButton());
@@ -56,7 +52,7 @@ public class TableEditPanel extends JPanel implements ActionListener
 			{
 				try
 				{
-					BigDecimal value = this.table.getSelectedColumn() == 0 ? this.precision.fitPrecisionX(new BigDecimal(input)) : this.precision.fitPrecisionY(new BigDecimal(input));
+					BigDecimal value = new BigDecimal(input);
 					this.table.setValueAt(value, this.table.getSelectedRow(), this.table.getSelectedColumn());
 					this.getRootPane().repaint();
 				}
