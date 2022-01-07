@@ -4,17 +4,21 @@ import java.math.BigDecimal;
 import java.util.EventObject;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.text.JTextComponent;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import data.DataPrecision;
 import data.MapDiscreteData;
+import ui.DiscreteDataTableController;
 import ui.GraphTableModel;
 
 public class DataEditScreen extends JPanel
@@ -37,7 +41,7 @@ public class DataEditScreen extends JPanel
 
 		this.table = this.createTable(data, precision, xLabel, yLabel);
 		this.add(this.initTablePane(table), BorderLayout.WEST);
-		this.add(this.createControlPanel(table), BorderLayout.EAST);
+		this.add(this.createControlPanel(table), BorderLayout.CENTER);
 	}
 
 	public void refresh()
@@ -63,6 +67,7 @@ public class DataEditScreen extends JPanel
 			}
 		};
 		table.setCellSelectionEnabled(true);
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		return table;
 	}
 	
@@ -76,10 +81,16 @@ public class DataEditScreen extends JPanel
 
 	private JPanel createControlPanel(JTable table)
 	{
+		DiscreteDataTableController controller = new DiscreteDataTableController(table, this.tableModel);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		// Add controls and events
-		
+		JPanel tableControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		tableControls.add(new JButton(controller.new InsertAction()));
+		tableControls.add(new JButton(controller.new InsertAfterAction()));
+		tableControls.add(new JButton(controller.new DeleteRowsAction()));
+		tableControls.add(new JButton(controller.new ClearCellAction()));
+		panel.add(tableControls);
 		return panel;
 	}
 }

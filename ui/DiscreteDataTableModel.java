@@ -66,7 +66,43 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 	{
 		return column == 0 ? this.nameX : this.nameY;
 	}
-	
+
+	// Inserts row before the current row in the index
+	public void insertRow(int rowIndex)
+	{
+		if (this.containsRow(rowIndex))
+		{
+			this.data.add(rowIndex, new Pair<>(null, null));
+			this.fireTableRowsInserted(rowIndex, rowIndex);
+		}
+	}
+
+	public void insertRowAfter(int rowIndex)
+	{
+		if (this.containsRow(rowIndex))
+		{
+			this.data.add(rowIndex + 1, new Pair<>(null, null));
+			this.fireTableRowsInserted(rowIndex + 1, rowIndex);
+		}
+	}
+
+	public void deleteRows(int rowIndex, int numRows)
+	{
+		if (this.containsRow(rowIndex) && numRows > 0)
+		{
+			for (int i = 0; i < numRows; i++)
+			{
+				this.data.remove(rowIndex);
+			}
+			this.fireTableRowsDeleted(rowIndex, rowIndex + numRows - 1);
+		}
+	}
+
+	public void clear(int rowIndex, int columnIndex)
+	{
+		this.setValueAt(null, rowIndex, columnIndex);
+	}
+
 	protected ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
@@ -75,5 +111,15 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 	protected DiscreteData<M, N> getOutsideData()
 	{
 		return this.outsideData;
+	}
+
+	protected boolean containsRow(int rowIndex)
+	{
+		return rowIndex >= 0 && rowIndex < this.getRowCount();
+	}
+
+	protected boolean containsColumn(int columnIndex)
+	{
+		return columnIndex >= 0 && columnIndex < this.getColumnCount();
 	}
 }

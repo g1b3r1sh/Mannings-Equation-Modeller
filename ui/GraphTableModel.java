@@ -1,5 +1,7 @@
 package ui;
 
+import hydraulics.Pair;
+
 import java.math.BigDecimal;
 
 import data.DataPrecision;
@@ -21,18 +23,43 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 	}
 	
 	@Override
-	public void setValueAt(Object value, int rowIndex, int colIndex)
+	public void setValueAt(Object value, int rowIndex, int columnIndex)
 	{
-		if (value instanceof BigDecimal)
+		if (this.containsRow(rowIndex) && this.containsColumn(columnIndex))
 		{
-			BigDecimal decimal = (BigDecimal) value;
-			if (colIndex == 0)
+			Pair<BigDecimal, BigDecimal> row = this.getData().get(rowIndex);
+			if (value == null)
 			{
-				this.getData().get(rowIndex).first = this.precision.fitPrecisionX(decimal);
+				if (columnIndex == 0)
+				{
+					row.first = null;
+				}
+				else
+				{
+					row.second = null;
+				}
+				this.fireTableCellUpdated(rowIndex, columnIndex);
 			}
-			else
+			else if (value instanceof BigDecimal)
 			{
-				this.getData().get(rowIndex).second = this.precision.fitPrecisionY(decimal);
+				BigDecimal newValue = (BigDecimal) value;
+				BigDecimal oldValue;
+				if (columnIndex == 0)
+				{
+					newValue = this.precision.fitPrecisionX(newValue);
+					oldValue = row.first;
+					row.first = newValue;
+				}
+				else
+				{
+					newValue = this.precision.fitPrecisionY(newValue);
+					oldValue = row.second;
+					row.second = newValue;
+				}
+				if (!newValue.equals(oldValue))
+				{
+					this.fireTableCellUpdated(rowIndex, columnIndex);
+				}
 			}
 		}
 	}
@@ -46,5 +73,5 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 	public DataPrecision getPrecision()
 	{
 		return this.precision;
-	} 
+	}
 }
