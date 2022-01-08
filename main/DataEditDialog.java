@@ -34,6 +34,7 @@ public class DataEditDialog extends JDialog implements PropertyChangeListener
 		this.setVisible(true);
 	}
 
+	// Since closing with the x button does not result in the calling of this method, this method should only hide the dialog
 	public void close()
 	{
 		this.setVisible(false);
@@ -53,7 +54,10 @@ public class DataEditDialog extends JDialog implements PropertyChangeListener
 			if ((Integer) value == JOptionPane.OK_OPTION)
 			{
 				// Validate input, if valid, call event for setting values and close
-				//this.close();
+				if (this.okClose())
+				{
+					this.close();
+				}
 			}
 			else if ((Integer) value == JOptionPane.CANCEL_OPTION)
 			{
@@ -68,5 +72,23 @@ public class DataEditDialog extends JDialog implements PropertyChangeListener
 	public Dimension getPreferredSize()
 	{
 		return new Dimension((int) (this.getOwner().getWidth() * 0.9), (int) (this.getOwner().getHeight() * 0.9));
+	}
+
+	private boolean okClose()
+	{
+		if (this.screen.getModel().containsDuplicates())
+		{
+			JOptionPane.showMessageDialog(this, "Error: X column contains duplicates.", "Error: Duplicates", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		if (this.screen.getModel().containsEmpty())
+		{
+			int result = JOptionPane.showConfirmDialog(this, "Warning: Some cells are blank. They will not be included when updating the data. Continue?", "Warning: Blanks", JOptionPane.YES_NO_OPTION);
+			if (result == JOptionPane.NO_OPTION)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

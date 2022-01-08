@@ -68,6 +68,42 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		return column == 0 ? this.nameX : this.nameY;
 	}
 
+	// Returns whether all complete rows (i.e. does not contain any null values) have a unique key
+	public boolean containsDuplicates()
+	{
+		for (int i = 0; i < this.data.size(); i++)
+		{
+			Pair<M, N> row = this.data.get(i);
+			if (row.first != null && row.second != null)
+			{
+				for (int j = 0; j < i; j++)
+				{
+					Pair<M, N> secondRow = this.data.get(j);
+					if (secondRow.first != null && secondRow.second != null)
+					{
+						if (this.data.get(i).first.equals(this.data.get(j).first))
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean containsEmpty()
+	{
+		for (Pair<M, N> row : this.data)
+		{
+			if (row.first == null || row.second == null)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// Inserts row before the current row in the index
 	public void insertRow(int rowIndex)
 	{
