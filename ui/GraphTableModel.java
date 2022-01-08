@@ -70,6 +70,32 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 		return BigDecimal.class;
 	}
 
+	// Replaces data
+	public void pasteData(BigDecimal[][] data, int rowIndex, int columnIndex)
+	{
+		if (this.containsRow(rowIndex) && this.containsColumn(columnIndex) && data.length > 0 && data[0].length > 0)
+		{
+			for (int y = 0; y < data.length; y++)
+			{
+				int pasteRowIndex = y + rowIndex;
+				if (pasteRowIndex >= this.getData().size())
+				{
+					this.getData().add(new Pair<>(null, null));
+				}
+				if (columnIndex == 0)
+				{
+					this.setValueAt(data[y][0], pasteRowIndex, 0);
+					this.setValueAt(data[y][1], pasteRowIndex, 1);
+				}
+				else if (columnIndex == 1)
+				{
+					this.setValueAt(data[y][0], pasteRowIndex, 1);
+				}
+			}
+			this.fireTableDataChanged();
+		}
+	}
+
 	public DataPrecision getPrecision()
 	{
 		return this.precision;
