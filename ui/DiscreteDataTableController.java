@@ -26,7 +26,7 @@ public class DiscreteDataTableController
 			this.controller = DiscreteDataTableController.this;
 		}
 
-		public DiscreteDataTableController getController()
+		protected DiscreteDataTableController getController()
 		{
 			return this.controller;
 		}
@@ -78,17 +78,31 @@ public class DiscreteDataTableController
 		}
 	}
 
-	public class ClearCellsAction extends ControllerAction
+	public class ClearSelectedAction extends ControllerAction
 	{
-		public ClearCellsAction()
+		public ClearSelectedAction()
 		{
-			super("Clear Cells");
+			super("Clear Selected");
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			this.getController().tableModel.clear(this.getController().table.getSelectedRows(), this.getController().table.getSelectedColumns());
+		}
+	}
+
+	public class NewTableAction extends ControllerAction
+	{
+		public NewTableAction()
+		{
+			super("New Table");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			this.getController().tableModel.newTable();
 		}
 	}
 

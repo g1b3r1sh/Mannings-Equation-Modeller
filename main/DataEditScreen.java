@@ -56,6 +56,11 @@ public class DataEditScreen extends JPanel
 		this.add(this.createControlPanel(table), BorderLayout.CENTER);
 	}
 
+	public GraphTableModel getModel()
+	{
+		return this.tableModel;
+	}
+
 	public void refresh()
 	{
 		// Update screen to be consistent with current values
@@ -110,12 +115,12 @@ public class DataEditScreen extends JPanel
 		tableControls.add(new JButton(controller.new InsertAction()));
 		tableControls.add(new JButton(controller.new InsertLastAction()));
 		tableControls.add(new JButton(controller.new DeleteRowsAction()));
-		tableControls.add(new JButton(controller.new ClearCellsAction()));
+		tableControls.add(new JButton(controller.new ClearSelectedAction()));
+		tableControls.add(new JButton(controller.new NewTableAction()));
 		Action printAction = controller.new PrintSelectedAction();
 		tableControls.add(new JButton(printAction));
 		// this.addShortcut(KeyStroke.getKeyStroke("K"), printAction);
 		this.table.setTransferHandler(new GraphTableTransferHandler());
-		//System.out.println(this.table.getTransferHandler().getSourceActions(this));
 		return tableControls;
 	}
 

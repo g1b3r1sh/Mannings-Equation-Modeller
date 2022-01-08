@@ -106,6 +106,13 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		}
 	}
 
+	public void newTable()
+	{
+		this.data.clear();
+		this.data.add(new Pair<>(null, null));
+		this.fireTableDataChanged();
+	}
+
 	protected ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
