@@ -110,12 +110,7 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 	{
 		return this.data;
 	}
-
-	protected DiscreteData<M, N> getOutsideData()
-	{
-		return this.outsideData;
-	}
-
+	
 	protected boolean containsRow(int rowIndex)
 	{
 		return rowIndex >= 0 && rowIndex < this.getRowCount();
