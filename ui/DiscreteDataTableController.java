@@ -4,6 +4,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JTable;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class DiscreteDataTableController
 {
@@ -78,17 +79,40 @@ public class DiscreteDataTableController
 		}
 	}
 
-	public class ClearCellAction extends ControllerAction
+	public class ClearCellsAction extends ControllerAction
 	{
-		public ClearCellAction()
+		public ClearCellsAction()
 		{
-			super("Clear Cell");
+			super("Clear Cells");
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			this.getController().tableModel.clear(this.getController().table.getSelectedRow(), this.getController().table.getSelectedColumn());
+			this.getController().tableModel.clear(this.getController().table.getSelectedRows(), this.getController().table.getSelectedColumns());
+		}
+	}
+
+	public class PrintSelectedAction extends ControllerAction
+	{
+		public PrintSelectedAction()
+		{
+			super("Print Selected");
+			putValue(AbstractAction.ACCELERATOR_KEY, KeyEvent.VK_K);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.print("[");
+			for (int row : this.getController().table.getSelectedRows())
+			{
+				for (int column : this.getController().table.getSelectedColumns())
+				{
+					System.out.printf("%s, ", this.getController().tableModel.getValueAt(row, column).toString());
+				}
+			}
+			System.out.printf("]\n");
 		}
 	}
 }

@@ -60,6 +60,7 @@ public class InputScreen extends JPanel
 	{
 		JTable table = new JTable(new GraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
 		table.setCellSelectionEnabled(true);
+		table.getTableHeader().setReorderingAllowed(false);
 		return table;
 	}
 	

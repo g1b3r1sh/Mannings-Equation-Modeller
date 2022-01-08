@@ -98,9 +98,15 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		}
 	}
 
-	public void clear(int rowIndex, int columnIndex)
+	public void clear(int[] rows, int[] columns)
 	{
-		this.setValueAt(null, rowIndex, columnIndex);
+		for (int row : rows)
+		{
+			for (int column : columns)
+			{
+				this.setValueAt(null, row, column);
+			}
+		}
 	}
 
 	protected ArrayList<Pair<M, N>> getData()

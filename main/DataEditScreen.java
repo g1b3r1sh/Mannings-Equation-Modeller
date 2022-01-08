@@ -3,14 +3,17 @@ package main;
 import java.math.BigDecimal;
 import java.util.EventObject;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.text.JTextComponent;
@@ -23,6 +26,7 @@ import java.awt.FlowLayout;
 import data.DataPrecision;
 import data.MapDiscreteData;
 import ui.DiscreteDataTableController;
+import ui.JTableTransferHandler;
 import ui.GraphPrecisionController;
 import ui.GraphTableModel;
 
@@ -55,6 +59,7 @@ public class DataEditScreen extends JPanel
 	{
 		// Update screen to be consistent with current values
 		this.tableModel.refresh();
+		this.table.clearSelection();
 	}
 
 	private JTable createTable(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, String xLabel, String yLabel)
@@ -75,6 +80,7 @@ public class DataEditScreen extends JPanel
 		};
 		table.setCellSelectionEnabled(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table.getTableHeader().setReorderingAllowed(false);
 		return table;
 	}
 	
@@ -103,7 +109,12 @@ public class DataEditScreen extends JPanel
 		tableControls.add(new JButton(controller.new InsertAction()));
 		tableControls.add(new JButton(controller.new InsertAfterAction()));
 		tableControls.add(new JButton(controller.new DeleteRowsAction()));
-		tableControls.add(new JButton(controller.new ClearCellAction()));
+		tableControls.add(new JButton(controller.new ClearCellsAction()));
+		Action printAction = controller.new PrintSelectedAction();
+		tableControls.add(new JButton(printAction));
+		// this.addShortcut(KeyStroke.getKeyStroke("K"), printAction);
+		this.table.setTransferHandler(new JTableTransferHandler());
+		//System.out.println(this.table.getTransferHandler().getSourceActions(this));
 		return tableControls;
 	}
 
@@ -131,5 +142,12 @@ public class DataEditScreen extends JPanel
 		precisionControls.add(precisionXControls);
 		precisionControls.add(precisionYControls);
 		return precisionControls;
+	}
+
+	private void addShortcut(KeyStroke keyStroke, Action action)
+	{
+		this.table.getInputMap().put(keyStroke, action);
+		this.table.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, action);
+		this.table.getActionMap().put(action, action);
 	}
 }
