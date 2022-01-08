@@ -30,15 +30,21 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 			Pair<BigDecimal, BigDecimal> row = this.getData().get(rowIndex);
 			if (value == null)
 			{
-				if (columnIndex == 0)
+				boolean changed = false;
+				if (columnIndex == 0 && row.first != null)
 				{
+					changed = true;
 					row.first = null;
 				}
-				else
+				else if (row.second != null)
 				{
+					changed = true;
 					row.second = null;
 				}
-				this.fireTableCellUpdated(rowIndex, columnIndex);
+				if (changed)
+				{
+					this.fireTableCellUpdated(rowIndex, columnIndex);
+				}
 			}
 			else if (value instanceof BigDecimal)
 			{
@@ -105,7 +111,10 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 	{
 		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
 		{
-			pair.first = this.precision.fitPrecisionX(pair.first);
+			if (pair.first != null)
+			{
+				pair.first = this.precision.fitPrecisionX(pair.first);
+			}
 		}
 		this.fireTableRowsUpdated(0, this.getData().size() - 1);
 	}
@@ -114,7 +123,10 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 	{
 		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
 		{
-			pair.second = this.precision.fitPrecisionY(pair.second);
+			if (pair.second != null)
+			{
+				pair.second = this.precision.fitPrecisionY(pair.second);
+			}
 		}
 		this.fireTableRowsUpdated(0, this.getData().size() - 1);
 	}
