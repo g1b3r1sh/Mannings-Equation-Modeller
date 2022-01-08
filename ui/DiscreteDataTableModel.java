@@ -41,6 +41,7 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		{
 			this.data.add(new Pair<>(e.getKey(), e.getValue()));
 		}
+		this.fireTableDataChanged();
 	}
 
 	@Override
