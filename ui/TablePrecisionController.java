@@ -4,13 +4,13 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class GraphPrecisionController implements ChangeListener
+public class TablePrecisionController implements ChangeListener
 {
 	GraphTableModel model;
 	SpinnerNumberModel spinnerX = null;
 	SpinnerNumberModel spinnerY = null;
 	
-	public GraphPrecisionController(GraphTableModel model)
+	public TablePrecisionController(GraphTableModel model)
 	{
 		this.model = model;
 	}

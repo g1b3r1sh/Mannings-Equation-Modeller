@@ -30,7 +30,7 @@ import java.awt.event.KeyEvent;
 import data.DataPrecision;
 import data.MapDiscreteData;
 import ui.DiscreteDataTableController;
-import ui.GraphPrecisionController;
+import ui.TablePrecisionController;
 import ui.GraphTableModel;
 import ui.GraphTableTransferHandler;
 
@@ -38,7 +38,7 @@ public class DataEditScreen extends JPanel
 {
 	private GraphTableModel tableModel;
 	private JTable table;
-	private GraphPrecisionController precisionController;
+	private TablePrecisionController precisionController;
 	private DiscreteDataTableController tableController;
 
 	public DataEditScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, String xLabel, String yLabel)
@@ -140,7 +140,7 @@ public class DataEditScreen extends JPanel
 		// Create and link spinner models to controller
 		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getPrecision().getX(), null, null, 1);
 		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getPrecision().getY(), null, null, 1);
-		this.precisionController = new GraphPrecisionController(this.tableModel);
+		this.precisionController = new TablePrecisionController(this.tableModel);
 		this.precisionController.setSpinnerX(modelX);
 		this.precisionController.setSpinnerY(modelY);
 
