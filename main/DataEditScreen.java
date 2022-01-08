@@ -3,6 +3,7 @@ package main;
 import java.math.BigDecimal;
 import java.util.EventObject;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,6 +24,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import data.DataPrecision;
 import data.MapDiscreteData;
@@ -121,6 +124,14 @@ public class DataEditScreen extends JPanel
 		tableControls.add(new JButton(printAction));
 		// this.addShortcut(KeyStroke.getKeyStroke("K"), printAction);
 		this.table.setTransferHandler(new GraphTableTransferHandler());
+		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_WINDOWS, 0), new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				return;
+			}
+		});
 		return tableControls;
 	}
 
