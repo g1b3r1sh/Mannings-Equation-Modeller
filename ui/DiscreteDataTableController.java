@@ -4,7 +4,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JTable;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class DiscreteDataTableController
 {
@@ -74,7 +73,7 @@ public class DiscreteDataTableController
 			int rowCount = this.getController().table.getSelectedRowCount();
 			if (rowCount > 0)
 			{
-				this.getController().tableModel.deleteRows(this.getController().table.getSelectedRows()[0], rowCount);
+				this.getController().tableModel.deleteRows(this.getController().table.getSelectedRow(), rowCount);
 			}
 		}
 	}
@@ -98,7 +97,6 @@ public class DiscreteDataTableController
 		public PrintSelectedAction()
 		{
 			super("Print Selected");
-			putValue(AbstractAction.ACCELERATOR_KEY, KeyEvent.VK_K);
 		}
 
 		@Override
