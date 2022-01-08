@@ -74,4 +74,22 @@ public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecim
 	{
 		return this.precision;
 	}
+
+	public void updatePrecisionX()
+	{
+		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
+		{
+			pair.first = this.precision.fitPrecisionX(pair.first);
+		}
+		this.fireTableRowsUpdated(0, this.getData().size() - 1);
+	}
+
+	public void updatePrecisionY()
+	{
+		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
+		{
+			pair.second = this.precision.fitPrecisionY(pair.second);
+		}
+		this.fireTableRowsUpdated(0, this.getData().size() - 1);
+	}
 }

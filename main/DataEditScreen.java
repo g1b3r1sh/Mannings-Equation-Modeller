@@ -16,7 +16,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.text.JTextComponent;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -24,12 +23,15 @@ import java.awt.FlowLayout;
 import data.DataPrecision;
 import data.MapDiscreteData;
 import ui.DiscreteDataTableController;
+import ui.GraphPrecisionController;
 import ui.GraphTableModel;
 
 public class DataEditScreen extends JPanel
 {
 	private GraphTableModel tableModel;
 	private JTable table;
+	private GraphPrecisionController precisionController;
+	private DiscreteDataTableController tableController;
 
 	public DataEditScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, String xLabel, String yLabel)
 	{
@@ -86,11 +88,11 @@ public class DataEditScreen extends JPanel
 
 	private JPanel createControlPanel(JTable table)
 	{
-		DiscreteDataTableController controller = new DiscreteDataTableController(table, this.tableModel);
+		this.tableController = new DiscreteDataTableController(table, this.tableModel);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(this.createTableControls(controller));
-		panel.add(this.createPrecisionControls(controller));
+		panel.add(this.createTableControls(tableController));
+		panel.add(this.createPrecisionControls(tableController));
 		panel.add(Box.createVerticalGlue());
 		return panel;
 	}
@@ -107,6 +109,14 @@ public class DataEditScreen extends JPanel
 
 	private JPanel createPrecisionControls(DiscreteDataTableController controller)
 	{
+		// Create and link spinner models to controller
+		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getPrecision().getX(), 0, null, 1);
+		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getPrecision().getY(), 0, null, 1);
+		this.precisionController = new GraphPrecisionController(this.tableModel);
+		this.precisionController.setSpinnerX(modelX);
+		this.precisionController.setSpinnerY(modelY);
+
+		// Construct panel containing controls
 		JPanel precisionControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 		JPanel precisionXControls = new JPanel();
@@ -114,9 +124,9 @@ public class DataEditScreen extends JPanel
 		precisionXControls.setLayout(new BoxLayout(precisionXControls, BoxLayout.X_AXIS));
 		precisionYControls.setLayout(new BoxLayout(precisionYControls, BoxLayout.X_AXIS));
 		precisionXControls.add(new JLabel("Precision x: "));
-		precisionXControls.add(new JSpinner(new SpinnerNumberModel(this.tableModel.getPrecision().getX(), 0, null, 1)));
+		precisionXControls.add(new JSpinner(modelX));
 		precisionYControls.add(new JLabel("Precision y: "));
-		precisionYControls.add(new JSpinner(new SpinnerNumberModel(this.tableModel.getPrecision().getY(), 0, null, 1)));
+		precisionYControls.add(new JSpinner(modelY));
 
 		precisionControls.add(precisionXControls);
 		precisionControls.add(precisionYControls);
