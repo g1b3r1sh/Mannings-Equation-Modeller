@@ -47,17 +47,17 @@ public class DiscreteDataTableController
 		}
 	}
 
-	public class InsertAfterAction extends ControllerAction
+	public class InsertLastAction extends ControllerAction
 	{
-		public InsertAfterAction()
+		public InsertLastAction()
 		{
-			super("Insert After Row");
+			super("Add Row to Last");
 		}
 		
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			this.getController().tableModel.insertRowAfter(this.getController().table.getSelectedRow());
+			this.getController().tableModel.insertRowLast();
 		}
 	}
 

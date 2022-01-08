@@ -77,13 +77,10 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		}
 	}
 
-	public void insertRowAfter(int rowIndex)
+	public void insertRowLast()
 	{
-		if (this.containsRow(rowIndex))
-		{
-			this.data.add(rowIndex + 1, new Pair<>(null, null));
-			this.fireTableRowsInserted(rowIndex + 1, rowIndex);
-		}
+		this.data.add(new Pair<>(null, null));
+		this.fireTableRowsInserted(this.data.size() - 1, this.data.size() - 1);
 	}
 
 	public void deleteRows(int rowIndex, int numRows)

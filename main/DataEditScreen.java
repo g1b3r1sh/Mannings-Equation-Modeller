@@ -15,6 +15,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.text.JTextComponent;
 
@@ -26,9 +27,9 @@ import java.awt.FlowLayout;
 import data.DataPrecision;
 import data.MapDiscreteData;
 import ui.DiscreteDataTableController;
-import ui.JTableTransferHandler;
 import ui.GraphPrecisionController;
 import ui.GraphTableModel;
+import ui.GraphTableTransferHandler;
 
 public class DataEditScreen extends JPanel
 {
@@ -107,13 +108,13 @@ public class DataEditScreen extends JPanel
 	{
 		JPanel tableControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tableControls.add(new JButton(controller.new InsertAction()));
-		tableControls.add(new JButton(controller.new InsertAfterAction()));
+		tableControls.add(new JButton(controller.new InsertLastAction()));
 		tableControls.add(new JButton(controller.new DeleteRowsAction()));
 		tableControls.add(new JButton(controller.new ClearCellsAction()));
 		Action printAction = controller.new PrintSelectedAction();
 		tableControls.add(new JButton(printAction));
 		// this.addShortcut(KeyStroke.getKeyStroke("K"), printAction);
-		this.table.setTransferHandler(new JTableTransferHandler());
+		this.table.setTransferHandler(new GraphTableTransferHandler());
 		//System.out.println(this.table.getTransferHandler().getSourceActions(this));
 		return tableControls;
 	}
@@ -121,8 +122,8 @@ public class DataEditScreen extends JPanel
 	private JPanel createPrecisionControls(DiscreteDataTableController controller)
 	{
 		// Create and link spinner models to controller
-		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getPrecision().getX(), 0, null, 1);
-		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getPrecision().getY(), 0, null, 1);
+		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getPrecision().getX(), null, null, 1);
+		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getPrecision().getY(), null, null, 1);
 		this.precisionController = new GraphPrecisionController(this.tableModel);
 		this.precisionController.setSpinnerX(modelX);
 		this.precisionController.setSpinnerY(modelY);
@@ -135,13 +136,20 @@ public class DataEditScreen extends JPanel
 		precisionXControls.setLayout(new BoxLayout(precisionXControls, BoxLayout.X_AXIS));
 		precisionYControls.setLayout(new BoxLayout(precisionYControls, BoxLayout.X_AXIS));
 		precisionXControls.add(new JLabel("Precision x: "));
-		precisionXControls.add(new JSpinner(modelX));
+		precisionXControls.add(this.createPrecisionSpinner(modelX));
 		precisionYControls.add(new JLabel("Precision y: "));
-		precisionYControls.add(new JSpinner(modelY));
+		precisionYControls.add(this.createPrecisionSpinner(modelY));
 
 		precisionControls.add(precisionXControls);
 		precisionControls.add(precisionYControls);
 		return precisionControls;
+	}
+
+	private JSpinner createPrecisionSpinner(SpinnerModel model)
+	{
+		JSpinner spinner = new JSpinner(model);
+		spinner.setPreferredSize(new Dimension(50, spinner.getPreferredSize().height));
+		return spinner;
 	}
 
 	private void addShortcut(KeyStroke keyStroke, Action action)
