@@ -3,15 +3,20 @@ package main;
 import java.math.BigDecimal;
 import java.util.EventObject;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.text.JTextComponent;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -84,13 +89,37 @@ public class DataEditScreen extends JPanel
 		DiscreteDataTableController controller = new DiscreteDataTableController(table, this.tableModel);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		// Add controls and events
+		panel.add(this.createTableControls(controller));
+		panel.add(this.createPrecisionControls(controller));
+		panel.add(Box.createVerticalGlue());
+		return panel;
+	}
+
+	private JPanel createTableControls(DiscreteDataTableController controller)
+	{
 		JPanel tableControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tableControls.add(new JButton(controller.new InsertAction()));
 		tableControls.add(new JButton(controller.new InsertAfterAction()));
 		tableControls.add(new JButton(controller.new DeleteRowsAction()));
 		tableControls.add(new JButton(controller.new ClearCellAction()));
-		panel.add(tableControls);
-		return panel;
+		return tableControls;
+	}
+
+	private JPanel createPrecisionControls(DiscreteDataTableController controller)
+	{
+		JPanel precisionControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+		JPanel precisionXControls = new JPanel();
+		JPanel precisionYControls = new JPanel();
+		precisionXControls.setLayout(new BoxLayout(precisionXControls, BoxLayout.X_AXIS));
+		precisionYControls.setLayout(new BoxLayout(precisionYControls, BoxLayout.X_AXIS));
+		precisionXControls.add(new JLabel("Precision x: "));
+		precisionXControls.add(new JSpinner(new SpinnerNumberModel(this.tableModel.getPrecision().getX(), 0, null, 1)));
+		precisionYControls.add(new JLabel("Precision y: "));
+		precisionYControls.add(new JSpinner(new SpinnerNumberModel(this.tableModel.getPrecision().getY(), 0, null, 1)));
+
+		precisionControls.add(precisionXControls);
+		precisionControls.add(precisionYControls);
+		return precisionControls;
 	}
 }
