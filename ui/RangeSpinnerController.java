@@ -46,8 +46,9 @@ public class RangeSpinnerController implements ChangeListener
 
 	public void setRange(Range range)
 	{
-		this.range.setLower(range.getLower());
-		this.range.setUpper(range.getUpper());
+		this.range.copy(range);
+		this.lowerSpinner.setValue(this.range.getLower());
+		this.upperSpinner.setValue(this.range.getUpper());
 	}
 
 	@Override
