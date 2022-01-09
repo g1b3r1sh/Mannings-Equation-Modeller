@@ -1,4 +1,4 @@
-package main;
+package main.inputscreen;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

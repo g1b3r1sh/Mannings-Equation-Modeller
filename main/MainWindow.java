@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.JFrame;
 
+import main.inputscreen.InputScreen;
+
 public class MainWindow extends JFrame
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";

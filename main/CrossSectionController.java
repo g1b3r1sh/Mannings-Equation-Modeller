@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 import data.DataPrecision;
 import hydraulics.Pair;
+import main.inputscreen.DataEditDialog;
+import main.inputscreen.InputScreen;
 import ui.GraphTableModel;
 import ui.PrecisionSpinnerModel;
 

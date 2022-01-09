@@ -1,4 +1,4 @@
-package main;
+package main.inputscreen;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
