@@ -43,6 +43,7 @@ public class InputScreen extends JPanel
 	private static final String GRAPH_TITLE = "Cross-section of River Bank";
 
 	private DataEditDialog editDialog;
+	private GraphEditDialog graphDialog;
 	private GraphTableModel tableModel;
 	private Graph graph;
 	private JSpinner waterLevelSpinner;
@@ -58,6 +59,8 @@ public class InputScreen extends JPanel
 		GraphContainer graphContainer = this.createGraphContainer(this.graph, precision);
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		this.add(graphContainer, BorderLayout.CENTER);
+		this.graphDialog = new GraphEditDialog(parent, new GraphEditScreen(graphContainer));
+
 		JTable table = this.createTable(data, precision);
 		this.add(this.createSidePanel(table, waterCalculator, precision.getY(), graphContainer.getGraph(), precision), BorderLayout.WEST);
 
@@ -117,6 +120,15 @@ public class InputScreen extends JPanel
 		});
 		panel.add(button);
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
+		JButton graphButton = new JButton(new AbstractAction("Edit Graph")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				InputScreen.this.graphDialog.open();
+			}
+		});
+		panel.add(graphButton);
 		panel.add(new JLabel("Water Level:"));
 		this.waterLevelSpinner = this.createWaterSpinner(calculator, spinnerPrecision, graph);
 		panel.add(this.waterLevelSpinner);
