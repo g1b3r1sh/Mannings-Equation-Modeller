@@ -47,6 +47,7 @@ public class InputScreen extends JPanel
 	private GraphTableModel tableModel;
 	private Graph graph;
 	private JSpinner waterLevelSpinner;
+	private GraphController graphController;
 
 	public InputScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator, JFrame parent)
 	{
@@ -59,7 +60,10 @@ public class InputScreen extends JPanel
 		GraphContainer graphContainer = this.createGraphContainer(this.graph, precision);
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		this.add(graphContainer, BorderLayout.CENTER);
+		
+		this.graphController = new GraphController(graphContainer);
 		this.graphDialog = new GraphEditDialog(parent, new GraphEditScreen(graphContainer));
+		this.graphDialog.addPropertyChangeListener(this.graphController);
 
 		JTable table = this.createTable(data, precision);
 		this.add(this.createSidePanel(table, waterCalculator, precision.getY(), graphContainer.getGraph(), precision), BorderLayout.WEST);
