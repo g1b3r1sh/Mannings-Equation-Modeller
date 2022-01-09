@@ -4,16 +4,67 @@ import javax.swing.AbstractAction;
 import javax.swing.JTable;
 
 import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 public class DiscreteDataTableController
 {
 	private JTable table;
 	private DiscreteDataTableModel<?, ?> tableModel;
+	private HashMap<Class<? extends ControllerAction>, ControllerAction> actions;
 
 	public DiscreteDataTableController(JTable table, DiscreteDataTableModel<?, ?> tableModel)
 	{
 		this.table = table;
 		this.tableModel = tableModel;
+		this.actions = new HashMap<>();
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends ControllerAction> T getAction(Class<T> c)
+	{
+		if (this.actions.get(c) == null)
+		{
+			try
+			{
+				this.actions.put(c, c.getDeclaredConstructor(DiscreteDataTableController.class).newInstance(this));
+			}
+			catch (IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | NoSuchMethodException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return (T) this.actions.get(c);
+	}
+
+	public InsertAction getInsertAction()
+	{
+		return this.getAction(InsertAction.class);
+	}
+
+	public InsertLastAction getInsertLastAction()
+	{
+		return this.getAction(InsertLastAction.class);
+	}
+
+	public DeleteRowsAction getDeleteRowsAction()
+	{
+		return this.getAction(DeleteRowsAction.class);
+	}
+
+	public ClearSelectedAction getClearSelectedAction()
+	{
+		return this.getAction(ClearSelectedAction.class);
+	}
+
+	public NewTableAction getNewTableAction()
+	{
+		return this.getAction(NewTableAction.class);
+	}
+	
+	public PrintSelectedAction getPrintSelectedAction()
+	{
+		return this.getAction(PrintSelectedAction.class);
 	}
 
 	public abstract class ControllerAction extends AbstractAction

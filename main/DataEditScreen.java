@@ -116,15 +116,15 @@ public class DataEditScreen extends JPanel
 	private JPanel createTableControls(DiscreteDataTableController controller)
 	{
 		JPanel tableControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		tableControls.add(new JButton(controller.new InsertAction()));
-		tableControls.add(new JButton(controller.new InsertLastAction()));
-		tableControls.add(new JButton(controller.new DeleteRowsAction()));
-		tableControls.add(new JButton(controller.new ClearSelectedAction()));
-		tableControls.add(new JButton(controller.new NewTableAction()));
-		Action printAction = controller.new PrintSelectedAction();
-		tableControls.add(new JButton(printAction));
-		// this.addShortcut(KeyStroke.getKeyStroke("K"), printAction);
+		tableControls.add(new JButton(controller.getInsertAction()));
+		tableControls.add(new JButton(controller.getInsertLastAction()));
+		tableControls.add(new JButton(controller.getDeleteRowsAction()));
+		tableControls.add(new JButton(controller.getClearSelectedAction()));
+		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), controller.getClearSelectedAction());
+		tableControls.add(new JButton(controller.getNewTableAction()));
+		// Allow use of document editing commands by using a custom transfer handler
 		this.table.setTransferHandler(new GraphTableTransferHandler());
+		// Disable windows key so that it's possible to paste from windows clipboard history using Win+V
 		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_WINDOWS, 0), new AbstractAction()
 		{
 			@Override
