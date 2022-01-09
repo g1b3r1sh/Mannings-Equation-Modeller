@@ -16,6 +16,17 @@ public class Range
 		this.setUpper(upper);
 	}
 
+	public Range(Range range)
+	{
+		this(range.getLower(), range.getUpper());
+	}
+
+	public void copy(Range range)
+	{
+		this.lower = range.getLower();
+		this.setUpper(range.getUpper());
+	}
+
 	public int getLower()
 	{
 		return this.lower;

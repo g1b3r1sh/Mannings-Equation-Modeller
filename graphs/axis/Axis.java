@@ -51,6 +51,40 @@ public class Axis extends JPanel
 		}
 	}
 
+	// Only copies tickmarks and numbers
+	public void lightCopy(Axis axis)
+	{
+		this.setPrecision(axis.getPrecision());
+		if (axis.containsTickmarks())
+		{
+			this.addTickmarks();
+			AxisTickmarks tickmarks = axis.getTickmarks();
+			this.getTickmarks().setColor(tickmarks.getColor());
+			this.getTickmarks().setTickLength(tickmarks.getTickLength());
+			this.getTickmarks().setNumTicks(tickmarks.getNumTicks());
+		}
+		else
+		{
+			this.removeTickmarks();
+		}
+		if (axis.containsNumbers())
+		{
+			this.addNumbers();
+			AxisNumbers numbers = axis.getNumbers();
+			this.getNumbers().setPrecision(numbers.getPrecision());
+			this.getNumbers().getRange().copy(numbers.getRange());
+			this.getNumbers().getFontRange().copy(numbers.getFontRange());
+			if (this.getGraphics() != null)
+			{
+				this.getNumbers().fitFont();
+			}
+		}
+		else
+		{
+			this.removeNumbers();
+		}
+	}
+
 	public boolean containsTickmarks()
 	{
 		for (Component c : this.getComponents())

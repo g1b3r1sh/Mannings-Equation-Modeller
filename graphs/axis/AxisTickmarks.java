@@ -47,11 +47,6 @@ public abstract class AxisTickmarks extends JComponent
 		this.tickLength = tickLength;
 	}
 
-	public double calcTickFraction(int tick)
-	{
-		return ((double) tick) / (this.getNumTicks() - 1);
-	}
-
 	public int getTickLength()
 	{
 		return this.tickLength;
@@ -66,7 +61,12 @@ public abstract class AxisTickmarks extends JComponent
 	{
 		return this.color;
 	}
-	
+
+	public double calcTickFraction(int tick)
+	{
+		return ((double) tick) / (this.getNumTicks() - 1);
+	}
+
 	@Override
 	public Dimension getPreferredSize()
 	{		

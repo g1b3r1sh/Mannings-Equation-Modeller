@@ -72,6 +72,20 @@ public class GraphContainer extends JComponent
 		return this.graph;
 	}
 
+	public void lightCopy(GraphContainer container)
+	{
+		this.graph.lightCopy(container.getGraph());
+		for (Direction d : Direction.values())
+		{
+			if (this.getAxis(d) != null && container.getAxis(d) != null)
+			{
+				this.getAxis(d).lightCopy(container.getAxis(d));
+			}
+		}
+		this.getDefaultAxisPrecision().setX(container.getDefaultAxisPrecision().getX());
+		this.getDefaultAxisPrecision().setY(container.getDefaultAxisPrecision().getY());
+	}
+
 	public DataPrecision getDefaultAxisPrecision()
 	{
 		return this.defaultAxisPrecision;

@@ -87,6 +87,21 @@ public class Graph extends JComponent
 	{
 		return this.dataList;
 	}
+
+	// Requires both graphs to have set up Plane
+	// Does not copy type of plane, only the ranges in it
+	// Does not copy datalist nor graphcomponents
+	public void lightCopy(Graph graph)
+	{
+		if (this.getPlane() != null && graph.getPlane() != null)
+		{
+			Plane plane = graph.getPlane();
+			this.getPlane().getRangeX().copy(plane.getRangeX());
+			this.getPlane().getRangeY().copy(plane.getRangeY());
+		}
+		this.getGrid().setNumCols(graph.getGrid().getNumCols());
+		this.getGrid().setNumRows(graph.getGrid().getNumRows());
+	}
 	
 	// Get dimensions on which pixels are visible, since pixels on edge are not visible
 	public int getCanvasWidth()
