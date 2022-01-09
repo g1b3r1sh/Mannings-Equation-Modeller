@@ -81,7 +81,10 @@ public class GraphTableTransferHandler extends JTableTransferHandler
 						String[] values = this.splitValues(rows[y]);
 						for (int x = 0; x < values.length; x++)
 						{
-							decimalData[y][x] = new BigDecimal(values[x]);
+							if (!"".equals(values[x]))
+							{
+								decimalData[y][x] = new BigDecimal(values[x]);
+							}
 						}
 					}
 
@@ -120,13 +123,16 @@ public class GraphTableTransferHandler extends JTableTransferHandler
 		{
 			for (String value : this.splitValues(row))
 			{
-				try
+				if (!"".equals(value))
 				{
-					new BigDecimal(value);
-				}
-				catch (NumberFormatException e)
-				{
-					return false;
+					try
+					{
+						new BigDecimal(value);
+					}
+					catch (NumberFormatException e)
+					{
+						return false;
+					}
 				}
 			}
 		}
