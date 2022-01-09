@@ -19,7 +19,7 @@ public class Main
 				final CrossSectionModel model = new CrossSectionModel();
 				final MainWindow window = new MainWindow(model);
 				// Link controller to model and window
-				final CrossSectionController controller = new CrossSectionController(model, window);
+				new CrossSectionController(model, window);
 				window.setVisible(true);
 			}
 		});
