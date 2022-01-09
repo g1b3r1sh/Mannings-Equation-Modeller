@@ -1,5 +1,7 @@
 package ui;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -8,7 +10,6 @@ import javax.swing.JPanel;
 
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -16,7 +17,7 @@ import java.awt.event.ActionEvent;
  * Component that allows for switching of screens controlled by button menu at bottom of screen.
 **/
 
-public class ScreenSwitcher extends JPanel implements ActionListener
+public class ScreenSwitcher extends JPanel
 {
 	private JPanel cards;
 	private CardLayout cardLayout;
@@ -33,12 +34,8 @@ public class ScreenSwitcher extends JPanel implements ActionListener
 		this.cardLayout = new CardLayout();
 		this.cards = new JPanel(this.cardLayout);
 
-		this.prev = new JButton("Prev");
-		this.prev.setActionCommand("prev");
-		this.prev.addActionListener(this);
-		this.next = new JButton("Next");
-		this.next.setActionCommand("next");
-		this.next.addActionListener(this);
+		this.prev = new JButton(this.createPrevAction());
+		this.next = new JButton(this.createNextAction());
 		
 		this.index = 0;
 		this.add(this.cards);
@@ -65,26 +62,49 @@ public class ScreenSwitcher extends JPanel implements ActionListener
 		this.refreshButtons();
 	}
 
+	public void switchScreen(String name)
+	{
+		if (this.names.contains(name))
+		{
+			this.cardLayout.show(this.cards, name);
+			this.index = this.names.indexOf(name);
+			this.refreshButtons();
+		}
+	}
+
 	public void switchFirst()
 	{
 		this.cardLayout.first(this.cards);
+		this.index = 0;
 		this.refreshButtons();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e)
+	public Action createNextAction()
 	{
-		if (e.getActionCommand().equals("next"))
+		return new AbstractAction()
 		{
-			this.cardLayout.next(this.cards);
-			this.index++;
-		}
-		else if (e.getActionCommand().equals("prev"))
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				ScreenSwitcher.this.cardLayout.next(ScreenSwitcher.this.cards);
+				ScreenSwitcher.this.index++;
+				ScreenSwitcher.this.refreshButtons();
+			}
+		};
+	}
+
+	public Action createPrevAction()
+	{
+		return new AbstractAction()
 		{
-			this.cardLayout.previous(this.cards);
-			this.index--;
-		}
-		this.refreshButtons();
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				ScreenSwitcher.this.cardLayout.previous(ScreenSwitcher.this.cards);
+				ScreenSwitcher.this.index--;
+				ScreenSwitcher.this.refreshButtons();
+			}
+		};
 	}
 
 	private void refreshButtons()

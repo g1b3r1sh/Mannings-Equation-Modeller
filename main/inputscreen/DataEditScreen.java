@@ -65,6 +65,11 @@ public class DataEditScreen extends JPanel
 		return this.tableModel;
 	}
 
+	public DiscreteDataTableController getController()
+	{
+		return this.tableController;
+	}
+
 	public void refresh()
 	{
 		// Update screen to be consistent with current values

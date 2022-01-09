@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.function.Consumer;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -25,12 +26,21 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 
 	protected abstract void prepareScreen();
 
-	public void open()
+	public void open(Consumer<EditDialog> consumer)
 	{
 		this.prepareScreen();
 		this.pack();
 		this.setLocationRelativeTo(this.getOwner());
+		if (consumer != null)
+		{
+			consumer.accept(this);
+		}
 		this.setVisible(true);
+	}
+
+	public void open()
+	{
+		this.open(null);
 	}
 
 	// Since closing with the x button does not result in the calling of this method, this method should only hide the dialog

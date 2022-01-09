@@ -46,7 +46,7 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 
 	public GraphEditScreen(GraphContainer outsideGraphContainer)
 	{
-		super(new BorderLayout());
+		super(new BorderLayout(5, 5));
 
 		// Setup graphs
 		this.outsideGraphContainer = outsideGraphContainer;

@@ -19,6 +19,11 @@ public class DataEditDialog extends EditDialog
 		this.screen = screen;
 	}
 
+	public DataEditScreen getEditScreen()
+	{
+		return this.screen;
+	}
+
 	@Override
 	protected void prepareScreen()
 	{

@@ -3,6 +3,7 @@ package main;
 import javax.swing.JFrame;
 
 import main.inputscreen.InputScreen;
+import ui.ScreenSwitcher;
 
 public class MainWindow extends JFrame
 {
@@ -26,6 +27,16 @@ public class MainWindow extends JFrame
 		this.initializeFrame();
 	}
 
+	public CrossSectionModel getModel()
+	{
+		return this.model;
+	}
+
+	public ScreenSwitcher getScreenSwitcher()
+	{
+		return this.screenSwitcher;
+	}
+
 	public InputScreen getInputScreen()
 	{
 		return this.screenSwitcher.getInputScreen();
@@ -33,7 +44,7 @@ public class MainWindow extends JFrame
 
 	private void initializeFrame()
 	{
-		this.setJMenuBar(new MainWindowMenu());
+		this.setJMenuBar(new MainWindowMenu(this));
 		this.add(this.screenSwitcher);
 	}
 }
