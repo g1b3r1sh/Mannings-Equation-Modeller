@@ -17,7 +17,9 @@ import data.DiscreteData;
 import data.MapDiscreteData;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 
@@ -113,20 +115,11 @@ public class InputScreen extends JPanel
 				InputScreen.this.editDialog.open();
 			}
 		});
-		button.setOpaque(false);
 		panel.add(button);
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
 		panel.add(new JLabel("Water Level:"));
 		this.waterLevelSpinner = this.createWaterSpinner(calculator, spinnerPrecision, graph);
 		panel.add(this.waterLevelSpinner);
-		panel.add(new JButton(new AbstractAction("Print water level")
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				System.out.printf("%s\n", ((BigDecimal) InputScreen.this.waterLevelSpinner.getValue()).toString());
-			}
-		}));
 
 		return panel;
 	}
@@ -137,6 +130,8 @@ public class InputScreen extends JPanel
 		JSpinner spinner = new JSpinner(new PrecisionSpinnerModel(calculator.getWaterLevel().doubleValue(), null, null, precision));
 		((DefaultEditor) spinner.getEditor()).getTextField().setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
 		spinner.addChangeListener(new WaterLevelChangeListener(calculator, graph));
+		this.increaseFont(spinner, 5);
+
 		return spinner;
 	}
 
@@ -172,5 +167,11 @@ public class InputScreen extends JPanel
 		container.getGraph().getDataList().addData(data);
 		container.getGraph().getDataList().getVisualsHandler(data).plotData();
 		container.getGraph().getDataList().getVisualsHandler(data).connectData();
+	}
+
+	private void increaseFont(Component component, float increment)
+	{
+		Font font = component.getFont();
+		component.setFont(font.deriveFont(font.getSize2D() + increment));
 	}
 }
