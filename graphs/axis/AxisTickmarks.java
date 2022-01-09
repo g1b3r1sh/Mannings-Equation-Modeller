@@ -32,6 +32,16 @@ public abstract class AxisTickmarks extends JComponent
 		return this.numTicks;
 	}
 
+	public void setNumTicks(int numTicks)
+	{
+		if (numTicks < 2)
+		{
+			throw new IllegalArgumentException("Cannot have less than two tickmarks on an axis.");
+		}
+		this.numTicks = numTicks;
+		this.repaint();
+	}
+
 	public void setTickLength(int tickLength)
 	{
 		this.tickLength = tickLength;

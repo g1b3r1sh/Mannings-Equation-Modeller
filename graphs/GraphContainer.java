@@ -62,9 +62,19 @@ public class GraphContainer extends JComponent
 		this.add(this.containerPanel);
 	}
 
+	public GraphContainer(Graph graph)
+	{
+		this(graph, new DataPrecision(0, 0));
+	}
+
 	public Graph getGraph()
 	{
 		return this.graph;
+	}
+
+	public DataPrecision getDefaultAxisPrecision()
+	{
+		return this.defaultAxisPrecision;
 	}
 	
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center

@@ -54,7 +54,7 @@ public class Graph extends JComponent
 	public void setGrid(int numCols, int numRows)
 	{
 		this.grid.setNumCols(numCols);
-		this.grid.setNumCols(numRows);
+		this.grid.setNumRows(numRows);
 	}
 	
 	// Fit gridpane for scales

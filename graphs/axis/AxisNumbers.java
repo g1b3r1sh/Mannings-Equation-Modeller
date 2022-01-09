@@ -45,7 +45,7 @@ public abstract class AxisNumbers extends JComponent
 			@Override
 			public void componentResized(ComponentEvent e)
 			{
-				AxisNumbers.this.fitFont();
+				AxisNumbers.this.resizeFitFont();
 			}
 		});
 
@@ -103,8 +103,22 @@ public abstract class AxisNumbers extends JComponent
 	public abstract int getTickPos(int i);
 
 	public abstract boolean isOverlapping();
-	
+
+	// Algorithm is less efficient than resizeFitFont, but always works
 	public void fitFont()
+	{
+		float size = this.fontRange.getUpper();
+		this.setFont(this.getFont().deriveFont(size));
+		while (size > this.fontRange.getLower() && this.isOverlapping())
+		{
+			size -= this.RESIZE_INCREMENT;
+			this.setFont(this.getFont().deriveFont(size));
+		}
+	}
+	
+	// Fits font after resizing along the changing length
+	// Does not work if the changing length didn't change
+	public void resizeFitFont()
 	{
 		int currLength = this.getChangingLength();
 		float size = this.getFont().getSize2D();
