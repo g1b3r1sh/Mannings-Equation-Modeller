@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import data.DataPrecision;
@@ -107,9 +108,11 @@ public class DataEditScreen extends JPanel
 		this.tableController = new DiscreteDataTableController(table, this.tableModel);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(this.createTableControls(tableController));
-		panel.add(this.createPrecisionControls(tableController));
+		panel.add(this.createTableControls(this.tableController));
+		panel.add(this.createPrecisionControls(this.tableController));
 		panel.add(Box.createVerticalGlue());
+
+		this.setupShortcuts(this.tableController);
 		return panel;
 	}
 
@@ -120,8 +123,17 @@ public class DataEditScreen extends JPanel
 		tableControls.add(new JButton(controller.getInsertLastAction()));
 		tableControls.add(new JButton(controller.getDeleteRowsAction()));
 		tableControls.add(new JButton(controller.getClearSelectedAction()));
-		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), controller.getClearSelectedAction());
 		tableControls.add(new JButton(controller.getNewTableAction()));
+		return tableControls;
+	}
+
+	private void setupShortcuts(DiscreteDataTableController controller)
+	{
+		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK), controller.getInsertAction());
+		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK), controller.getInsertLastAction());
+		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK), controller.getNewTableAction());
+		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), controller.getClearSelectedAction());
+		
 		// Allow use of document editing commands by using a custom transfer handler
 		this.table.setTransferHandler(new GraphTableTransferHandler());
 		// Disable windows key so that it's possible to paste from windows clipboard history using Win+V
@@ -133,7 +145,6 @@ public class DataEditScreen extends JPanel
 				return;
 			}
 		});
-		return tableControls;
 	}
 
 	private JPanel createPrecisionControls(DiscreteDataTableController controller)
