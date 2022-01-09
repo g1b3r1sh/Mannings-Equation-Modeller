@@ -54,6 +54,12 @@ public class MapDiscreteData<N extends Number, M extends Number> implements Disc
 	}
 
 	@Override
+	public void clear()
+	{
+		this.data.clear();
+	}
+
+	@Override
 	public int size()
 	{
 		return this.data.size();

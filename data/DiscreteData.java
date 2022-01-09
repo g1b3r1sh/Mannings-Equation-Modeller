@@ -12,6 +12,7 @@ public interface DiscreteData<M extends Number, N extends Number> extends Functi
 {
 	public void set(M x, N y);
 	public void remove(M x);
+	public void clear();
 	public int size();
 	// Returns ordered set of x values
 	public NavigableSet<M> getXSet();

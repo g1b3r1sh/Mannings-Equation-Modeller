@@ -35,6 +35,12 @@ public class TablePrecisionController implements ChangeListener
 		this.spinnerY.addChangeListener(this);
 	}
 
+	public void refreshSpinnerValues()
+	{
+		this.spinnerX.setValue(this.model.getPrecision().getX());
+		this.spinnerY.setValue(this.model.getPrecision().getY());
+	}
+
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{

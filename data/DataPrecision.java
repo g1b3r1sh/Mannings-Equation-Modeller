@@ -13,6 +13,11 @@ public class DataPrecision
 		this.x = precisionX;
 		this.y = precisionY;
 	}
+
+	public DataPrecision(DataPrecision precision)
+	{
+		this(precision.getX(), precision.getY());
+	}
 	
 	public int getX()
 	{

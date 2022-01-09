@@ -25,7 +25,7 @@ public class ScreenSwitcher extends JPanel implements ActionListener
 	private int index;
 	private ArrayList<String> names;
 
-	public ScreenSwitcher(JComponent initScreen, String name)
+	public ScreenSwitcher()
 	{
 		this.setLayout(new BorderLayout());
 
@@ -40,7 +40,6 @@ public class ScreenSwitcher extends JPanel implements ActionListener
 		this.next.setActionCommand("next");
 		this.next.addActionListener(this);
 		
-		this.addScreen(initScreen, name);
 		this.index = 0;
 		this.add(this.cards);
 
@@ -52,10 +51,23 @@ public class ScreenSwitcher extends JPanel implements ActionListener
 		buttonPanel.add(next);
 	}
 
+	public ScreenSwitcher(JComponent initScreen, String name)
+	{
+		super();
+
+		this.addScreen(initScreen, name);
+	}
+
 	public void addScreen(JComponent screen, String name)
 	{
 		this.cards.add(screen, name);
 		this.names.add(name);
+		this.refreshButtons();
+	}
+
+	public void switchFirst()
+	{
+		this.cardLayout.first(this.cards);
 		this.refreshButtons();
 	}
 

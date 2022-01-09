@@ -38,6 +38,9 @@ public class InputScreen extends JPanel
 	private static final String GRAPH_TITLE = "Cross-section of River Bank";
 
 	private DataEditDialog editDialog;
+	private GraphTableModel tableModel;
+	private Graph graph;
+	private JSpinner waterLevelSpinner;
 
 	public InputScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator, JFrame parent)
 	{
@@ -46,7 +49,8 @@ public class InputScreen extends JPanel
 		this.editDialog = new DataEditDialog(parent, new DataEditScreen(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
 
 		// Init components
-		GraphContainer graphContainer = this.createGraphContainer(this.createGraph(), precision);
+		this.graph = this.createGraph();
+		GraphContainer graphContainer = this.createGraphContainer(this.graph, precision);
 		graphContainer.getGraph().getGraphComponents().add(new WaterLevelVisualiser(graphContainer.getGraph(), waterCalculator));
 		this.add(graphContainer, BorderLayout.CENTER);
 		JTable table = this.createTable(data, precision);
@@ -56,9 +60,30 @@ public class InputScreen extends JPanel
 		this.addVisualData(graphContainer, data);
 	}
 
+	public DataEditDialog getEditDialog()
+	{
+		return this.editDialog;
+	}
+
+	public GraphTableModel getTableModel()
+	{
+		return this.tableModel;
+	}
+
+	public Graph getGraph()
+	{
+		return this.graph;
+	}
+
+	public JSpinner getWaterLevelSpinner()
+	{
+		return this.waterLevelSpinner;
+	}
+
 	private JTable createTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision)
 	{
-		JTable table = new JTable(new GraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
+		this.tableModel = new GraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL);
+		JTable table = new JTable(this.tableModel);
 		table.setCellSelectionEnabled(true);
 		table.getTableHeader().setReorderingAllowed(false);
 		return table;
@@ -89,7 +114,16 @@ public class InputScreen extends JPanel
 		panel.add(button);
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
 		panel.add(new JLabel("Water Level:"));
-		panel.add(this.createWaterSpinner(calculator, spinnerPrecision, graph));
+		this.waterLevelSpinner = this.createWaterSpinner(calculator, spinnerPrecision, graph);
+		panel.add(this.waterLevelSpinner);
+		panel.add(new JButton(new AbstractAction("Print precision")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				System.out.printf("%d, %d\n", precision.getX(), precision.getY());
+			}
+		}));
 
 		return panel;
 	}

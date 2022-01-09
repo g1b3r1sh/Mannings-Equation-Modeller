@@ -15,11 +15,32 @@ import data.DiscreteData;
 public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
 {
 	private DataPrecision precision;
+	private DataPrecision outsidePrecision;
 
-	public GraphTableModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision precision, String nameX, String nameY)
+	public GraphTableModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision outsidePrecision, String nameX, String nameY)
 	{
 		super(outsideData, nameX, nameY);
-		this.precision = precision;
+		this.outsidePrecision = outsidePrecision;
+		this.precision = new DataPrecision(this.outsidePrecision);
+	}
+
+	@Override
+	public void refresh()
+	{
+		super.refresh();
+		if (this.precision != null)
+		{
+			if (this.precision.getX() != this.outsidePrecision.getX())
+			{
+				this.precision.setX(this.outsidePrecision.getX());
+				this.updatePrecisionX();
+			}
+			if (this.precision.getY() != this.outsidePrecision.getY())
+			{
+				this.precision.setY(this.outsidePrecision.getY());
+				this.updatePrecisionY();
+			}
+		}
 	}
 	
 	@Override

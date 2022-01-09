@@ -16,7 +16,10 @@ public class Main
 			@Override
 			public void run()
 			{
-				final MainWindow window = new MainWindow(new CrossSectionModel());
+				final CrossSectionModel model = new CrossSectionModel();
+				final MainWindow window = new MainWindow(model);
+				// Link controller to model and window
+				final CrossSectionController controller = new CrossSectionController(model, window);
 				window.setVisible(true);
 			}
 		});

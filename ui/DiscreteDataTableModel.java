@@ -150,7 +150,7 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		this.fireTableDataChanged();
 	}
 
-	protected ArrayList<Pair<M, N>> getData()
+	public ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
 	}

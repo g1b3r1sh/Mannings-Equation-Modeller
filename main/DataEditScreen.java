@@ -69,6 +69,7 @@ public class DataEditScreen extends JPanel
 		// Update screen to be consistent with current values
 		this.tableModel.refresh();
 		this.table.clearSelection();
+		this.precisionController.refreshSpinnerValues();
 	}
 
 	private JTable createTable(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, String xLabel, String yLabel)

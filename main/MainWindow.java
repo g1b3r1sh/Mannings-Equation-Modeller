@@ -5,7 +5,9 @@ import javax.swing.JFrame;
 public class MainWindow extends JFrame
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
+
 	private CrossSectionModel model;
+	ProgramScreenSwitcher screenSwitcher;
 
 	public MainWindow(CrossSectionModel model)
 	{
@@ -18,12 +20,18 @@ public class MainWindow extends JFrame
 		this.setLocation(10, 10);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+		this.screenSwitcher = new ProgramScreenSwitcher(this, this.model);
 		this.initializeFrame();
+	}
+
+	public InputScreen getInputScreen()
+	{
+		return this.screenSwitcher.getInputScreen();
 	}
 
 	private void initializeFrame()
 	{
 		this.setJMenuBar(new MainWindowMenu());
-		this.add(new ProgramScreenSwitcher(this, this.model));
+		this.add(this.screenSwitcher);
 	}
 }

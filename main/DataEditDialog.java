@@ -56,6 +56,7 @@ public class DataEditDialog extends JDialog implements PropertyChangeListener
 				// Validate input, if valid, call event for setting values and close
 				if (this.okClose())
 				{
+					this.firePropertyChange("update", null, this.screen.getModel());
 					this.close();
 				}
 			}
