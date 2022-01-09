@@ -28,7 +28,7 @@ public class WaterLevelChangeListener implements ChangeListener
 		if (o instanceof JSpinner)
 		{
 			JSpinner spinner = (JSpinner) o;
-			this.calculator.setWaterLevel((Double) spinner.getValue());
+			this.calculator.setWaterLevel((Number) spinner.getValue());
 			this.graph.repaint();
 		}
 	}

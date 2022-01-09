@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import data.DataPrecision;
 import hydraulics.Pair;
 import ui.GraphTableModel;
+import ui.PrecisionSpinnerModel;
 
 public class CrossSectionController implements PropertyChangeListener
 {
@@ -62,6 +63,6 @@ public class CrossSectionController implements PropertyChangeListener
 	{
 		this.inputScreen.getTableModel().refresh();
 		this.inputScreen.getGraph().repaint();
-		// this.inputScreen.getWaterLevelSpinner().getModel().;
+		((PrecisionSpinnerModel) this.inputScreen.getWaterLevelSpinner().getModel()).setPrecision(this.model.getPrecision().getY());
 	}
 }

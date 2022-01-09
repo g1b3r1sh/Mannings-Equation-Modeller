@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.JSpinner.DefaultEditor;
+import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 
 import data.DataPrecision;
 import data.DiscreteData;
@@ -26,6 +28,7 @@ import hydraulics.WaterLevelChangeListener;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import ui.GraphTableModel;
+import ui.PrecisionSpinnerModel;
 
 /**
  * Contains methods for constructing input screen
@@ -116,12 +119,12 @@ public class InputScreen extends JPanel
 		panel.add(new JLabel("Water Level:"));
 		this.waterLevelSpinner = this.createWaterSpinner(calculator, spinnerPrecision, graph);
 		panel.add(this.waterLevelSpinner);
-		panel.add(new JButton(new AbstractAction("Print precision")
+		panel.add(new JButton(new AbstractAction("Print water level")
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.printf("%d, %d\n", precision.getX(), precision.getY());
+				System.out.printf("%s\n", ((BigDecimal) InputScreen.this.waterLevelSpinner.getValue()).toString());
 			}
 		}));
 
@@ -131,9 +134,8 @@ public class InputScreen extends JPanel
 
 	private JSpinner createWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{
-		// Default range: 0 to 100
-		// Default increment: 0.1
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(calculator.getWaterLevel().doubleValue(), 0d, 100d, Math.pow(0.1d, precision)));
+		JSpinner spinner = new JSpinner(new PrecisionSpinnerModel(calculator.getWaterLevel().doubleValue(), null, null, precision));
+		((DefaultEditor) spinner.getEditor()).getTextField().setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
 		spinner.addChangeListener(new WaterLevelChangeListener(calculator, graph));
 		return spinner;
 	}
