@@ -61,16 +61,27 @@ public class ContinuousData<M extends Number, N extends Number> implements Conti
 		throw new IllegalArgumentException("Number is higher than bounds of data.");
 	}
 	
-	// Slope equation
+	// Slope equation for line between two data points
 	public double getSlope(M x1, M x2)
 	{
 		return (this.data.y(x2).doubleValue() - this.data.y(x1).doubleValue()) / (x2.doubleValue() - x1.doubleValue());
 	}
 
-	// Returns point x of intersection between line created by two points and flat line
+	// Returns point x of intersection between line created by two data points and flat line
 	// Point form equation
 	public double xIntersection(M x1, M x2, Number y)
 	{
 		return ((y.doubleValue() - this.data.y(x1).doubleValue()) / this.getSlope(x1, x2)) + x1.doubleValue();
+	}
+
+	// Length of segment between two points
+	public double segmentLength(double x1, double x2)
+	{
+		return Math.sqrt(square(x1 - x2) + square(this.y(x1) - this.y(x2)));
+	}
+
+	private static double square(double x)
+	{
+		return x * x;
 	}
 }

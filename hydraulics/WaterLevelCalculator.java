@@ -1,6 +1,7 @@
 package hydraulics;
 
 import java.util.LinkedList;
+import java.util.NavigableSet;
 import java.util.Map.Entry;
 
 import data.ContinuousData;
@@ -15,12 +16,12 @@ import java.awt.geom.PathIterator;
 
 public class WaterLevelCalculator<M extends Number, N extends Number>
 {
-	private ContinuousData<M, N> sectionData;
+	private ContinuousData<M, N> data;
 	private Number waterLevel;
 
-	public WaterLevelCalculator(DiscreteData<M, N> sectionData, Number waterLevel)
+	public WaterLevelCalculator(DiscreteData<M, N> data, Number waterLevel)
 	{
-		this.sectionData = new ContinuousData<M, N>(sectionData);
+		this.data = new ContinuousData<M, N>(data);
 		this.setWaterLevel(waterLevel);
 	}
 
@@ -36,16 +37,16 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	
 	public DiscreteData<M, N> getSectionData()
 	{
-		return this.sectionData.getData();
+		return this.data.getData();
 	}
 	
 	// Returns whether water is contained within data (i.e. No water is spilling out of left or right side)
 	// WARNING: Does not return whether data allows for water to exist 
 	public boolean withinBounds()
 	{
-		if (this.sectionData.getData().size() > 1)
+		if (this.data.getData().size() > 1)
 		{
-			return this.aboveWater(this.sectionData.getData().getXSet().first()) && this.aboveWater(this.sectionData.getData().getXSet().last());
+			return this.aboveWater(this.data.getData().getXSet().first()) && this.aboveWater(this.data.getData().getXSet().last());
 		}
 		else
 		{
@@ -56,7 +57,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	// Points at water level are considered out of water
 	public boolean aboveWater(M x)
 	{
-		return this.sectionData.getData().y(x).doubleValue() >= this.waterLevel.doubleValue();
+		return this.data.getData().y(x).doubleValue() >= this.waterLevel.doubleValue();
 	}
 
 	public double crossSectionArea()
@@ -69,46 +70,101 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 		return area;
 	}
 
+	public double wettedPerimeter()
+	{
+		double perimeter = 0;
+		if (this.withinBounds())
+		{
+			NavigableSet<M> xSet = this.getSectionData().getXSet();
+			for (M left : xSet)
+			{
+				M right = xSet.higher(left);
+				if (right != null)
+				{
+					if (this.aboveWater(left) && !this.aboveWater(right))
+					{
+						perimeter += this.data.segmentLength(this.waterIntersection(right), right.doubleValue());
+					}
+					else if (!this.aboveWater(left) && this.aboveWater(right))
+					{
+						perimeter += this.data.segmentLength(left.doubleValue(), this.waterIntersection(right));
+					}
+					else if (!this.aboveWater(left) && !this.aboveWater(right))
+					{
+						perimeter += this.data.segmentLength(left.doubleValue(), right.doubleValue());
+					}
+				}
+			}
+		}
+		return perimeter;
+	}
+
 	// To generate shapes, go through all data
 	// If data is below water, add to list
 	// If data is above water, list is converted into shape (if it contains data, of course)
 	public LinkedList<Path2D.Double> generateWaterPolygons()
 	{
 		LinkedList<Path2D.Double> list = new LinkedList<>();
-			if (this.withinBounds())
+		if (this.withinBounds())
+		{
+			Path2D.Double currentPolygon = null;
+			for (Entry<M, N> e : this.data.getData().getEntrySet())
 			{
-				Path2D.Double currentPolygon = null;
-				for (Entry<M, N> e : this.sectionData.getData().getEntrySet())
+				M x = e.getKey();
+				N y = e.getValue();
+				if (!this.aboveWater(x))
 				{
-					M x = e.getKey();
-					N y = e.getValue();
-					if (!this.aboveWater(x))
-					{
-						if (currentPolygon == null)
-						{
-							double xPos = this.waterIntersection(x);
-							currentPolygon = new Path2D.Double();
-							currentPolygon.moveTo(xPos, this.sectionData.y(xPos));
-						}
-						currentPolygon.lineTo(x.doubleValue(), y.doubleValue());
-					}
-					else if (this.aboveWater(x) && currentPolygon != null)
+					if (currentPolygon == null)
 					{
 						double xPos = this.waterIntersection(x);
-						currentPolygon.lineTo(xPos, this.sectionData.y(xPos));
-						currentPolygon.closePath();
-						list.add(currentPolygon);
-						currentPolygon = null;
+						currentPolygon = new Path2D.Double();
+						currentPolygon.moveTo(xPos, this.data.y(xPos));
 					}
+					currentPolygon.lineTo(x.doubleValue(), y.doubleValue());
+				}
+				else if (this.aboveWater(x) && currentPolygon != null)
+				{
+					double xPos = this.waterIntersection(x);
+					currentPolygon.lineTo(xPos, this.data.y(xPos));
+					currentPolygon.closePath();
+					list.add(currentPolygon);
+					currentPolygon = null;
 				}
 			}
+		}
 		return list;
+	}
+
+	// Calculate water level that returns the cross section area by setting water level to levelHint, then incrementing or decrementing it by step
+	// 	until calculator calculates area
+	// Warning: Destructive method - changes water level of calculator
+	public double calculateWaterLevel(double area, double levelHint, double step)
+	{
+		this.setWaterLevel(levelHint);
+		// Make sure step is positive to avoid accidental infinite loop
+		step = Math.abs(step);
+		// If water level is too high, decrement water level by step. Otherwise, increment water level by step
+		if (this.crossSectionArea() > area)
+		{
+			while (this.crossSectionArea() > area)
+			{
+				this.setWaterLevel(this.getWaterLevel().doubleValue() - step);
+			}
+		}
+		else
+		{
+			while (this.crossSectionArea() < area)
+			{
+				this.setWaterLevel(this.getWaterLevel().doubleValue() + step);
+			}
+		}
+		return this.getWaterLevel().doubleValue();
 	}
 
 	// Calculate x position of point where water intersects with line between given point and point before it
 	private double waterIntersection(M rightX)
 	{
-		return this.sectionData.xIntersection(this.sectionData.getData().getXSet().lower(rightX), rightX, this.waterLevel);
+		return this.data.xIntersection(this.data.getData().getXSet().lower(rightX), rightX, this.waterLevel);
 	}
 
 	// Area between two points makes a sideways trapezoid
