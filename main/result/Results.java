@@ -1,4 +1,4 @@
-package ui;
+package main.result;
 
 import javax.swing.JLabel;
 

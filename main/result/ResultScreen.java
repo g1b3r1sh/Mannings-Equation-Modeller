@@ -1,16 +1,22 @@
 package main.result;
+import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-import javax.swing.Box;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import data.MapDiscreteData;
-import hydraulics.WaterLevelCalculator;
-import ui.Results;
+import graphs.Graph;
+import hydraulics.ManningsModel;
+import ui.Wrapper;
 
 /**
  * Contains methods for constructing results screen
@@ -18,22 +24,130 @@ import ui.Results;
 
 public class ResultScreen extends JPanel
 {
-	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator)
+	private static final String DEFAULT_N = "0.025";
+	private static final String DEFAULT_S = "1";
+	private static final String DEFAULT_Q = "1";
+	private static final String DEFAULT_LEVEL = "0";
+	private static final String DEFAULT_V = "0";
+	private static final double DEFAULT_STEP = 0.001;
+	private static final int DEFAULT_SCALE = 6;
+
+	private ManningsModel model;
+	private Wrapper<BigDecimal> n;
+	private Wrapper<BigDecimal> s;
+	private Wrapper<BigDecimal> q;
+	private Wrapper<BigDecimal> level;
+	private Wrapper<BigDecimal> v;
+
+	private JLabel levelLabel;
+	private JLabel vLabel;
+
+	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
 		super();
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		this.add(Box.createRigidArea(new Dimension(0, 30)));
-		this.add(this.largeLabel("Results"));
-		this.add(Box.createRigidArea(new Dimension(0, 30)));
-		this.add(new Results(waterCalculator));
+		this.setLayout(new BorderLayout(10, 10));
+		this.model = new ManningsModel(data);
+		this.n = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_N));
+		this.s = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_S));
+		this.q = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_Q));
+		this.level = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_LEVEL));
+		this.v = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_V));
+
+		this.levelLabel = new JLabel();
+		this.vLabel = new JLabel();
+
+		this.add(this.createSidePanel(), BorderLayout.WEST);
+		// this.add(new Graph(), BorderLayout.CENTER);
 	}
 
-	private JLabel largeLabel(String text)
+	public void refresh()
 	{
-		JLabel label = new JLabel(text);
-		label.setAlignmentX(Component.CENTER_ALIGNMENT);
-		label.setFont(label.getFont().deriveFont(50f));
-		return label;
+		if (model.withinBounds(this.level.value.doubleValue()))
+		{
+			this.levelLabel.setText(this.level.value.toString());
+			this.vLabel.setText(this.v.value.toString());
+		}
+		else
+		{
+			this.levelLabel.setText("Overflow!");
+			this.vLabel.setText("Overflow!");
+		}
 	}
 
+	public JPanel createSidePanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(this.numberEditPanel("Manning's Constant", this.n));
+		panel.add(this.numberEditPanel("Channel Bed Slope", this.s));
+		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
+		panel.add(new JButton(this.calculateAction()));
+		panel.add(this.numberPanel("Water Level Elevation (m)", this.level, this.levelLabel));
+		panel.add(this.numberPanel("Velocity (m/s)", this.v, this.vLabel));
+		return panel;
+	}
+
+	public JPanel numberPanel(String name, Wrapper<BigDecimal> number, JLabel numberLabel)
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel.add(new JLabel(String.format("%s: ", name)));
+		numberLabel.setText(number.value.toString());
+		panel.add(numberLabel);
+		return panel;
+	}
+
+	public JPanel numberEditPanel(String name, Wrapper<BigDecimal> number)
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JLabel numberText = new JLabel(number.value.toString());
+		JButton editButton = new JButton(new AbstractAction("Edit")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				String output = JOptionPane.showInputDialog(ResultScreen.this, "Input new value", number.value.toString());
+				if (output != null)
+				{
+					try
+					{
+						number.value = new BigDecimal(output);
+						numberText.setText(number.value.toString());
+					}
+					catch (NumberFormatException exception) {}
+				}
+			}
+		});
+
+		panel.add(editButton); // Edit button
+		panel.add(new JLabel(String.format("%s: ", name)));
+		panel.add(numberText);
+		return panel;
+	}
+
+	public Action calculateAction()
+	{
+		return new AbstractAction("Calculate")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				ManningsModel model = ResultScreen.this.model;
+				double q = ResultScreen.this.q.value.doubleValue();
+				model.setN(ResultScreen.this.n.value);
+				model.setS(ResultScreen.this.s.value);
+				double level = model.calcWaterLevel(q, ResultScreen.DEFAULT_STEP);
+
+				ResultScreen.this.level.value = new BigDecimal(level);
+				ResultScreen.this.level.value = ResultScreen.this.level.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+				ResultScreen.this.v.value = new BigDecimal(model.calcVelocity(q, level));
+				ResultScreen.this.v.value = ResultScreen.this.v.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+				
+				ResultScreen.this.refresh();
+			}
+		};
+	}
 }

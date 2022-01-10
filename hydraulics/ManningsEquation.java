@@ -21,7 +21,7 @@ public class ManningsEquation
 		return (q - this.calcDischarge()) < ACCEPTABLE_THRESHOLD_MANNING;
 	}
 	
-	public double r()
+	public double r() // Channel Radius, R
 	{
 		return a / p;
 	}
