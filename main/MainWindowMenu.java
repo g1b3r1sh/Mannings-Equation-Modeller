@@ -120,6 +120,8 @@ public class MainWindowMenu extends JMenuBar
 			CTRL+C - Copy selected cells\n
 			CTRL+V - Paste cells\n
 			CTRL+X - Cut selected cells\n
+			CTRL+D - Insert row
+			CTRL+SHIFT+D - Add row to last
 			DEL - Clear selected cells\n
 			ESC - Cancel edit
 			"""
