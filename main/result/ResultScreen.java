@@ -1,12 +1,14 @@
 package main.result;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -60,7 +62,7 @@ public class ResultScreen extends JPanel
 		this.aLabel = new JLabel();
 		this.vLabel = new JLabel();
 
-		this.add(this.createSidePanel(), BorderLayout.WEST);
+		this.add(this.createSidePanel(), BorderLayout.CENTER);
 		// this.add(new Graph(), BorderLayout.CENTER);
 	}
 
@@ -85,11 +87,19 @@ public class ResultScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(this.numberEditPanel("Manning's Constant", this.n));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberEditPanel("Channel Bed Slope", this.s));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
-		panel.add(new JButton(this.calculateAction()));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		JButton calculate = new JButton(this.calculateAction());
+		calculate.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(calculate);
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberPanel("Water Level Elevation (m)", this.level.value.toString(), this.levelLabel));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberPanel("Cross-Section Area (m^2)", "0", this.aLabel));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberPanel("Velocity (m/s)", this.v.value.toString(), this.vLabel));
 		return panel;
 	}
@@ -98,7 +108,7 @@ public class ResultScreen extends JPanel
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		// panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.add(new JLabel(String.format("%s: ", name)));
 		numberLabel.setText(defaultString);
 		panel.add(numberLabel);
@@ -109,7 +119,7 @@ public class ResultScreen extends JPanel
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		// panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		JLabel numberText = new JLabel(number.value.toString());
 		JButton editButton = new JButton(new AbstractAction("Edit")
 		{
@@ -130,6 +140,7 @@ public class ResultScreen extends JPanel
 		});
 
 		panel.add(editButton); // Edit button
+		panel.add(Box.createRigidArea(new Dimension(10, 0)));
 		panel.add(new JLabel(String.format("%s: ", name)));
 		panel.add(numberText);
 		return panel;
