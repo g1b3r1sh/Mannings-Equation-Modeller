@@ -3,6 +3,7 @@ package main;
 import javax.swing.JFrame;
 
 import main.input.InputScreen;
+import main.result.ResultScreen;
 import ui.ScreenSwitcher;
 
 public class ProgramScreenSwitcher extends ScreenSwitcher
