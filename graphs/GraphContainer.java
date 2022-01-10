@@ -94,27 +94,27 @@ public class GraphContainer extends JComponent
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center
 	private JPanel createContainerPanel()
 	{
-		containerPanel = new JPanel(new GridBagLayout());
+		JPanel panel = new JPanel(new GridBagLayout());
 
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		this.bottomAxis = new Axis(this, Direction.BOTTOM, this.defaultAxisPrecision.getX());
-		containerPanel.add(this.bottomAxis, constraints);
+		panel.add(this.bottomAxis, constraints);
 		constraints.gridy = 0;
 		this.topAxis = new Axis(this, Direction.TOP, this.defaultAxisPrecision.getX());
-		containerPanel.add(this.topAxis, constraints);
+		panel.add(this.topAxis, constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.leftAxis = new Axis(this, Direction.LEFT, this.defaultAxisPrecision.getY());
 		constraints.fill = GridBagConstraints.VERTICAL;
-		containerPanel.add(this.leftAxis, constraints);
+		panel.add(this.leftAxis, constraints);
 		constraints.gridx = 2;
 		this.rightAxis = new Axis(this, Direction.RIGHT, this.defaultAxisPrecision.getY());
-		containerPanel.add(this.rightAxis, constraints);
+		panel.add(this.rightAxis, constraints);
 
-		return containerPanel;
+		return panel;
 	}
 
 	public Axis getAxis(Direction direction)

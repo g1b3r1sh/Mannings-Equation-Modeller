@@ -68,7 +68,7 @@ public class ResultScreen extends JPanel
 
 	public void refresh()
 	{
-		if (model.withinBounds(this.level.value.doubleValue()))
+		if (this.model.withinBounds(this.level.value.doubleValue()))
 		{
 			this.levelLabel.setText(this.level.value.toString());
 			this.aLabel.setText(this.a.value.toString());

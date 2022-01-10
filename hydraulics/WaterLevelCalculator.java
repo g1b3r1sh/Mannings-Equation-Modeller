@@ -27,7 +27,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 
 	public Number getWaterLevel()
 	{
-		return waterLevel;
+		return this.waterLevel;
 	}
 
 	public void setWaterLevel(Number waterLevel)

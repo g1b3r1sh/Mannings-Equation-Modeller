@@ -43,9 +43,9 @@ public class ScreenSwitcher extends JPanel
 		JPanel buttonPanel = new JPanel();
 		this.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-		buttonPanel.add(prev);
+		buttonPanel.add(this.prev);
 		buttonPanel.add(Box.createHorizontalGlue());
-		buttonPanel.add(next);
+		buttonPanel.add(this.next);
 	}
 
 	public ScreenSwitcher(JComponent initScreen, String name)
@@ -112,19 +112,19 @@ public class ScreenSwitcher extends JPanel
 		// Update visibility
 		if (this.index == 0)
 		{
-			prev.setVisible(false);
+			this.prev.setVisible(false);
 		}
 		else
 		{
-			prev.setVisible(true);
+			this.prev.setVisible(true);
 		}
 		if (this.index == this.cards.getComponentCount() - 1)
 		{
-			next.setVisible(false);
+			this.next.setVisible(false);
 		}
 		else
 		{
-			next.setVisible(true);
+			this.next.setVisible(true);
 		}
 
 		// Update names

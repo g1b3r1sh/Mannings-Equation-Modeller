@@ -27,7 +27,7 @@ public class Results extends JLabel
 
 	public void updateText()
 	{
-		double value = waterCalculator.crossSectionArea();
+		double value = this.waterCalculator.crossSectionArea();
 		this.setText(String.format("Area: %." + this.precision + "f m^2", value));
 	}
 

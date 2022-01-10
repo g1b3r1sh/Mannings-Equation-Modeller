@@ -56,8 +56,8 @@ public class DataEditScreen extends JPanel
 		};
 
 		this.table = this.createTable(data, precision, xLabel, yLabel);
-		this.add(this.initTablePane(table), BorderLayout.WEST);
-		this.add(this.createControlPanel(table), BorderLayout.CENTER);
+		this.add(this.initTablePane(this.table), BorderLayout.WEST);
+		this.add(this.createControlPanel(this.table), BorderLayout.CENTER);
 	}
 
 	public GraphTableModel getModel()

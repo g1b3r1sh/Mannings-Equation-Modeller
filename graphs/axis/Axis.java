@@ -153,7 +153,7 @@ public class Axis extends JPanel
 			}
 			else
 			{
-				numbers = new AxisNumbersVertical(this.getTickmarks(), this.getGraph().getPlane().getRangeY(), this.precision, Axis.DEFAULT_VERTICAL_PADDING, direction == Direction.LEFT);
+				numbers = new AxisNumbersVertical(this.getTickmarks(), this.getGraph().getPlane().getRangeY(), this.precision, Axis.DEFAULT_VERTICAL_PADDING, this.direction == Direction.LEFT);
 			}
 			this.addAxisComponent(numbers, 1);
 		}
@@ -194,7 +194,7 @@ public class Axis extends JPanel
 
 	public AxisTickmarks createTickmarks()
 	{
-		switch (direction)
+		switch (this.direction)
 		{
 			case BOTTOM:
 				return new AxisTickmarksBottom(this.defaultNumTicks());

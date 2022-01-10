@@ -7,6 +7,7 @@ package hydraulics;
  * Variables must be initialized before they are used, otherwise, methods will throw a NullPointerException
 **/
 
+@SuppressWarnings("unqualified-field-access")
 public class ManningsEquation
 {
 	// Since the class uses doubles, results of equation are unlikely to be exact, meaning

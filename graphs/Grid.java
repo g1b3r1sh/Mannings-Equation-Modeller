@@ -10,8 +10,8 @@ import java.awt.Color;
 
 public class Grid extends GraphComponent
 {
-	private final Color BACK_COLOR = new Color(0f, 0f, 0f, 0f);
-	private final Color LINE_COLOR = Color.LIGHT_GRAY;
+	private static final Color BACK_COLOR = new Color(0f, 0f, 0f, 0f);
+	private static final Color LINE_COLOR = Color.LIGHT_GRAY;
 
 	private int numCols;
 	private int numRows;
@@ -83,11 +83,11 @@ public class Grid extends GraphComponent
 		Graphics2D g2 = (Graphics2D) g;
 
 		// Paint background
-		g2.setColor(BACK_COLOR);
+		g2.setColor(Grid.BACK_COLOR);
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 		// Paint gridlines
-		g2.setColor(LINE_COLOR);
+		g2.setColor(Grid.LINE_COLOR);
 		for (int i = 0; i <= this.numCols; i++)
 		{
 			int xPos = (int) (this.cellWidth() * (i + this.offsetCol));

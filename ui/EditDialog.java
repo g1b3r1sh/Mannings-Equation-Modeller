@@ -21,7 +21,7 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 		this.pane = new JOptionPane(screen, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		this.setContentPane(this.pane);
 		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-		pane.addPropertyChangeListener(JOptionPane.VALUE_PROPERTY, this);
+		this.pane.addPropertyChangeListener(JOptionPane.VALUE_PROPERTY, this);
 	}
 
 	protected abstract void prepareScreen();

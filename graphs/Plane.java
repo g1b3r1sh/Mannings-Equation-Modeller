@@ -18,14 +18,14 @@ public abstract class Plane extends GraphComponent
 		this.rangeY = rangeY;
 	}
 
-	public Range getRangeY()
-	{
-		return rangeY;
-	}
-
 	public Range getRangeX()
 	{
-		return rangeX;
+		return this.rangeX;
+	}
+
+	public Range getRangeY()
+	{
+		return this.rangeY;
 	}
 
 	public abstract int posX(double x);

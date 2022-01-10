@@ -31,7 +31,7 @@ public class DataPrecision
 	
 	public int getX()
 	{
-		return x;
+		return this.x;
 	}
 
 	public void setX(int precisionX)
@@ -41,7 +41,7 @@ public class DataPrecision
 	
 	public int getY()
 	{
-		return y;
+		return this.y;
 	}
 
 	public void setY(int precisionY)
