@@ -6,8 +6,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import main.inputscreen.DataEditDialog;
+import main.input.DataEditDialog;
 import ui.EditDialog;
+import ui.PrecisionSpinnerModel;
 
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
@@ -20,14 +21,15 @@ public class MainWindowMenu extends JMenuBar
 	{
 		super();
 		this.window = window;
-		this.add(this.editJMenu());
-		this.add(this.helpJMenu());
+		this.add(this.editMenu());
+		this.add(this.windowMenu());
+		this.add(this.helpMenu());
 	}
 
-	private JMenu editJMenu()
+	private JMenu editMenu()
 	{
 		JMenu edit = new JMenu("Edit");
-		edit.add(menuItem("New", new Runnable()
+		edit.add(menuItem("New Dataset", new Runnable()
 		{
 			@Override
 			public void run()
@@ -45,36 +47,94 @@ public class MainWindowMenu extends JMenuBar
 				});
 			}
 		}));
+		edit.add(menuItem("Edit Dataset", new Runnable() {
+			@Override
+			public void run()
+			{
+				MainWindow window = MainWindowMenu.this.window;
+				window.getScreenSwitcher().switchFirst();
+				window.getInputScreen().getEditDialog().open();
+			}
+		}));
+		edit.add(menuItem("Load Sample Dataset", new Runnable() {
+			@Override
+			public void run()
+			{
+				MainWindow window = MainWindowMenu.this.window;
+				window.getScreenSwitcher().switchFirst();
+				window.getModel().loadSampleData();
+				window.getInputScreen().getTableModel().refresh();
+				window.getInputScreen().getGraph().repaint();
+				((PrecisionSpinnerModel) window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(window.getModel().getCalculator().getWaterLevel());
+			}
+		}));
 		return edit;
 	}
 
-	private JMenu helpJMenu()
+	private JMenu windowMenu()
+	{
+		JMenu window = new JMenu("Window");
+		window.add(menuItem("Edit Input Graph", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				MainWindow window = MainWindowMenu.this.window;
+				window.getScreenSwitcher().switchFirst();
+				window.getInputScreen().getGraphEditDialog().open();
+			}
+		}));
+		window.addSeparator();
+		window.add(menuItem("Exit", new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				MainWindowMenu.this.window.dispose();
+			}
+		}));
+		return window;
+	}
+
+	private JMenu helpMenu()
 	{
 		JMenu help = new JMenu("Help");
 		
 		help.add(helpItem("What is this?", 
 			"""
-			To modify the data, select a cell in the table and press the \"Edit Cell\" button.\n
-			Then, enter the value in the popup that appears. Make sure the input is a number!
+			This application calculates the area of the cross-section of a river. The plot on the graph represents\n
+			 the waterbed and the blue represent water. The water level can be adjusted to calculate the area under different conditions.
 			"""
 		));
+		help.addSeparator();
 		help.add(helpItem("How to modify data", 
+			"""
+			To modify the data, click the \"Edit\" button above the table to open the edit dialog. You can\n
+			edit the data by selecting the cells and typing a number, click on the buttons in the panel to the right,\n
+			or use keyboard shortcuts.
+			"""
+		));
+		help.add(helpItem("Data Editing Keyboard Shortcuts",
+			"""
+			This is a non-exhaustive list of possible shortcuts when editing table data:\n
+			CTRL+C - Copy selected cells\n
+			CTRL+V - Paste cells\n
+			CTRL+X - Cut selected cells\n
+			DEL - Clear selected cells\n
+			ESC - Cancel edit
+			"""
+		));
+		help.add(helpItem("How to modify water level", 
 			"""
 			To modify water level on the graph, modify the number in the number field below the table.\n
 			You can also click on the arrows to increment it by small amounts. If the water cannot be \n
 			contained by the banks, it won't be drawn.
 			"""
 		));
-		help.add(helpItem("How to modify water level", 
-			"""
-			To calculate the area of the water, click on the \"Results\" button in the bottom-right corner.\n
-			To go back, click on the \"Input\" button in the bottom-left corner.
-			"""
-		));
 		help.add(helpItem("How to see area of water", 
 			"""
-			This application calculates the area of the cross-section of a river. The plot on the graph represents\n
-			 the waterbed and the blue represent water. The waterlevel can be adjusted to calculate the area under different conditions.
+			To calculate the area of the water, in the input screen, click on the \"Results\" button in the bottom-right corner.\n
+			To go back, click on the \"Input\" button in the bottom-left corner.
 			"""
 		));
 

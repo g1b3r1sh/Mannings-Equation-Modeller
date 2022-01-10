@@ -16,7 +16,7 @@ public class CrossSectionModel
 	{
 		this.data = defaultData();
 		this.precision = defaultPrecision();
-		this.waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(data, new BigDecimal("2.00"));
+		this.waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(data, defaultWaterLevel());
 	}
 
 	public MapDiscreteData<BigDecimal, BigDecimal> getData()
@@ -32,6 +32,13 @@ public class CrossSectionModel
 	public WaterLevelCalculator<BigDecimal, BigDecimal> getCalculator()
 	{
 		return this.waterCalculator;
+	}
+
+	public void loadSampleData()
+	{
+		this.data.load(defaultData());
+		this.precision.load(defaultPrecision());
+		this.waterCalculator.setWaterLevel(defaultWaterLevel());
 	}
 	
 	public static MapDiscreteData<BigDecimal, BigDecimal> defaultData()
@@ -54,5 +61,10 @@ public class CrossSectionModel
 	public static DataPrecision defaultPrecision()
 	{
 		return new DataPrecision(3, 2);
+	}
+
+	public static BigDecimal defaultWaterLevel()
+	{
+		return new BigDecimal("2.00");
 	}
 }

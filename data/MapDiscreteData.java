@@ -11,44 +11,41 @@ import java.util.TreeSet;
  * An instance of DiscreteData through a Map
 **/
 
-public class MapDiscreteData<N extends Number, M extends Number> implements DiscreteData<N, M>
+public class MapDiscreteData<M extends Number, N extends Number> implements DiscreteData<M, N>
 {
-	private NavigableMap<N, M> data;
+	private NavigableMap<M, N> data;
 
 	public MapDiscreteData()
 	{
 		this.data = new TreeMap<>();
 	}
 
-	public MapDiscreteData(DiscreteData<N, M> data)
+	public MapDiscreteData(DiscreteData<M, N> data)
 	{
 		this();
-		for (N x : data.getXSet())
-		{
-			this.set(x, data.y(x));
-		}
+		this.load(data);
 	}
 
 	@Override
-	public void set(N x, M y)
+	public void set(M x, N y)
 	{
 		this.data.put(x, y);
 	}
 
 	@Override
-	public void remove(N x)
+	public void remove(M x)
 	{
 		this.data.remove(x);
 	}
 
 	@Override
-	public boolean hasY(N x)
+	public boolean hasY(M x)
 	{
 		return this.data.containsKey(x);
 	}
 
 	@Override
-	public M y(N x)
+	public N y(M x)
 	{
 		return this.data.get(x);
 	}
@@ -60,6 +57,16 @@ public class MapDiscreteData<N extends Number, M extends Number> implements Disc
 	}
 
 	@Override
+	public void load(DiscreteData<M, N> data)
+	{
+		this.clear();
+		for (M x : data.getXSet())
+		{
+			this.set(x, data.y(x));
+		}
+	}
+
+	@Override
 	public int size()
 	{
 		return this.data.size();
@@ -67,13 +74,13 @@ public class MapDiscreteData<N extends Number, M extends Number> implements Disc
 
 	// Note: Any modifications to set will also modify data
 	@Override
-	public NavigableSet<N> getXSet()
+	public NavigableSet<M> getXSet()
 	{
-		return new TreeSet<N>(this.data.keySet());
+		return new TreeSet<M>(this.data.keySet());
 	}
 
 	@Override
-	public Set<Entry<N, M>> getEntrySet()
+	public Set<Entry<M, N>> getEntrySet()
 	{
 		return this.data.entrySet();
 	}

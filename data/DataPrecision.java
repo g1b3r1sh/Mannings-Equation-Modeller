@@ -18,6 +18,12 @@ public class DataPrecision
 	{
 		this(precision.getX(), precision.getY());
 	}
+
+	public void load(DataPrecision precision)
+	{
+		this.x = precision.getX();
+		this.y = precision.getY();
+	}
 	
 	public int getX()
 	{
