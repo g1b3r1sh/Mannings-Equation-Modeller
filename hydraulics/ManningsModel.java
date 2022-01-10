@@ -69,6 +69,12 @@ public class ManningsModel
 		return velocity;
 	}
 
+	public double calcArea(double level)
+	{
+		this.calculator.setWaterLevel(level);
+		return this.calculator.crossSectionArea();
+	}
+
 	public boolean withinBounds(Number level)
 	{
 		this.calculator.setWaterLevel(level);

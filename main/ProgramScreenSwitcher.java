@@ -15,7 +15,7 @@ public class ProgramScreenSwitcher extends ScreenSwitcher
 		super();
 		this.inputScreen = new InputScreen(model.getData(), model.getPrecision(), model.getCalculator(), parent);
 		this.addScreen(this.inputScreen, "Input");
-		this.addScreen(new ResultScreen(model.getData()), "Results");
+		this.addScreen(new ResultScreen(model.getData()), "Calculate");
 		this.switchFirst();
 	}
 

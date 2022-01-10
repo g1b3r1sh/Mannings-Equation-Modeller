@@ -133,12 +133,7 @@ public class MainWindowMenu extends JMenuBar
 			contained by the banks, it won't be drawn.
 			"""
 		));
-		help.add(helpItem("How to see area of water", 
-			"""
-			To calculate the area of the water, in the input screen, click on the \"Results\" button in the bottom-right corner.\n
-			To go back, click on the \"Input\" button in the bottom-left corner.
-			"""
-		));
+		// TODO: Add help for calculating
 
 		return help;
 	}

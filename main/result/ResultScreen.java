@@ -37,10 +37,12 @@ public class ResultScreen extends JPanel
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
 	private Wrapper<BigDecimal> level;
+	private Wrapper<BigDecimal> a;
 	private Wrapper<BigDecimal> v;
 
 	private JLabel levelLabel;
 	private JLabel vLabel;
+	private JLabel aLabel;
 
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
@@ -51,9 +53,11 @@ public class ResultScreen extends JPanel
 		this.s = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_S));
 		this.q = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_Q));
 		this.level = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_LEVEL));
+		this.a = new Wrapper<>(new BigDecimal(0));
 		this.v = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_V));
 
 		this.levelLabel = new JLabel();
+		this.aLabel = new JLabel();
 		this.vLabel = new JLabel();
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
@@ -65,11 +69,13 @@ public class ResultScreen extends JPanel
 		if (model.withinBounds(this.level.value.doubleValue()))
 		{
 			this.levelLabel.setText(this.level.value.toString());
+			this.aLabel.setText(this.a.value.toString());
 			this.vLabel.setText(this.v.value.toString());
 		}
 		else
 		{
 			this.levelLabel.setText("Overflow!");
+			this.aLabel.setText("Overflow!");
 			this.vLabel.setText("Overflow!");
 		}
 	}
@@ -82,18 +88,19 @@ public class ResultScreen extends JPanel
 		panel.add(this.numberEditPanel("Channel Bed Slope", this.s));
 		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
 		panel.add(new JButton(this.calculateAction()));
-		panel.add(this.numberPanel("Water Level Elevation (m)", this.level, this.levelLabel));
-		panel.add(this.numberPanel("Velocity (m/s)", this.v, this.vLabel));
+		panel.add(this.numberPanel("Water Level Elevation (m)", this.level.value.toString(), this.levelLabel));
+		panel.add(this.numberPanel("Cross-Section Area (m^2)", "0", this.aLabel));
+		panel.add(this.numberPanel("Velocity (m/s)", this.v.value.toString(), this.vLabel));
 		return panel;
 	}
 
-	public JPanel numberPanel(String name, Wrapper<BigDecimal> number, JLabel numberLabel)
+	public JPanel numberPanel(String name, String defaultString, JLabel numberLabel)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel.add(new JLabel(String.format("%s: ", name)));
-		numberLabel.setText(number.value.toString());
+		numberLabel.setText(defaultString);
 		panel.add(numberLabel);
 		return panel;
 	}
@@ -143,6 +150,8 @@ public class ResultScreen extends JPanel
 
 				ResultScreen.this.level.value = new BigDecimal(level);
 				ResultScreen.this.level.value = ResultScreen.this.level.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+				ResultScreen.this.a.value = new BigDecimal(model.calcArea(level));
+				ResultScreen.this.a.value = ResultScreen.this.a.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
 				ResultScreen.this.v.value = new BigDecimal(model.calcVelocity(q, level));
 				ResultScreen.this.v.value = ResultScreen.this.v.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
 				
