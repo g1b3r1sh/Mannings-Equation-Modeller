@@ -1,4 +1,4 @@
-package main.inputscreen;
+package main.input;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -77,6 +77,11 @@ public class InputScreen extends JPanel
 		return this.editDialog;
 	}
 
+	public GraphEditDialog getGraphEditDialog()
+	{
+		return this.graphDialog;
+	}
+
 	public GraphTableModel getTableModel()
 	{
 		return this.tableModel;
@@ -124,15 +129,6 @@ public class InputScreen extends JPanel
 		});
 		panel.add(button);
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
-		JButton graphButton = new JButton(new AbstractAction("Edit Graph")
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				InputScreen.this.graphDialog.open();
-			}
-		});
-		panel.add(graphButton);
 		panel.add(new JLabel("Water Level:"));
 		this.waterLevelSpinner = this.createWaterSpinner(calculator, spinnerPrecision, graph);
 		panel.add(this.waterLevelSpinner);

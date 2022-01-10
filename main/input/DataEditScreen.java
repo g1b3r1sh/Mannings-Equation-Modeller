@@ -1,4 +1,4 @@
-package main.inputscreen;
+package main.input;
 
 import java.math.BigDecimal;
 import java.util.EventObject;

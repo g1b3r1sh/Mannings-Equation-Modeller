@@ -2,7 +2,7 @@ package main;
 
 import javax.swing.JFrame;
 
-import main.inputscreen.InputScreen;
+import main.input.InputScreen;
 import ui.ScreenSwitcher;
 
 public class MainWindow extends JFrame
