@@ -44,7 +44,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	// WARNING: Does not return whether data allows for water to exist 
 	public boolean withinBounds()
 	{
-		if (this.data.getData().size() > 1)
+		if (this.data.getData().size() > 0)
 		{
 			return this.aboveWater(this.data.getData().getXSet().first()) && this.aboveWater(this.data.getData().getXSet().last());
 		}
@@ -99,6 +99,21 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 		return perimeter;
 	}
 
+	// Sets water level to lowest point in data, where area is 0
+	public void moveToLowest()
+	{
+		DiscreteData<M, N> dataset = this.data.getData();
+		N lowest = dataset.y(dataset.getXSet().first());
+		for (Entry<M, N> e : dataset.getEntrySet())
+		{
+			if (e.getValue().doubleValue() < lowest.doubleValue())
+			{
+				lowest = e.getValue();
+			}
+		}
+		this.setWaterLevel(lowest);
+	}
+
 	// To generate shapes, go through all data
 	// If data is below water, add to list
 	// If data is above water, list is converted into shape (if it contains data, of course)
@@ -133,32 +148,6 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 			}
 		}
 		return list;
-	}
-
-	// Calculate water level that returns the cross section area by setting water level to levelHint, then incrementing or decrementing it by step
-	// 	until calculator calculates area
-	// Warning: Destructive method - changes water level of calculator
-	public double calculateWaterLevel(double area, double levelHint, double step)
-	{
-		this.setWaterLevel(levelHint);
-		// Make sure step is positive to avoid accidental infinite loop
-		step = Math.abs(step);
-		// If water level is too high, decrement water level by step. Otherwise, increment water level by step
-		if (this.crossSectionArea() > area)
-		{
-			while (this.crossSectionArea() > area)
-			{
-				this.setWaterLevel(this.getWaterLevel().doubleValue() - step);
-			}
-		}
-		else
-		{
-			while (this.crossSectionArea() < area)
-			{
-				this.setWaterLevel(this.getWaterLevel().doubleValue() + step);
-			}
-		}
-		return this.getWaterLevel().doubleValue();
 	}
 
 	// Calculate x position of point where water intersects with line between given point and point before it
