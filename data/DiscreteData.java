@@ -5,7 +5,7 @@ import java.util.NavigableSet;
 import java.util.Set;
 
 /**
- * Represents a discrete data function
+ * Represents a set of discrete data coordinates
 **/
 
 public interface DiscreteData<M extends Number, N extends Number> extends Function<M, N>

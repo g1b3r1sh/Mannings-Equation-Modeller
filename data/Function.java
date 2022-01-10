@@ -1,7 +1,7 @@
 package data;
 
 /**
- * Represents a mathematical function. Contains methods for converting into double.
+ * Represents a mathematical function
 **/  
 
 public interface Function<M extends Number, N extends Number>

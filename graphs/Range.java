@@ -4,7 +4,6 @@ package graphs;
  * Represents numerical range
 **/
 
-// Inclusive lower, exclusive upper
 public class Range
 {
 	private int lower;

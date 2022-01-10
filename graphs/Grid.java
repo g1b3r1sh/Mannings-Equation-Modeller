@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 
 /**
- * The visual Grid of a Graph. Contains methods for retrieving # of rows and cols which I heavily regret.
+ * The visual Grid of a Graph
 **/
 
 public class Grid extends GraphComponent
@@ -41,18 +41,18 @@ public class Grid extends GraphComponent
 
 	public void setNumCols(int numCols)
 	{
-		if (numCols < 0)
+		if (numCols < 1)
 		{
-			throw new IllegalArgumentException("Cannot have negative number of columns.");
+			throw new IllegalArgumentException("Cannot have non-positive number of columns.");
 		}
 		this.numCols = numCols;
 	}
 
 	public void setNumRows(int numRows)
 	{
-		if (numRows < 0)
+		if (numRows < 1)
 		{
-			throw new IllegalArgumentException("Cannot have negative number of rows.");
+			throw new IllegalArgumentException("Cannot have non-positive number of rows.");
 		}
 		this.numRows = numRows;
 	}

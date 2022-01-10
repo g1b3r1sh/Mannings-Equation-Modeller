@@ -3,7 +3,7 @@ package data;
 import java.util.Iterator;
 
 /**
- * Represent continuous function constructed by connecting all points in DiscreteData
+ * Represents continuous function constructed by connecting all points in DiscreteData
 **/
 
 public class ContinuousData<M extends Number, N extends Number> implements ContinuousFunction

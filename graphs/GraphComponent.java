@@ -3,7 +3,7 @@ package graphs;
 import java.awt.Graphics;
 
 /**
- * A class wherein its instances are contained inside a Graph
+ * Represents a component that is contained inside a graph
 **/
 
 public abstract class GraphComponent

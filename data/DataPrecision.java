@@ -3,6 +3,10 @@ package data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+/**
+ * Represents precision of a function
+**/
+
 public class DataPrecision
 {
 	private int x;
@@ -45,6 +49,7 @@ public class DataPrecision
 		this.y = precisionY;
 	}
 
+	// Return BigDecimal fitted to precision represented by DataPrecision
 	public BigDecimal fitPrecisionX(BigDecimal decimal)
 	{
 		return decimal.setScale(this.x, RoundingMode.HALF_UP);

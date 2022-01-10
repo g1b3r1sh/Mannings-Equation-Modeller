@@ -7,7 +7,7 @@ import graphs.Graph;
 import graphs.Plane;
 
 /**
- * Plots data on Graph
+ * Plots DiscreteData on Graph
 **/
 
 public class DataPlotter extends DataVisualiser

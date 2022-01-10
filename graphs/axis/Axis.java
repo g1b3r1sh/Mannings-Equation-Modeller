@@ -13,6 +13,9 @@ import java.awt.Component;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * Represents an axis in a GraphContainer
+**/
 
 public class Axis extends JPanel
 {

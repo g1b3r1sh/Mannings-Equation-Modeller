@@ -10,8 +10,8 @@ import graphs.visualiser.DataPlotter;
 import graphs.visualiser.DataVisualiser;
 
 /**
- * Stores DiscreteData and is responsible for handling how it is drawn on a graph
- * Handles drawing through DataVisualisers
+ * Stores DiscreteData
+ * Handles drawing data on a graph through DataVisualisers
 **/
 public class DataVisualsHandler
 {
@@ -65,7 +65,7 @@ public class DataVisualsHandler
 		return visualiser;
 	}
 	
-	// Remove all visual components of data based on predicate that takes in the visualiser
+	// Remove all visual components of data based on predicate (i.e. boolean function)
 	private void removeVisualisers(Predicate<DataVisualiser> predicate)
 	{
 		Iterator<DataVisualiser> it = this.visualisers.iterator();

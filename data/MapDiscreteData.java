@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * An instance of DiscreteData through a Map
+ * An implementation of DiscreteData using TreeMap
 **/
 
 public class MapDiscreteData<M extends Number, N extends Number> implements DiscreteData<M, N>
@@ -72,7 +72,7 @@ public class MapDiscreteData<M extends Number, N extends Number> implements Disc
 		return this.data.size();
 	}
 
-	// Note: Any modifications to set will also modify data
+	// Note: Any modifications to sets will also modify data
 	@Override
 	public NavigableSet<M> getXSet()
 	{

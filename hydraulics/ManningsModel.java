@@ -12,6 +12,11 @@ A and P are both calculated using WaterLevelCalculator
 V is calculated when A is known (i.e. when manningFormulaConsistent() is true)
 	Calculated using calcVelocity()
 */
+
+/**
+ * Represents a model of the Manning's Equation simulated with a cross-section represented with DiscreteData
+**/
+
 public class ManningsModel
 {
 	private WaterLevelCalculator<?, ?> calculator;
