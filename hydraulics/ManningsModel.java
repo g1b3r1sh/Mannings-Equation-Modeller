@@ -38,6 +38,11 @@ public class ManningsModel
 		this.equation.s = s.doubleValue();
 	}
 
+	public boolean calcWaterLevelValid()
+	{
+		return this.equation.n != null && this.equation.n != 0 && this.equation.s != null;
+	}
+
 	// If there does not exist a water level that satisfies the equation, will return a water level that is out of bounds of data
 	// Requires n and s to be set
 	public double calcWaterLevel(double discharge, double step)
