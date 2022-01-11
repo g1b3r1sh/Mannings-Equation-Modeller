@@ -24,6 +24,18 @@ public class LinearPlane extends Plane
 	{
 		return (int) (this.cellHeight() * this.invertY(y - this.getRangeY().getLower()));
 	}
+	
+	@Override
+	public double inversePosX(int x)
+	{
+		return ((double) x) / this.cellWidth() + this.getRangeX().getLower();
+	}
+
+	@Override
+	public double inversePosY(int y)
+	{
+		return (((double) y) / this.cellHeight() - this.getRangeY().size() - this.getRangeY().getLower()) * -1;
+	}
 
 	// Since grid y is normally up-down, invertY makes it down-up
 	private double invertY(double y)

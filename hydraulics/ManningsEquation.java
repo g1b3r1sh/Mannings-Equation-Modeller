@@ -28,7 +28,7 @@ public class ManningsEquation
 
 	public boolean manningFormulaConsistent()
 	{
-		return (q - this.calcDischarge()) < ACCEPTABLE_THRESHOLD;
+		return Math.abs(q - this.calcDischarge()) < ACCEPTABLE_THRESHOLD;
 	}
 	
 	public double r() // Hydraulic Radius, R (m)

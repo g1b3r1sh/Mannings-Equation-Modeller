@@ -16,7 +16,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import data.MapDiscreteData;
+import data.Parabola;
 import graphs.Graph;
+import graphs.GraphContainer;
+import graphs.Range;
+import graphs.GraphContainer.Direction;
+import graphs.visualiser.ContinuousFunctionVisualiser;
 import hydraulics.ManningsModel;
 import ui.Wrapper;
 
@@ -62,8 +67,8 @@ public class ResultScreen extends JPanel
 		this.aLabel = new JLabel();
 		this.vLabel = new JLabel();
 
-		this.add(this.createSidePanel(), BorderLayout.CENTER);
-		// this.add(new Graph(), BorderLayout.CENTER);
+		this.add(this.createSidePanel(), BorderLayout.WEST);
+		this.add(this.createGraphContainer(), BorderLayout.CENTER);
 	}
 
 	public void refresh()
@@ -82,7 +87,7 @@ public class ResultScreen extends JPanel
 		}
 	}
 
-	public JPanel createSidePanel()
+	private JPanel createSidePanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -104,7 +109,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	public JPanel numberPanel(String name, String defaultString, JLabel numberLabel)
+	private JPanel numberPanel(String name, String defaultString, JLabel numberLabel)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -115,7 +120,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	public JPanel numberEditPanel(String name, Wrapper<BigDecimal> number)
+	private JPanel numberEditPanel(String name, Wrapper<BigDecimal> number)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -146,7 +151,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	public Action calculateAction()
+	private Action calculateAction()
 	{
 		return new AbstractAction("Calculate")
 		{
@@ -161,13 +166,38 @@ public class ResultScreen extends JPanel
 
 				ResultScreen.this.level.value = new BigDecimal(level);
 				ResultScreen.this.level.value = ResultScreen.this.level.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
-				ResultScreen.this.a.value = new BigDecimal(model.calcArea(level));
-				ResultScreen.this.a.value = ResultScreen.this.a.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
-				ResultScreen.this.v.value = new BigDecimal(model.calcVelocity(q, level));
-				ResultScreen.this.v.value = ResultScreen.this.v.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+				if (model.withinBounds(ResultScreen.this.level.value))
+				{
+					ResultScreen.this.a.value = new BigDecimal(model.calcArea(level));
+					ResultScreen.this.a.value = ResultScreen.this.a.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+					ResultScreen.this.v.value = new BigDecimal(model.calcVelocity(q, level));
+					ResultScreen.this.v.value = ResultScreen.this.v.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+				}
 				
 				ResultScreen.this.refresh();
 			}
 		};
 	}
+
+	private GraphContainer createGraphContainer()
+	{
+		GraphContainer container = new GraphContainer(this.createGraph());
+		container.getAxis(Direction.BOTTOM).addTickmarks();
+		container.getAxis(Direction.BOTTOM).addNumbers();
+		container.getAxis(Direction.BOTTOM).addName("Discharge, Q");
+		container.getAxis(Direction.LEFT).addTickmarks();
+		container.getAxis(Direction.LEFT).addNumbers();
+		container.getAxis(Direction.LEFT).addName("Water Elevation");
+		return container;	
+	}
+
+	private Graph createGraph()
+	{
+		Graph graph = new Graph();
+		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
+		graph.fitGridPlane(2, 2);
+		graph.getGraphComponents().add(new ContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
+		return graph;
+	}
+
 }

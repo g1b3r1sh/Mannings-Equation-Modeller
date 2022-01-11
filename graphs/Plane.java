@@ -28,8 +28,13 @@ public abstract class Plane extends GraphComponent
 		return this.rangeY;
 	}
 
+	// Map plane position to screen position
 	public abstract int posX(double x);
 	public abstract int posY(double y);
+
+	// Map screen position to plane position
+	public abstract double inversePosX(int x);
+	public abstract double inversePosY(int y);
 
 	public int posX(Number x)
 	{
@@ -39,6 +44,16 @@ public abstract class Plane extends GraphComponent
 	public int posY(Number y)
 	{
 		return this.posY(y.doubleValue());
+	}
+
+	public double inversePosX(Number x)
+	{
+		return this.inversePosX(x.doubleValue());
+	}
+
+	public double inversePosY(Number y)
+	{
+		return this.inversePosX(y.doubleValue());
 	}
 
 	@Override
