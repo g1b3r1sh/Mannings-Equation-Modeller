@@ -28,6 +28,11 @@ public class ManningsModel
 		this.equation = new ManningsEquation();
 	}
 
+	public DiscreteData<?, ?> getSectionData()
+	{
+		return this.calculator.getSectionData();
+	}
+
 	public void setN(Number n)
 	{
 		this.equation.n = n.doubleValue();
@@ -38,7 +43,7 @@ public class ManningsModel
 		this.equation.s = s.doubleValue();
 	}
 
-	public boolean calcWaterLevelValid()
+	public boolean isCalcLevelReady()
 	{
 		return this.equation.n != null && this.equation.n != 0 && this.equation.s != null;
 	}

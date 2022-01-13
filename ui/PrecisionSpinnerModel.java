@@ -11,12 +11,12 @@ public class PrecisionSpinnerModel extends SpinnerNumberModel
 
 	public PrecisionSpinnerModel(Number value, BigDecimal minimum, BigDecimal maximum, int precision)
 	{
-		this(PrecisionSpinnerModel.generatePreciseNumber(value, precision), minimum, maximum, precision);
+		this(PrecisionSpinnerModel.getPreciseNumber(value, precision), minimum, maximum, precision);
 	}
 
 	public PrecisionSpinnerModel(BigDecimal value, BigDecimal minimum, BigDecimal maximum, int precision)
 	{
-		super(value, minimum, maximum, PrecisionSpinnerModel.generateStepSize(precision));
+		super(value, minimum, maximum, PrecisionSpinnerModel.getStepSize(precision));
 		this.precision = precision;
 	}
 
@@ -27,7 +27,7 @@ public class PrecisionSpinnerModel extends SpinnerNumberModel
 		{
             throw new IllegalArgumentException("illegal value");
         }
-		BigDecimal newValue = this.createPreciseNumber((Number) value);
+		BigDecimal newValue = this.getPreciseNumber((Number) value);
 		super.setValue(newValue);
 	}
 
@@ -46,12 +46,16 @@ public class PrecisionSpinnerModel extends SpinnerNumberModel
 	public void setPrecision(int precision)
 	{
 		this.precision = precision;
-		this.setStepSize(PrecisionSpinnerModel.generateStepSize(precision));
+		this.setStepSize(PrecisionSpinnerModel.getStepSize(precision));
 		this.setValue(this.getValue());
 	}
 
 	public BigDecimal getBigDecimalValue()
 	{
+		if (this.getValue() == null)
+		{
+			return null;
+		}
 		return (BigDecimal) this.getValue();
 	}
 
@@ -64,23 +68,23 @@ public class PrecisionSpinnerModel extends SpinnerNumberModel
 		}
 		else
 		{
-			return this.createPreciseNumber(stepSize);
+			return this.getPreciseNumber(stepSize);
 		}
 	}
 
-	private static BigDecimal generatePreciseNumber(Number number, int precision)
+	private static BigDecimal getPreciseNumber(Number number, int precision)
 	{
 		BigDecimal unscaled = BigDecimal.valueOf(number.doubleValue());
 		return unscaled.setScale(precision, RoundingMode.HALF_UP);
 	}
 
-	private static BigDecimal generateStepSize(int precision)
+	private static BigDecimal getStepSize(int precision)
 	{
-		return PrecisionSpinnerModel.generatePreciseNumber(Math.pow(0.1d, precision), precision);
+		return PrecisionSpinnerModel.getPreciseNumber(Math.pow(0.1d, precision), precision);
 	}
 
-	private BigDecimal createPreciseNumber(Number number)
+	private BigDecimal getPreciseNumber(Number number)
 	{
-		return PrecisionSpinnerModel.generatePreciseNumber(number, this.precision);
+		return PrecisionSpinnerModel.getPreciseNumber(number, this.precision);
 	}
 }

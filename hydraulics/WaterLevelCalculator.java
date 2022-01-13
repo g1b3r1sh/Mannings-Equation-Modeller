@@ -103,15 +103,18 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	public void moveToLowest()
 	{
 		DiscreteData<M, N> dataset = this.data.getDataSet();
-		N lowest = dataset.y(dataset.getXSet().first());
-		for (Entry<M, N> e : dataset.getEntrySet())
+		if (dataset.size() > 0)
 		{
-			if (e.getValue().doubleValue() < lowest.doubleValue())
+			N lowest = dataset.y(dataset.getXSet().first());
+			for (Entry<M, N> e : dataset.getEntrySet())
 			{
-				lowest = e.getValue();
+				if (e.getValue().doubleValue() < lowest.doubleValue())
+				{
+					lowest = e.getValue();
+				}
 			}
+			this.setWaterLevel(lowest);
 		}
-		this.setWaterLevel(lowest);
 	}
 
 	// To generate shapes, go through all data

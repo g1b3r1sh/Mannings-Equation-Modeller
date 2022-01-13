@@ -77,11 +77,6 @@ public class ContinuousData<M extends Number, N extends Number> implements Conti
 	// Length of segment between two points
 	public double segmentLength(double x1, double x2)
 	{
-		return Math.sqrt(square(x1 - x2) + square(this.y(x1) - this.y(x2)));
-	}
-
-	private static double square(double x)
-	{
-		return x * x;
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(this.y(x1) - this.y(x2), 2));
 	}
 }
