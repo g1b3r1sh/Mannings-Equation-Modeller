@@ -15,7 +15,7 @@ public class ContinuousData<M extends Number, N extends Number> implements Conti
 		this.data = data;
 	}
 
-	public DiscreteData<M, N> getData()
+	public DiscreteData<M, N> getDataSet()
 	{
 		return this.data;
 	}

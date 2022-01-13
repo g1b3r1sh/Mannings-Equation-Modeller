@@ -37,16 +37,16 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	
 	public DiscreteData<M, N> getSectionData()
 	{
-		return this.data.getData();
+		return this.data.getDataSet();
 	}
 	
 	// Returns whether water is contained within data (i.e. No water is spilling out of left or right side)
 	// WARNING: Does not return whether data allows for water to exist 
 	public boolean withinBounds()
 	{
-		if (this.data.getData().size() > 0)
+		if (this.data.getDataSet().size() > 0)
 		{
-			return this.aboveWater(this.data.getData().getXSet().first()) && this.aboveWater(this.data.getData().getXSet().last());
+			return this.aboveWater(this.data.getDataSet().getXSet().first()) && this.aboveWater(this.data.getDataSet().getXSet().last());
 		}
 		else
 		{
@@ -57,7 +57,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	// Points at water level are considered out of water
 	public boolean aboveWater(M x)
 	{
-		return this.data.getData().y(x).doubleValue() >= this.waterLevel.doubleValue();
+		return this.data.getDataSet().y(x).doubleValue() >= this.waterLevel.doubleValue();
 	}
 
 	public double crossSectionArea()
@@ -102,7 +102,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	// Sets water level to lowest point in data, where area is 0
 	public void moveToLowest()
 	{
-		DiscreteData<M, N> dataset = this.data.getData();
+		DiscreteData<M, N> dataset = this.data.getDataSet();
 		N lowest = dataset.y(dataset.getXSet().first());
 		for (Entry<M, N> e : dataset.getEntrySet())
 		{
@@ -123,7 +123,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 		if (this.withinBounds())
 		{
 			Path2D.Double currentPolygon = null;
-			for (Entry<M, N> e : this.data.getData().getEntrySet())
+			for (Entry<M, N> e : this.data.getDataSet().getEntrySet())
 			{
 				M x = e.getKey();
 				N y = e.getValue();
@@ -153,7 +153,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	// Calculate x position of point where water intersects with line between given point and point before it
 	private double waterIntersection(M rightX)
 	{
-		return this.data.xIntersection(this.data.getData().getXSet().lower(rightX), rightX, this.waterLevel);
+		return this.data.xIntersection(this.data.getDataSet().getXSet().lower(rightX), rightX, this.waterLevel);
 	}
 
 	// Area between two points makes a sideways trapezoid
