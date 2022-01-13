@@ -31,13 +31,12 @@ import ui.Wrapper;
 
 public class ResultScreen extends JPanel
 {
-	private static final String DEFAULT_N = "0.025";
-	private static final String DEFAULT_S = "1";
-	private static final String DEFAULT_Q = "1";
-	private static final String DEFAULT_LEVEL = "0";
-	private static final String DEFAULT_V = "0";
-	private static final double DEFAULT_STEP = 0.001;
-	private static final int DEFAULT_SCALE = 6;
+	private static final String INITIAL_N = "0.025";
+	private static final String INITIAL_S = "1";
+	private static final String INITIAL_Q = "1";
+	private static final String INITIAL_LEVEL = "0";
+	private static final String INITIAL_V = "0";
+	private static final int DISPLAYED_SCALE = 6;
 
 	private ManningsModel model;
 	private Wrapper<BigDecimal> n;
@@ -56,12 +55,12 @@ public class ResultScreen extends JPanel
 		super();
 		this.setLayout(new BorderLayout(10, 10));
 		this.model = new ManningsModel(data);
-		this.n = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_N));
-		this.s = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_S));
-		this.q = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_Q));
-		this.level = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_LEVEL));
+		this.n = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_N));
+		this.s = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_S));
+		this.q = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_Q));
+		this.level = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_LEVEL));
 		this.a = new Wrapper<>(new BigDecimal(0));
-		this.v = new Wrapper<>(new BigDecimal(ResultScreen.DEFAULT_V));
+		this.v = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_V));
 
 		this.levelLabel = new JLabel();
 		this.aLabel = new JLabel();
@@ -73,11 +72,11 @@ public class ResultScreen extends JPanel
 
 	public void refresh()
 	{
-		if (this.model.withinBounds(this.level.value.doubleValue()))
+		if (this.level.value != null && this.a.value != null && this.v.value != null)
 		{
-			this.levelLabel.setText(this.level.value.toString());
-			this.aLabel.setText(this.a.value.toString());
-			this.vLabel.setText(this.v.value.toString());
+			this.levelLabel.setText(this.level.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
+			this.aLabel.setText(this.a.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
+			this.vLabel.setText(this.v.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
 		}
 		else
 		{
@@ -162,16 +161,19 @@ public class ResultScreen extends JPanel
 				double q = ResultScreen.this.q.value.doubleValue();
 				model.setN(ResultScreen.this.n.value);
 				model.setS(ResultScreen.this.s.value);
-				double level = model.calcWaterLevel(q, ResultScreen.DEFAULT_STEP);
+				double level = model.calcWaterLevel(q, ResultScreen.this.modelStep(ResultScreen.DISPLAYED_SCALE));
 
-				ResultScreen.this.level.value = new BigDecimal(level);
-				ResultScreen.this.level.value = ResultScreen.this.level.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
-				if (model.withinBounds(ResultScreen.this.level.value))
+				if (model.withinBounds(level))
 				{
+					ResultScreen.this.level.value = new BigDecimal(level);
 					ResultScreen.this.a.value = new BigDecimal(model.calcArea(level));
-					ResultScreen.this.a.value = ResultScreen.this.a.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
 					ResultScreen.this.v.value = new BigDecimal(model.calcVelocity(q, level));
-					ResultScreen.this.v.value = ResultScreen.this.v.value.setScale(ResultScreen.DEFAULT_SCALE, RoundingMode.HALF_UP);
+				}
+				else
+				{
+					ResultScreen.this.level.value = null;
+					ResultScreen.this.a.value = null;
+					ResultScreen.this.v.value = null;
 				}
 				
 				ResultScreen.this.refresh();
@@ -200,4 +202,9 @@ public class ResultScreen extends JPanel
 		return graph;
 	}
 
+	// Value of step of model should be 10^-(scale of displayed values + 1)
+	private double modelStep(int scale)
+	{
+		return Math.pow(0.1, scale + 1);
+	}
 }

@@ -10,10 +10,6 @@ package hydraulics;
 @SuppressWarnings("unqualified-field-access")
 public class ManningsEquation
 {
-	// Since the class uses doubles, results of equation are unlikely to be exact, meaning
-	// there must be a threshold in which the results are "good enough"
-	public static final double ACCEPTABLE_THRESHOLD = 0.00001;
-
 	// Q = VA = (1/n)A(R^2/3)(s^1/2)
 	// However, given that R = A / P, it can be substituted into the equation, resulting in
 	// Q = VA = (1/n)A((A/P)^2/3)(s^1/2)
@@ -26,13 +22,28 @@ public class ManningsEquation
 	public Double n = null; // Manning’s Roughness Coefficient, n
 	public Double s = null; // Channel Bed Slope, S
 
-	public boolean manningFormulaConsistent()
+	// Returns 0 if formula is consistent, otherwise, returns -1 if calculated discharge is too low and 1 if calculated discharge is too high
+	// Since the class uses doubles, results of equation are unlikely to be exact, meaning
+	// there must be a threshold in which the results are "good enough"
+	public int manningFormulaConsistent(double acceptableThreshold)
 	{
-		return Math.abs(q - this.calcDischarge()) < ACCEPTABLE_THRESHOLD;
+		double result = this.calcDischarge() - q;
+		if (Math.abs(result) < acceptableThreshold)
+		{
+			return 0;
+		}
+		else
+		{
+			return (int) Math.signum(result);
+		}
 	}
 	
 	public double r() // Hydraulic Radius, R (m)
 	{
+		if (p == 0)
+		{
+			return 0;
+		}
 		return a / p;
 	}
 
@@ -43,6 +54,11 @@ public class ManningsEquation
 
 	public double calcVelocity()
 	{
+		// If there is no flow and no water, there cannot be velocity
+		if (q == 0 && a == 0)
+		{
+			return 0;
+		}
 		return q / a;
 	}
 }
