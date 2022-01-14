@@ -46,16 +46,6 @@ public abstract class Plane extends GraphComponent
 		return this.posY(y.doubleValue());
 	}
 
-	public double inversePosX(Number x)
-	{
-		return this.inversePosX(x.doubleValue());
-	}
-
-	public double inversePosY(Number y)
-	{
-		return this.inversePosX(y.doubleValue());
-	}
-
 	@Override
 	protected void paintComponent(Graphics g)
 	{
