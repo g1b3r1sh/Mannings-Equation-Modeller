@@ -1,5 +1,4 @@
 package main.input;
-import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,7 +19,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 
 import graphs.Range;
@@ -119,14 +117,7 @@ public class InputScreen extends JPanel
 		JPanel panel = new JPanel();
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		JButton button = new JButton(new AbstractAction("Edit")
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				InputScreen.this.editDialog.open();
-			}
-		});
+		JButton button = new JButton(this.editDialog.createOpenAction("Edit"));
 		panel.add(button);
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
 		panel.add(new JLabel("Water Level:"));

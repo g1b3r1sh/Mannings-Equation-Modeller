@@ -2,13 +2,18 @@ package ui;
 
 import java.awt.Frame;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.function.Consumer;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+
 
 public abstract class EditDialog extends JDialog implements PropertyChangeListener
 {
@@ -85,5 +90,17 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 	public Dimension getPreferredSize()
 	{
 		return new Dimension((int) (this.getOwner().getWidth() * 0.9), (int) (this.getOwner().getHeight() * 0.9));
+	}
+
+	public Action createOpenAction(String name)
+	{
+		return new AbstractAction(name)
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				EditDialog.this.open();
+			}
+		};
 	}
 }

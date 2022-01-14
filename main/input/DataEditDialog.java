@@ -53,5 +53,4 @@ public class DataEditDialog extends EditDialog
 	{
 		this.firePropertyChange("update", null, this.screen.getModel());
 	}
-	
 }
