@@ -1,6 +1,7 @@
 package main.result;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
@@ -11,10 +12,12 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import data.DataPrecision;
 import data.MapDiscreteData;
 import data.Parabola;
 import graphs.Graph;
@@ -22,7 +25,12 @@ import graphs.GraphContainer;
 import graphs.Range;
 import graphs.GraphContainer.Direction;
 import graphs.visualiser.ContinuousFunctionVisualiser;
+import graphs.visualiser.InverseContinuousFunctionVisualiser;
+import graphs.visualiser.VerticalLineVisualiser;
+import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
+import main.input.GraphEditDialog;
+import main.input.GraphEditScreen;
 import ui.Wrapper;
 
 /**
@@ -36,9 +44,12 @@ public class ResultScreen extends JPanel
 	private static final String INITIAL_Q = "1";
 	private static final String INITIAL_LEVEL = "0";
 	private static final String INITIAL_V = "0";
-	private static final int DISPLAYED_SCALE = 6;
+	private static final int DISPLAYED_SCALE = 3;
+
+	private JFrame parent;
 
 	private ManningsModel model;
+	private ManningsFunction function;
 	private Wrapper<BigDecimal> n;
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
@@ -50,11 +61,18 @@ public class ResultScreen extends JPanel
 	private JLabel vLabel;
 	private JLabel aLabel;
 
-	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data)
+	private Graph manningsGraph;
+	private GraphContainer manningsGraphContainer;
+	private GraphEditDialog manningsGraphEditDialog;
+
+	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
 	{
 		super();
+		this.parent = parent;
+
 		this.setLayout(new BorderLayout(10, 10));
 		this.model = new ManningsModel(data);
+		this.function = new ManningsFunction(this.model);
 		this.n = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_N));
 		this.s = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_S));
 		this.q = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_Q));
@@ -65,13 +83,19 @@ public class ResultScreen extends JPanel
 		this.levelLabel = new JLabel();
 		this.aLabel = new JLabel();
 		this.vLabel = new JLabel();
+		this.manningsGraph = this.createGraph();
+		this.manningsGraphContainer = this.createGraphContainer(this.manningsGraph);
+		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
-		this.add(this.createGraphContainer(), BorderLayout.CENTER);
+
+		this.add(this.manningsGraphContainer, BorderLayout.CENTER);
 	}
 
 	public void refresh()
 	{
+		this.function.updateUpperLimit();
+		this.manningsGraph.repaint();
 		if (this.level.value != null && this.a.value != null && this.v.value != null)
 		{
 			this.levelLabel.setText(this.level.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
@@ -90,12 +114,16 @@ public class ResultScreen extends JPanel
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		panel.add(new JButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph")));
+
 		panel.add(this.numberEditPanel("Manning's Constant", this.n));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberEditPanel("Channel Bed Slope", this.s));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
 		JButton calculate = new JButton(this.calculateAction());
 		calculate.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(calculate);
@@ -143,7 +171,7 @@ public class ResultScreen extends JPanel
 			}
 		});
 
-		panel.add(editButton); // Edit button
+		panel.add(editButton);
 		panel.add(Box.createRigidArea(new Dimension(10, 0)));
 		panel.add(new JLabel(String.format("%s: ", name)));
 		panel.add(numberText);
@@ -181,9 +209,9 @@ public class ResultScreen extends JPanel
 		};
 	}
 
-	private GraphContainer createGraphContainer()
+	private GraphContainer createGraphContainer(Graph graph)
 	{
-		GraphContainer container = new GraphContainer(this.createGraph());
+		GraphContainer container = new GraphContainer(graph, new DataPrecision(1, 1));
 		container.getAxis(Direction.BOTTOM).addTickmarks();
 		container.getAxis(Direction.BOTTOM).addNumbers();
 		container.getAxis(Direction.BOTTOM).addName("Discharge, Q");
@@ -196,9 +224,12 @@ public class ResultScreen extends JPanel
 	private Graph createGraph()
 	{
 		Graph graph = new Graph();
-		graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
-		graph.fitGridPlane(2, 2);
-		graph.getGraphComponents().add(new ContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
+		// graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
+		graph.setLinearPlane(new Range(0, 1000), new Range(0, 10));
+		graph.fitGridPlane(100, 2);
+		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.function));
+		graph.getGraphComponents().add(new VerticalLineVisualiser(graph, 493.66637)); // Line that the function should touch and end
+		// graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
 		return graph;
 	}
 
