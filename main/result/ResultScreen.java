@@ -29,6 +29,7 @@ import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import graphs.visualiser.VerticalLineVisualiser;
 import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
+import main.input.GraphController;
 import main.input.GraphEditDialog;
 import main.input.GraphEditScreen;
 import ui.Wrapper;
@@ -63,6 +64,7 @@ public class ResultScreen extends JPanel
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
+	private GraphController manningsGraphController;
 	private GraphEditDialog manningsGraphEditDialog;
 
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
@@ -85,7 +87,9 @@ public class ResultScreen extends JPanel
 		this.vLabel = new JLabel();
 		this.manningsGraph = this.createGraph();
 		this.manningsGraphContainer = this.createGraphContainer(this.manningsGraph);
+		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
+		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 
@@ -115,24 +119,36 @@ public class ResultScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		panel.add(new JButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph")));
+		JButton editButton = new JButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph"));
+		editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(editButton);
 
-		panel.add(this.numberEditPanel("Manning's Constant", this.n));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.numberEditPanel("Channel Bed Slope", this.s));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		JPanel inputPanel = new JPanel();
+		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
+		inputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		inputPanel.add(this.numberEditPanel("Manning's Constant", this.n));
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		inputPanel.add(this.numberEditPanel("Channel Bed Slope", this.s));
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		inputPanel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(inputPanel);
 
 		JButton calculate = new JButton(this.calculateAction());
 		calculate.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(calculate);
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.numberPanel("Water Level Elevation (m)", this.level.value.toString(), this.levelLabel));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.numberPanel("Cross-Section Area (m^2)", "0", this.aLabel));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.numberPanel("Velocity (m/s)", this.v.value.toString(), this.vLabel));
+
+		JPanel outputPanel = new JPanel();
+		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
+		outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);;
+		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		outputPanel.add(this.numberPanel("Water Level Elevation (m)", this.level.value.toString(), this.levelLabel));
+		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		outputPanel.add(this.numberPanel("Cross-Section Area (m^2)", "0", this.aLabel));
+		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		outputPanel.add(this.numberPanel("Velocity (m/s)", this.v.value.toString(), this.vLabel));
+		panel.add(outputPanel);
+
 		return panel;
 	}
 
@@ -140,7 +156,8 @@ public class ResultScreen extends JPanel
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		// panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
 		panel.add(new JLabel(String.format("%s: ", name)));
 		numberLabel.setText(defaultString);
 		panel.add(numberLabel);
@@ -151,7 +168,8 @@ public class ResultScreen extends JPanel
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		// panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
 		JLabel numberText = new JLabel(number.value.toString());
 		JButton editButton = new JButton(new AbstractAction("Edit")
 		{
