@@ -1,5 +1,7 @@
 package hydraulics;
 
+import java.util.Map.Entry;
+
 import data.ContinuousFunction;
 import data.DiscreteData;
 
@@ -7,22 +9,25 @@ import data.DiscreteData;
 public class ManningsFunction implements ContinuousFunction
 {
 	private ManningsModel model;
-	private double upperDischargeLimit; 
+	private double lowestElevation;
+	private double highestElevation; 
 
 	public ManningsFunction(ManningsModel model)
 	{
 		this.model = model;
-		this.upperDischargeLimit = 0;
+		this.lowestElevation = 0;
+		this.highestElevation = -1;
+		this.updateRange();
 	}
 
 	@Override
 	public boolean hasY(Double x)
 	{
-		if (!this.model.isCalcLevelReady())
+		if (!this.model.isCalcLevelReady() || this.model.getSectionData().size() == 0)
 		{
 			return false;
 		}
-		return 0 <= x && x < this.upperDischargeLimit;
+		return this.lowestElevation <= x && x < this.highestElevation;
 	}
 
 	@Override
@@ -35,23 +40,19 @@ public class ManningsFunction implements ContinuousFunction
 		return this.model.calcDischarge(x);
 	}
 
-	public void updateUpperLimit()
+	public void updateRange()
 	{
-		if (this.model.isCalcLevelReady())
+		Number lowest = ManningsFunction.getMinLevelY(this.model.getSectionData());
+		if (lowest != null)
 		{
-			this.upperDischargeLimit = this.getUpperLimit();
+			this.lowestElevation = lowest.doubleValue();
 		}
-	}
 
-	// Non-inclusive
-	private double getUpperLimit()
-	{
-		DiscreteData<?, ?> data = this.model.getSectionData();
-		if (data.size() == 0)
+		Number highest = ManningsFunction.getMaxLevelY(this.model.getSectionData());
+		if (highest != null)
 		{
-			return 0;
+			this.highestElevation = highest.doubleValue();
 		}
-		return this.model.calcDischarge(ManningsFunction.getMaxLevelY(data).doubleValue());
 	}
 
 	private static <M extends Number, N extends Number> N getMaxLevelY(DiscreteData<M, N> data)
@@ -63,5 +64,22 @@ public class ManningsFunction implements ContinuousFunction
 		N left = data.y(data.getXSet().first());
 		N right = data.y(data.getXSet().last());
 		return left.doubleValue() < right.doubleValue() ? left : right;
+	}
+
+	private static <M extends Number, N extends Number> N getMinLevelY(DiscreteData<M, N> data)
+	{
+		if (data.size() == 0)
+		{
+			return null;
+		}
+		N lowest = data.y(data.getXSet().first());
+		for (Entry<M, N> e : data.getEntrySet())
+		{
+			if (e.getValue().doubleValue() < lowest.doubleValue())
+			{
+				lowest = e.getValue();
+			}
+		}
+		return lowest;
 	}
 }
