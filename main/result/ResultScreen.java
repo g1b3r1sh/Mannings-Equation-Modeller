@@ -27,9 +27,9 @@ import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import graphs.visualiser.VerticalLineVisualiser;
 import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
-import main.input.GraphController;
-import main.input.GraphEditDialog;
-import main.input.GraphEditScreen;
+import main.dialogs.GraphController;
+import main.dialogs.GraphEditDialog;
+import main.dialogs.GraphEditScreen;
 import ui.Wrapper;
 
 /**

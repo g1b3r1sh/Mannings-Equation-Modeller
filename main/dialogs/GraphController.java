@@ -1,4 +1,4 @@
-package main.input;
+package main.dialogs;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

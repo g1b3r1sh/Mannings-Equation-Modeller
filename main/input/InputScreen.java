@@ -27,6 +27,11 @@ import graphs.GraphContainer;
 import hydraulics.WaterLevelChangeListener;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
+import main.dialogs.DataEditDialog;
+import main.dialogs.DataEditScreen;
+import main.dialogs.GraphController;
+import main.dialogs.GraphEditDialog;
+import main.dialogs.GraphEditScreen;
 import ui.GraphTableModel;
 import ui.PrecisionSpinnerModel;
 

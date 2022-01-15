@@ -6,8 +6,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import main.input.DataEditDialog;
-import ui.EditDialog;
+import main.dialogs.DataEditDialog;
+import main.dialogs.EditDialog;
 import ui.PrecisionSpinnerModel;
 
 import java.awt.event.ActionEvent;

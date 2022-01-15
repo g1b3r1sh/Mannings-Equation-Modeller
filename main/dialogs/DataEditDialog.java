@@ -1,10 +1,8 @@
-package main.input;
+package main.dialogs;
 
 import java.awt.Frame;
 
 import javax.swing.JOptionPane;
-
-import ui.EditDialog;
 
 public class DataEditDialog extends EditDialog
 {

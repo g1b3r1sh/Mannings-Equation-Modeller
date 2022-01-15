@@ -1,8 +1,6 @@
-package main.input;
+package main.dialogs;
 
 import java.awt.Frame;
-
-import ui.EditDialog;
 
 public class GraphEditDialog extends EditDialog
 {
