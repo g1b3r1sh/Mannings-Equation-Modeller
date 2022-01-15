@@ -1,7 +1,6 @@
 package main.result;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
@@ -24,7 +23,6 @@ import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.Range;
 import graphs.GraphContainer.Direction;
-import graphs.visualiser.ContinuousFunctionVisualiser;
 import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import graphs.visualiser.VerticalLineVisualiser;
 import hydraulics.ManningsFunction;
@@ -98,7 +96,7 @@ public class ResultScreen extends JPanel
 
 	public void refresh()
 	{
-		this.function.updateUpperLimit();
+		this.function.updateRange();
 		this.manningsGraph.repaint();
 		if (this.level.value != null && this.a.value != null && this.v.value != null)
 		{
@@ -203,28 +201,36 @@ public class ResultScreen extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ManningsModel model = ResultScreen.this.model;
-				double q = ResultScreen.this.q.value.doubleValue();
-				model.setN(ResultScreen.this.n.value);
-				model.setS(ResultScreen.this.s.value);
-				double level = model.calcWaterLevel(q, ResultScreen.this.modelStep(ResultScreen.DISPLAYED_SCALE));
-
-				if (model.withinBounds(level))
-				{
-					ResultScreen.this.level.value = new BigDecimal(level);
-					ResultScreen.this.a.value = new BigDecimal(model.calcArea(level));
-					ResultScreen.this.v.value = new BigDecimal(model.calcVelocity(q, level));
-				}
-				else
-				{
-					ResultScreen.this.level.value = null;
-					ResultScreen.this.a.value = null;
-					ResultScreen.this.v.value = null;
-				}
+				ResultScreen.this.updateModelConstants();
+				ResultScreen.this.setOutputValues(ResultScreen.this.q.value.doubleValue());
 				
 				ResultScreen.this.refresh();
 			}
 		};
+	}
+
+	private void updateModelConstants()
+	{
+		this.model.setN(this.n.value);
+		this.model.setS(this.s.value);
+	}
+
+	private void setOutputValues(double q)
+	{
+		double level = this.model.calcWaterLevel(q, this.modelStep(ResultScreen.DISPLAYED_SCALE));
+
+		if (this.model.withinBounds(level))
+		{
+			this.level.value = new BigDecimal(level);
+			this.a.value = new BigDecimal(this.model.calcArea(level));
+			this.v.value = new BigDecimal(this.model.calcVelocity(q, level));
+		}
+		else
+		{
+			this.level.value = null;
+			this.a.value = null;
+			this.v.value = null;
+		}
 	}
 
 	private GraphContainer createGraphContainer(Graph graph)
@@ -243,10 +249,10 @@ public class ResultScreen extends JPanel
 	{
 		Graph graph = new Graph();
 		// graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
-		graph.setLinearPlane(new Range(0, 1000), new Range(0, 10));
+		graph.setLinearPlane(new Range(0, 500), new Range(0, 10));
 		graph.fitGridPlane(100, 2);
 		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.function));
-		graph.getGraphComponents().add(new VerticalLineVisualiser(graph, 493.66637)); // Line that the function should touch and end
+		// graph.getGraphComponents().add(new VerticalLineVisualiser(graph, 493.66637)); // Line that the default function should touch and end
 		// graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
 		return graph;
 	}
