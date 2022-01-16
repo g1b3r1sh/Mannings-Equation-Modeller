@@ -25,7 +25,7 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 		
 		this.pane = new JOptionPane(screen, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 		this.setContentPane(this.pane);
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.pane.addPropertyChangeListener(JOptionPane.VALUE_PROPERTY, this);
 	}
 
@@ -51,7 +51,7 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 	// Since closing with the x button does not result in the calling of this method, this method should only hide the dialog
 	public void close()
 	{
-		this.setVisible(false);
+		this.dispose();
 	}
 
 	protected abstract boolean canOkClose();
