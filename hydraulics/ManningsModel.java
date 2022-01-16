@@ -61,7 +61,7 @@ public class ManningsModel
 		for (waterLevel = this.calculator.getWaterLevel().doubleValue(); 
 			this.calculator.withinBounds() && this.calcConsistent(waterLevel, -1) == -1; 
 			waterLevel += step)
-		{ }
+		;
 
 		// If the calculator calculates a value, 
 		if (this.calculator.withinBounds())
@@ -76,7 +76,11 @@ public class ManningsModel
 			this.resetModel();
 			return this.calculator.getWaterLevel().doubleValue();
 		}
+	}
 
+	public double calcWaterLevel(double discharge, int displayScale)
+	{
+		return this.calcWaterLevel(discharge, this.defaultStep(displayScale));
 	}
 
 	public double calcVelocity(double discharge, double level)
@@ -146,5 +150,11 @@ public class ManningsModel
 		double aDist = Math.abs(n - a);
 		double bDist = Math.abs(n - b);
 		return aDist <= bDist ? a : b;
+	}
+
+	// By, default, steps by 10^-(scale of displayed values + 1)
+	private double defaultStep(int displayScale)
+	{
+		return Math.pow(0.1, displayScale + 1);
 	}
 }

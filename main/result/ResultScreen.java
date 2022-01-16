@@ -274,10 +274,4 @@ public class ResultScreen extends JPanel
 		// graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
 		return graph;
 	}
-
-	// Value of step of model should be 10^-(scale of displayed values + 1)
-	private double modelStep(int scale)
-	{
-		return Math.pow(0.1, scale + 1);
-	}
 }
