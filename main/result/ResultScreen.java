@@ -1,5 +1,6 @@
 package main.result;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -41,9 +42,7 @@ public class ResultScreen extends JPanel
 	private static final String INITIAL_N = "0.025";
 	private static final String INITIAL_S = "1";
 	private static final String INITIAL_Q = "1";
-	private static final String INITIAL_LEVEL = "0";
-	private static final String INITIAL_V = "0";
-	private static final int DISPLAYED_SCALE = 3;
+	private static final int DISPLAYED_SCALE = 6;
 
 	private JFrame parent;
 
@@ -55,10 +54,12 @@ public class ResultScreen extends JPanel
 	private Wrapper<BigDecimal> level;
 	private Wrapper<BigDecimal> a;
 	private Wrapper<BigDecimal> v;
+	private boolean overflowed;
 
 	private JLabel levelLabel;
 	private JLabel vLabel;
 	private JLabel aLabel;
+	private JLabel overflowLabel;
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
@@ -76,13 +77,17 @@ public class ResultScreen extends JPanel
 		this.n = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_N));
 		this.s = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_S));
 		this.q = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_Q));
-		this.level = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_LEVEL));
-		this.a = new Wrapper<>(new BigDecimal(0));
-		this.v = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_V));
+		this.level = new Wrapper<>(null);
+		this.a = new Wrapper<>(null);
+		this.v = new Wrapper<>(null);
 
 		this.levelLabel = new JLabel();
 		this.aLabel = new JLabel();
 		this.vLabel = new JLabel();
+		this.overflowLabel = new JLabel("Overflow!");
+		this.overflowLabel.setForeground(Color.RED);
+		this.overflowLabel.setVisible(false);
+		this.overflowed = false;
 		this.manningsGraph = this.createGraph();
 		this.manningsGraphContainer = this.createGraphContainer(this.manningsGraph);
 		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
@@ -106,10 +111,11 @@ public class ResultScreen extends JPanel
 		}
 		else
 		{
-			this.levelLabel.setText("Overflow!");
-			this.aLabel.setText("Overflow!");
-			this.vLabel.setText("Overflow!");
+			this.levelLabel.setText("");
+			this.aLabel.setText("");
+			this.vLabel.setText("");
 		}
+		this.overflowLabel.setVisible(this.overflowed);
 	}
 
 	private JPanel createSidePanel()
@@ -138,25 +144,39 @@ public class ResultScreen extends JPanel
 
 		JPanel outputPanel = new JPanel();
 		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
-		outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);;
+		outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.numberPanel("Water Level Elevation (m)", this.level.value.toString(), this.levelLabel));
+		outputPanel.add(this.labelPanel(this.overflowLabel));
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.numberPanel("Cross-Section Area (m^2)", "0", this.aLabel));
+		outputPanel.add(this.numberDisplayPanel("Water Level Elevation (m)", "", this.levelLabel));
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.numberPanel("Velocity (m/s)", this.v.value.toString(), this.vLabel));
+		outputPanel.add(this.numberDisplayPanel("Cross-Section Area (m^2)", "", this.aLabel));
+		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		outputPanel.add(this.numberDisplayPanel("Velocity (m/s)", "", this.vLabel));
 		panel.add(outputPanel);
 
 		return panel;
 	}
 
-	private JPanel numberPanel(String name, String defaultString, JLabel numberLabel)
+	private JPanel labelPanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		return panel;
+	}
 
-		panel.add(new JLabel(String.format("%s: ", name)));
+	private JPanel labelPanel(JLabel label)
+	{
+		JPanel panel = this.labelPanel();
+		panel.add(label);
+		return panel;
+	}
+
+	private JPanel numberDisplayPanel(String name, String defaultString, JLabel numberLabel)
+	{
+		JPanel panel = this.labelPanel(new JLabel(String.format("%s: ", name)));
+
 		numberLabel.setText(defaultString);
 		panel.add(numberLabel);
 		return panel;
@@ -164,9 +184,7 @@ public class ResultScreen extends JPanel
 
 	private JPanel numberEditPanel(String name, Wrapper<BigDecimal> number)
 	{
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JPanel panel = this.labelPanel();
 
 		JLabel numberText = new JLabel(number.value.toString());
 		JButton editButton = new JButton(new AbstractAction("Edit")
