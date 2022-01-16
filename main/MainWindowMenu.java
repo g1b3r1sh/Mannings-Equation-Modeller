@@ -11,7 +11,6 @@ import main.dialogs.EditDialog;
 import ui.PrecisionSpinnerModel;
 
 import java.awt.event.ActionEvent;
-import java.util.function.Consumer;
 
 public class MainWindowMenu extends JMenuBar
 {
@@ -36,15 +35,13 @@ public class MainWindowMenu extends JMenuBar
 			{
 				MainWindow window = MainWindowMenu.this.window;
 				window.getScreenSwitcher().switchFirst();
-				window.getInputScreen().getEditDialog().open(new Consumer<EditDialog>()
-				{
-					@Override
-					public void accept(EditDialog t)
+				window.getInputScreen().getEditDialog().open(
+					(EditDialog t) ->
 					{
 						DataEditDialog dialog = (DataEditDialog) t;
 						dialog.getEditScreen().getController().getNewTableAction().actionPerformed(null);
 					}
-				});
+				);
 			}
 		}));
 		edit.add(menuItem("Edit Dataset", new Runnable() {
