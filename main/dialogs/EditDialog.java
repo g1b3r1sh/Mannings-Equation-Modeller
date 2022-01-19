@@ -33,14 +33,17 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 
 	public void open(Consumer<EditDialog> consumer)
 	{
-		this.prepareScreen();
-		this.pack();
-		this.setLocationRelativeTo(this.getOwner());
-		if (consumer != null)
+		if (!this.isVisible())
 		{
-			consumer.accept(this);
+			this.prepareScreen();
+			this.pack();
+			this.setLocationRelativeTo(this.getOwner());
+			if (consumer != null)
+			{
+				consumer.accept(this);
+			}
+			this.setVisible(true);
 		}
-		this.setVisible(true);
 	}
 
 	public void open()
@@ -51,7 +54,10 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 	// Since closing with the x button does not result in the calling of this method, this method should only hide the dialog
 	public void close()
 	{
-		this.dispose();
+		if (this.isVisible())
+		{
+			this.dispose();
+		}
 	}
 
 	protected abstract boolean canOkClose();
@@ -60,7 +66,7 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 	@Override
 	public void propertyChange(PropertyChangeEvent e)
 	{
-		if (this.isVisible() && e.getSource() == this.pane)
+		if (this.isVisible() && e.getSource() == this.pane && JOptionPane.VALUE_PROPERTY.equals(e.getPropertyName()))
 		{
 			Object value = e.getNewValue();
 			if (value == JOptionPane.UNINITIALIZED_VALUE)
