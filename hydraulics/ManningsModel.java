@@ -122,7 +122,7 @@ public class ManningsModel
 		return this.calculator.withinBounds();
 	}
 
-	private void setupModel(double waterLevel)
+	private synchronized void setupModel(double waterLevel)
 	{
 		this.calculator.setWaterLevel(waterLevel);
 		// Warning: If water level overflows, a and p will both be zero, invalidating the equation
@@ -131,7 +131,7 @@ public class ManningsModel
 	}
 
 	// Reset model so that if any values are accidentally not set, the function throws a null pointer exception
-	private void resetModel()
+	private synchronized void resetModel()
 	{
 		this.equation.q = null;
 		this.equation.a = null;
