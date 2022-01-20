@@ -1,5 +1,7 @@
 package hydraulics;
 
+import java.util.function.BooleanSupplier;
+
 import data.DiscreteData;
 
 /* Equation Analysis
@@ -28,6 +30,13 @@ public class ManningsModel
 		this.equation = new ManningsEquation();
 	}
 
+	public ManningsModel(ManningsModel model)
+	{
+		this(model.getSectionData());
+		this.setN(model.equation.n);
+		this.setS(model.equation.s);
+	}
+
 	public DiscreteData<?, ?> getSectionData()
 	{
 		return this.calculator.getSectionData();
@@ -50,7 +59,8 @@ public class ManningsModel
 
 	// If there does not exist a water level that satisfies the equation, will return a water level that is out of bounds of data
 	// Requires n and s to be set
-	public double calcWaterLevel(double discharge, double step)
+	// Runs as long as runCondition is true; if not, returns a level not in the range of data
+	private double calcWaterLevel(double discharge, double step, BooleanSupplier runCondition)
 	{
 		this.equation.q = discharge;
 		this.calculator.moveToLowest();
@@ -61,7 +71,14 @@ public class ManningsModel
 		for (waterLevel = this.calculator.getWaterLevel().doubleValue(); 
 			this.calculator.withinBounds() && this.calcConsistent(waterLevel, -1) == -1; 
 			waterLevel += step)
-		;
+		{
+			if (!runCondition.getAsBoolean())
+			{
+				this.calculator.moveToLowest();
+				this.resetModel();
+				return this.calculator.getWaterLevel().doubleValue() - step;
+			}
+		}
 
 		// If the calculator calculates a value, 
 		if (this.calculator.withinBounds())
@@ -78,9 +95,14 @@ public class ManningsModel
 		}
 	}
 
+	public double calcWaterLevel(double discharge, int displayScale, BooleanSupplier runCondition)
+	{
+		return this.calcWaterLevel(discharge, this.defaultStep(displayScale), runCondition);
+	}
+
 	public double calcWaterLevel(double discharge, int displayScale)
 	{
-		return this.calcWaterLevel(discharge, this.defaultStep(displayScale));
+		return this.calcWaterLevel(discharge, displayScale, () -> true);
 	}
 
 	public double calcVelocity(double discharge, double level)
@@ -122,7 +144,7 @@ public class ManningsModel
 		return this.calculator.withinBounds();
 	}
 
-	private synchronized void setupModel(double waterLevel)
+	private void setupModel(double waterLevel)
 	{
 		this.calculator.setWaterLevel(waterLevel);
 		// Warning: If water level overflows, a and p will both be zero, invalidating the equation
@@ -131,7 +153,7 @@ public class ManningsModel
 	}
 
 	// Reset model so that if any values are accidentally not set, the function throws a null pointer exception
-	private synchronized void resetModel()
+	private void resetModel()
 	{
 		this.equation.q = null;
 		this.equation.a = null;
