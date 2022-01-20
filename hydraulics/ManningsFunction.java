@@ -23,7 +23,7 @@ public class ManningsFunction implements ContinuousFunction
 	@Override
 	public boolean hasY(Double x)
 	{
-		if (!this.model.isCalcLevelReady() || this.model.getSectionData().size() == 0)
+		if (!this.model.constantsSet() || this.model.getSectionData().size() == 0)
 		{
 			return false;
 		}

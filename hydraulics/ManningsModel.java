@@ -52,31 +52,52 @@ public class ManningsModel
 		this.equation.s = s.doubleValue();
 	}
 
-	public boolean isCalcLevelReady()
+	public boolean constantsSet()
 	{
 		return this.equation.n != null && this.equation.n != 0 && this.equation.s != null;
 	}
 
-	// If there does not exist a water level that satisfies the equation, will return a water level that is out of bounds of data
-	// Requires n and s to be set
-	// Runs as long as runCondition is true; if not, returns a level not in the range of data
-	private double calcWaterLevel(double discharge, double step, BooleanSupplier runCondition)
+	// Calculates whether waterLevel is inside the bounds of the data
+	private boolean withinData(double waterLevel)
 	{
+		return this.calculator.getLowest().doubleValue() <= waterLevel && waterLevel <= this.calculator.getHighest().doubleValue();
+	}
+
+	// If there does not exist a water level that satisfies the equation, will return a water level that is out of bounds of data
+	// Runs as long as runCondition is true; if not, returns a level not in the range of data
+	private double calcWaterLevel(double discharge, double initStep, double hint, BooleanSupplier runCondition)
+	{
+		if (!this.constantsSet())
+		{
+			throw new IllegalStateException("Model is not ready.");
+		}
+
+		// If hint is not inside data, set it to the closest data point
+		if (hint < this.calculator.getLowest().doubleValue())
+		{
+			hint = this.calculator.getLowest().doubleValue();
+		}
+		else if (hint > this.calculator.getHighest().doubleValue())
+		{
+			hint = this.calculator.getHighest().doubleValue();
+		}
+
 		this.equation.q = discharge;
-		this.calculator.moveToLowest();
-	
+
+		int offsetDir = this.calcConsistent(hint, -1);
+		double step = offsetDir == -1 ? Math.abs(initStep) : -1 * Math.abs(initStep);
+
 		// Increase water level until either the equation is satisfied or the water overflows the banks
 		// The loop stops if the calculated value exceeds the desired value
 		double waterLevel;
 		for (waterLevel = this.calculator.getWaterLevel().doubleValue(); 
-			this.calculator.withinBounds() && this.calcConsistent(waterLevel, -1) == -1; 
+			this.withinData(waterLevel) && this.calcConsistent(waterLevel, -1) == offsetDir; 
 			waterLevel += step)
 		{
 			if (!runCondition.getAsBoolean())
 			{
-				this.calculator.moveToLowest();
 				this.resetModel();
-				return this.calculator.getWaterLevel().doubleValue() - step;
+				return this.calculator.getLowest().doubleValue() - Math.abs(step);
 			}
 		}
 
@@ -97,12 +118,29 @@ public class ManningsModel
 
 	public double calcWaterLevel(double discharge, int displayScale, BooleanSupplier runCondition)
 	{
-		return this.calcWaterLevel(discharge, this.defaultStep(displayScale), runCondition);
+		double waterLevel = this.calculator.getLowest().doubleValue();
+		for (int i = 0 < displayScale ? 0 : displayScale; i <= displayScale; i++)
+		{
+			waterLevel = this.calcWaterLevel(discharge, this.defaultStep(i), waterLevel, runCondition);
+		}
+		return waterLevel;
 	}
 
 	public double calcWaterLevel(double discharge, int displayScale)
 	{
 		return this.calcWaterLevel(discharge, displayScale, () -> true);
+	}
+
+	public double calcDischarge(double level)
+	{
+		if (!this.constantsSet())
+		{
+			throw new IllegalStateException("Model is not ready.");
+		}
+		this.setupModel(level);
+		double discharge = this.equation.calcDischarge();
+		this.resetModel();
+		return discharge;
 	}
 
 	public double calcVelocity(double discharge, double level)
@@ -122,14 +160,6 @@ public class ManningsModel
 	{
 		this.calculator.setWaterLevel(level);
 		return this.calculator.crossSectionArea();
-	}
-
-	public double calcDischarge(double level)
-	{
-		this.setupModel(level);
-		double discharge = this.equation.calcDischarge();
-		this.resetModel();
-		return discharge;
 	}
 
 	public double calcPerimeter(double level)
