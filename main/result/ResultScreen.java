@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -16,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 import data.DataPrecision;
 import data.MapDiscreteData;
@@ -31,6 +33,7 @@ import hydraulics.ManningsModel;
 import main.dialogs.GraphController;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
+import main.dialogs.SwingWorkerDialog;
 import ui.Wrapper;
 
 /**
@@ -65,6 +68,7 @@ public class ResultScreen extends JPanel
 	private GraphContainer manningsGraphContainer;
 	private GraphController manningsGraphController;
 	private GraphEditDialog manningsGraphEditDialog;
+	private SwingWorkerDialog workerDialog;
 
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
 	{
@@ -93,6 +97,8 @@ public class ResultScreen extends JPanel
 		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
+
+		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 
@@ -220,8 +226,7 @@ public class ResultScreen extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				ResultScreen.this.updateModelConstants();
-				ResultScreen.this.setOutputValues(ResultScreen.this.q.value.doubleValue());
-				
+				ResultScreen.this.calcOutputValues(ResultScreen.this.q.value.doubleValue());
 				ResultScreen.this.refresh();
 			}
 		};
@@ -233,15 +238,56 @@ public class ResultScreen extends JPanel
 		this.model.setS(this.s.value);
 	}
 
-	private void setOutputValues(double q)
+	private void calcOutputValues(double q)
 	{
-		double level = this.model.calcWaterLevel(q, this.modelStep(ResultScreen.DISPLAYED_SCALE));
+		class CalcWorker extends SwingWorker<Double, Object>
+		{
+			private ManningsModel model;
+			private double discharge;
+			private int displayScale;
+	
+			public CalcWorker(ManningsModel model, double discharge, int displayScale)
+			{
+				super();
+				this.model = new ManningsModel(model);
+				this.discharge = discharge;
+				this.displayScale = displayScale;
+			}
 
+			@Override
+			protected Double doInBackground() throws Exception
+			{
+				return this.model.calcWaterLevel(this.discharge, this.displayScale, () -> !this.isCancelled());
+			}
+
+			@Override
+			protected void done()
+			{
+				if (!this.isCancelled())
+				{
+					try
+					{
+						ResultScreen.this.updateWaterLevel(this.discharge, this.get());
+					}
+					catch (InterruptedException | ExecutionException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		CalcWorker worker = new CalcWorker(this.model, q, ResultScreen.DISPLAYED_SCALE);
+		this.workerDialog.open(worker);
+	}
+
+	private void updateWaterLevel(double discharge, double level)
+	{
 		if (this.model.withinBounds(level))
 		{
 			this.level.value = new BigDecimal(level);
 			this.a.value = new BigDecimal(this.model.calcArea(level));
-			this.v.value = new BigDecimal(this.model.calcVelocity(q, level));
+			this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level));
 		}
 		else
 		{
