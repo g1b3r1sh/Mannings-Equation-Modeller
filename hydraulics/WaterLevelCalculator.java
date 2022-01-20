@@ -32,7 +32,10 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 
 	public void setWaterLevel(Number waterLevel)
 	{
-		this.waterLevel = waterLevel;
+		if (waterLevel != null)
+		{
+			this.waterLevel = waterLevel;
+		}
 	}
 	
 	public DiscreteData<M, N> getSectionData()
@@ -58,6 +61,50 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	public boolean aboveWater(M x)
 	{
 		return this.data.getDataSet().y(x).doubleValue() >= this.waterLevel.doubleValue();
+	}
+
+	// Returns lowest possble water level (without it not touching the continuous function of the data points)
+	public N getLowest()
+	{
+		DiscreteData<M, N> dataset = this.data.getDataSet();
+		if (dataset.size() > 0)
+		{
+			N lowest = dataset.y(dataset.getXSet().first());
+			for (Entry<M, N> e : dataset.getEntrySet())
+			{
+				if (e.getValue().doubleValue() < lowest.doubleValue())
+				{
+					lowest = e.getValue();
+				}
+			}
+			return lowest;
+		}
+		return null;
+	}
+
+	// Returns highest possible water level
+	public N getHighest()
+	{
+		DiscreteData<M, N> dataset = this.data.getDataSet();
+		if (dataset.size() == 0)
+		{
+			return null;
+		}
+		else if (dataset.size() == 1)
+		{
+			return dataset.y(dataset.getXSet().first());
+		}
+		else
+		{
+			N left = dataset.y(dataset.getXSet().first());
+			N right = dataset.y(dataset.getXSet().last());
+			return left.doubleValue() <= right.doubleValue() ? left : right;
+		}
+	}
+
+	public void moveToLowest()
+	{
+		this.setWaterLevel(this.getLowest());
 	}
 
 	public double crossSectionArea()
@@ -97,24 +144,6 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 			}
 		}
 		return perimeter;
-	}
-
-	// Sets water level to lowest point in data, where area is 0
-	public void moveToLowest()
-	{
-		DiscreteData<M, N> dataset = this.data.getDataSet();
-		if (dataset.size() > 0)
-		{
-			N lowest = dataset.y(dataset.getXSet().first());
-			for (Entry<M, N> e : dataset.getEntrySet())
-			{
-				if (e.getValue().doubleValue() < lowest.doubleValue())
-				{
-					lowest = e.getValue();
-				}
-			}
-			this.setWaterLevel(lowest);
-		}
 	}
 
 	// To generate shapes, go through all data
