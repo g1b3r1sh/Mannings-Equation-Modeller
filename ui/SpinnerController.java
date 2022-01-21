@@ -16,20 +16,28 @@ public class SpinnerController<T> implements ChangeListener
 		this.listener = listener;
 	}
 
+	public SpinnerController(Wrapper<T> value)
+	{
+		this(value, null);
+	}
+
 	public void setValue(T value)
 	{
 		this.value.value = value;
 		this.spinner.setValue(this.value.value);
 	}
 
-	public void addSpinner(JSpinner spinner)
+	public void setSpinner(JSpinner spinner)
 	{
 		if (this.spinner != null)
 		{
 			this.spinner.removeChangeListener(this);
 		}
 		this.spinner = spinner;
-		this.spinner.addChangeListener(this);
+		if (this.spinner != null)
+		{
+			this.spinner.addChangeListener(this);
+		}
 	}
 
 	@Override
