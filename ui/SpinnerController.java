@@ -21,6 +21,11 @@ public class SpinnerController<T> implements ChangeListener
 		this(value, null);
 	}
 
+	public T getValue()
+	{
+		return this.value.value;
+	}
+
 	public void setValue(T value)
 	{
 		this.value.value = value;

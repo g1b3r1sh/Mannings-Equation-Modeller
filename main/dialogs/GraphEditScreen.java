@@ -151,32 +151,14 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		panel.add(new JLabel("Y Axis"));
 		panel.add(this.createRangeSpinners(this.yRangeController));
 
-		JSpinner scaleXSpinner = new JSpinner(new SpinnerNumberModel(this.xScale.value, 0, null, 1));
-		this.widenSpinner(scaleXSpinner);
-		this.xScaleController.setSpinner(scaleXSpinner);
-		panel.add(this.createSpinnerPanel("X Scale: ", scaleXSpinner));
-		JSpinner scaleYSpinner = new JSpinner(new SpinnerNumberModel(this.yScale.value, 0, null, 1));
-		this.widenSpinner(scaleYSpinner);
-		this.yScaleController.setSpinner(scaleYSpinner);
-		panel.add(this.createSpinnerPanel("Y Scale: ", scaleYSpinner));
+		panel.add(this.createSpinnerPanel("X Scale: ", this.createIntegerSpinner(this.xScaleController, 0, null, 1)));
+		panel.add(this.createSpinnerPanel("Y Scale: ", this.createIntegerSpinner(this.yScaleController, 0, null, 1)));
 		
-		JSpinner ticksXSpinner = new JSpinner(new SpinnerNumberModel(this.xTicks.value, 2, null, 1));
-		this.widenSpinner(ticksXSpinner);
-		this.xTicksController.setSpinner(ticksXSpinner);
-		panel.add(this.createSpinnerPanel("X Tickmarks: ", ticksXSpinner));
-		JSpinner ticksYSpinner = new JSpinner(new SpinnerNumberModel(this.yTicks.value, 2, null, 1));
-		this.widenSpinner(ticksYSpinner);
-		this.yTicksController.setSpinner(ticksYSpinner);
-		panel.add(this.createSpinnerPanel("Y Tickmarks: ", ticksYSpinner));
+		panel.add(this.createSpinnerPanel("X Tickmarks: ", this.createIntegerSpinner(this.xTicksController, 2, null, 1)));
+		panel.add(this.createSpinnerPanel("Y Tickmarks: ", this.createIntegerSpinner(this.yTicksController, 2, null, 1)));
 		
-		JSpinner gridXSpinner = new JSpinner(new SpinnerNumberModel(this.gridX.value, 1, null, 1));
-		this.widenSpinner(gridXSpinner);
-		this.gridXController.setSpinner(gridXSpinner);
-		panel.add(this.createSpinnerPanel("Grid Columns: ", gridXSpinner));
-		JSpinner gridYSpinner = new JSpinner(new SpinnerNumberModel(this.gridY.value, 1, null, 1));
-		this.widenSpinner(gridYSpinner);
-		this.gridYController.setSpinner(gridYSpinner);
-		panel.add(this.createSpinnerPanel("Grid Rows: ", gridYSpinner));
+		panel.add(this.createSpinnerPanel("Grid Columns: ", this.createIntegerSpinner(this.gridXController, 1, null, 1)));
+		panel.add(this.createSpinnerPanel("Grid Rows: ", this.createIntegerSpinner(this.gridYController, 1, null, 1)));
 		
 		return panel;
 	}
@@ -199,6 +181,14 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		panel.add(upper);
 		
 		return panel;
+	}
+
+	private JSpinner createIntegerSpinner(SpinnerController<Integer> controller, Integer lower, Integer upper, Number step)
+	{
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(controller.getValue(), lower, upper, step));
+		controller.setSpinner(spinner);
+		this.widenSpinner(spinner);
+		return spinner;
 	}
 
 	private JPanel createSpinnerPanel(String label, JSpinner spinner)
