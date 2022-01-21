@@ -57,6 +57,21 @@ public class ManningsModel
 		return this.equation.n != null && this.equation.n != 0 && this.equation.s != null;
 	}
 
+	public boolean dischargeWithinData(double discharge)
+	{
+		return  !this.dischargeUnderflow(discharge) && !this.dischargeOverflow(discharge);
+	}
+
+	public boolean dischargeUnderflow(double discharge)
+	{
+		return discharge < 0;
+	}
+
+	public boolean dischargeOverflow(double discharge)
+	{
+		return discharge > this.calcDischarge(this.calculator.getHighest().doubleValue());
+	}
+
 	// Calculates whether waterLevel is inside the bounds of the data
 	private boolean withinData(double waterLevel)
 	{
@@ -70,6 +85,10 @@ public class ManningsModel
 		if (!this.constantsSet())
 		{
 			throw new IllegalStateException("Model is not ready.");
+		}
+		if (!this.dischargeWithinData(discharge))
+		{
+			throw new IllegalArgumentException("Discharge is not within bounds of data.");
 		}
 
 		// If hint is not inside data, set it to the closest data point

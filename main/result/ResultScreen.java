@@ -45,7 +45,12 @@ public class ResultScreen extends JPanel
 	private static final String INITIAL_N = "0.025";
 	private static final String INITIAL_S = "1";
 	private static final String INITIAL_Q = "1";
-	private static final int DISPLAYED_SCALE = 6;
+	private static final int DISPLAYED_SCALE = 8;
+
+	private static enum ModelError
+	{
+		DISCHARGE_OVERFLOW, DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NONE
+	}
 
 	private JFrame parent;
 
@@ -57,12 +62,12 @@ public class ResultScreen extends JPanel
 	private Wrapper<BigDecimal> level;
 	private Wrapper<BigDecimal> a;
 	private Wrapper<BigDecimal> v;
-	private boolean overflowed;
+	private ModelError error = ModelError.NONE;
 
 	private JLabel levelLabel;
 	private JLabel vLabel;
 	private JLabel aLabel;
-	private JLabel overflowLabel;
+	private JLabel errorLabel;
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
@@ -88,10 +93,10 @@ public class ResultScreen extends JPanel
 		this.levelLabel = new JLabel();
 		this.aLabel = new JLabel();
 		this.vLabel = new JLabel();
-		this.overflowLabel = new JLabel("Overflow!");
-		this.overflowLabel.setForeground(Color.RED);
-		this.overflowLabel.setVisible(false);
-		this.overflowed = false;
+		this.errorLabel = new JLabel("");
+		this.errorLabel.setForeground(Color.RED);
+		this.errorLabel.setVisible(false);
+
 		this.manningsGraph = this.createGraph();
 		this.manningsGraphContainer = this.createGraphContainer(this.manningsGraph);
 		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
@@ -105,7 +110,7 @@ public class ResultScreen extends JPanel
 		this.add(this.manningsGraphContainer, BorderLayout.CENTER);
 	}
 
-	public void refresh()
+	public void refreshVisuals()
 	{
 		this.function.updateRange();
 		this.manningsGraph.repaint();
@@ -121,7 +126,22 @@ public class ResultScreen extends JPanel
 			this.aLabel.setText("");
 			this.vLabel.setText("");
 		}
-		this.overflowLabel.setVisible(this.overflowed);
+		
+		switch (this.error)
+		{
+			case CONSTANTS_NOT_SET:
+				this.showErrorMessage("Constants not set!");
+				break;
+			case DISCHARGE_OVERFLOW:
+				this.showErrorMessage("Discharge too high!");
+				break;
+			case DISCHARGE_UNDERFLOW:
+				this.showErrorMessage("Discharge too low!");
+				break;
+			case NONE:
+			default:
+				this.hideErrorMessage();
+		}
 	}
 
 	private JPanel createSidePanel()
@@ -152,7 +172,7 @@ public class ResultScreen extends JPanel
 		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
 		outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.labelPanel(this.overflowLabel));
+		outputPanel.add(this.labelPanel(this.errorLabel));
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		outputPanel.add(this.numberDisplayPanel("Water Level Elevation (m)", "", this.levelLabel));
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -227,7 +247,7 @@ public class ResultScreen extends JPanel
 			{
 				ResultScreen.this.updateModelConstants();
 				ResultScreen.this.calcOutputValues(ResultScreen.this.q.value.doubleValue());
-				ResultScreen.this.refresh();
+				ResultScreen.this.refreshVisuals();
 			}
 		};
 	}
@@ -257,7 +277,14 @@ public class ResultScreen extends JPanel
 			@Override
 			protected Double doInBackground() throws Exception
 			{
-				return this.model.calcWaterLevel(this.discharge, this.displayScale, () -> !this.isCancelled());
+				if (this.model.constantsSet() && this.model.dischargeWithinData(this.discharge))
+				{
+					return this.model.calcWaterLevel(this.discharge, this.displayScale, () -> !this.isCancelled());
+				}
+				else
+				{
+					return null;
+				}
 			}
 
 			@Override
@@ -265,13 +292,32 @@ public class ResultScreen extends JPanel
 			{
 				if (!this.isCancelled())
 				{
+					Double level = null;
 					try
 					{
-						ResultScreen.this.updateWaterLevel(this.discharge, this.get());
+						level = this.get();
 					}
 					catch (InterruptedException | ExecutionException e)
 					{
 						e.printStackTrace();
+					}
+					ResultScreen.this.updateWaterLevel(this.discharge, level);
+
+					if (!this.model.constantsSet())
+					{
+						ResultScreen.this.waterLevelError(ModelError.CONSTANTS_NOT_SET);
+					}
+					else if (this.model.dischargeOverflow(this.discharge))
+					{
+						ResultScreen.this.waterLevelError(ModelError.DISCHARGE_OVERFLOW);
+					}
+					else if (this.model.dischargeUnderflow(this.discharge))
+					{
+						ResultScreen.this.waterLevelError(ModelError.DISCHARGE_UNDERFLOW);
+					}
+					else
+					{
+						ResultScreen.this.waterLevelError(ModelError.NONE);
 					}
 				}
 			}
@@ -281,20 +327,35 @@ public class ResultScreen extends JPanel
 		this.workerDialog.open(worker);
 	}
 
-	private void updateWaterLevel(double discharge, double level)
+	private void updateWaterLevel(double discharge, Double level)
 	{
-		if (this.model.withinBounds(level))
-		{
-			this.level.value = new BigDecimal(level);
-			this.a.value = new BigDecimal(this.model.calcArea(level));
-			this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level));
-		}
-		else
+		if (level == null || !this.model.withinBounds(level) || (discharge != 0 && this.model.calcArea(level) == 0))
 		{
 			this.level.value = null;
 			this.a.value = null;
 			this.v.value = null;
+			return;
 		}
+		this.level.value = new BigDecimal(level);
+		this.a.value = new BigDecimal(this.model.calcArea(level));
+		this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level));
+	}
+
+	private void waterLevelError(ModelError error)
+	{
+		this.error = error;
+	}
+
+	private void showErrorMessage(String message)
+	{
+		this.errorLabel.setText(message);
+		this.errorLabel.setVisible(true);
+	}
+
+	private void hideErrorMessage()
+	{
+		this.errorLabel.setText("");
+		this.errorLabel.setVisible(false);
 	}
 
 	private GraphContainer createGraphContainer(Graph graph)
