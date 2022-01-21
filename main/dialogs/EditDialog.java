@@ -60,8 +60,8 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 		}
 	}
 
-	protected abstract boolean canOkClose();
-	protected abstract void okCloseActions();
+	protected abstract boolean canSave();
+	protected abstract void save();
 
 	@Override
 	public void propertyChange(PropertyChangeEvent e)
@@ -77,9 +77,9 @@ public abstract class EditDialog extends JDialog implements PropertyChangeListen
 			if ((Integer) value == JOptionPane.OK_OPTION)
 			{
 				// Validate input, if valid, call event for setting values and close
-				if (this.canOkClose())
+				if (this.canSave())
 				{
-					this.okCloseActions();
+					this.save();
 					this.close();
 				}
 			}

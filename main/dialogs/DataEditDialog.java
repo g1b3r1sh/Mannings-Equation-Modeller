@@ -29,7 +29,7 @@ public class DataEditDialog extends EditDialog
 	}
 
 	@Override
-	protected boolean canOkClose() {
+	protected boolean canSave() {
 		if (this.screen.getModel().containsDuplicates())
 		{
 			JOptionPane.showMessageDialog(this, "Error: X column contains duplicates.", "Error: Duplicates", JOptionPane.ERROR_MESSAGE);
@@ -47,7 +47,7 @@ public class DataEditDialog extends EditDialog
 	}
 
 	@Override
-	protected void okCloseActions()
+	protected void save()
 	{
 		this.firePropertyChange("update", null, this.screen.getModel());
 	}

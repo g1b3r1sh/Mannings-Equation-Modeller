@@ -22,13 +22,13 @@ public class GraphEditDialog extends EditDialog
 	}
 
 	@Override
-	protected boolean canOkClose()
+	protected boolean canSave()
 	{
 		return true;
 	}
 
 	@Override
-	protected void okCloseActions()
+	protected void save()
 	{
 		this.firePropertyChange("update", null, this.screen.getPreviewGraph());
 	}
