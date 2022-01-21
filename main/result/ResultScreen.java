@@ -114,6 +114,12 @@ public class ResultScreen extends JPanel
 	{
 		this.function.updateRange();
 		this.manningsGraph.repaint();
+		this.refreshOutputLabels();
+		this.refreshErrorMessage();
+	}
+
+	private void refreshOutputLabels()
+	{
 		if (this.level.value != null && this.a.value != null && this.v.value != null)
 		{
 			this.levelLabel.setText(this.level.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
@@ -126,7 +132,10 @@ public class ResultScreen extends JPanel
 			this.aLabel.setText("");
 			this.vLabel.setText("");
 		}
-		
+	}
+
+	private void refreshErrorMessage()
+	{
 		switch (this.error)
 		{
 			case CONSTANTS_NOT_SET:
