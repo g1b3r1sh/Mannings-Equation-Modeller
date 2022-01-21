@@ -183,9 +183,9 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		return panel;
 	}
 
-	private JSpinner createIntegerSpinner(SpinnerController<Integer> controller, Integer lower, Integer upper, Number step)
+	private JSpinner createIntegerSpinner(SpinnerController<Integer> controller, Integer min, Integer max, Number step)
 	{
-		JSpinner spinner = new JSpinner(new SpinnerNumberModel(controller.getValue(), lower, upper, step));
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(controller.getValue(), min, max, step));
 		controller.setSpinner(spinner);
 		this.widenSpinner(spinner);
 		return spinner;

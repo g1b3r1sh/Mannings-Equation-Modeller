@@ -13,10 +13,13 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
 import data.DataPrecision;
@@ -34,6 +37,7 @@ import main.dialogs.GraphController;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
+import ui.SpinnerController;
 import ui.Wrapper;
 
 /**
@@ -45,7 +49,9 @@ public class ResultScreen extends JPanel
 	private static final String INITIAL_N = "0.025";
 	private static final String INITIAL_S = "1";
 	private static final String INITIAL_Q = "1";
-	private static final int DISPLAYED_SCALE = 8;
+	private static final int DEFAULT_DISPLAYED_SCALE = 3;
+	private static final int MIN_DISPLAYED_SCALE = 0;
+	private static final int MAX_DISPLAYED_SCALE = 9;
 
 	private static enum ModelError
 	{
@@ -75,6 +81,9 @@ public class ResultScreen extends JPanel
 	private GraphEditDialog manningsGraphEditDialog;
 	private SwingWorkerDialog workerDialog;
 
+	private Wrapper<Integer> outputPrecision;
+	private SpinnerController<Integer> outputPrecisionController;
+
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
 	{
 		super();
@@ -103,6 +112,9 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
+		this.outputPrecision = new Wrapper<>(ResultScreen.DEFAULT_DISPLAYED_SCALE);
+		this.outputPrecisionController = new SpinnerController<>(this.outputPrecision);
+
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
@@ -122,9 +134,9 @@ public class ResultScreen extends JPanel
 	{
 		if (this.level.value != null && this.a.value != null && this.v.value != null)
 		{
-			this.levelLabel.setText(this.level.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
-			this.aLabel.setText(this.a.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
-			this.vLabel.setText(this.v.value.setScale(ResultScreen.DISPLAYED_SCALE, RoundingMode.HALF_UP).toString());
+			this.levelLabel.setText(this.level.value.toString());
+			this.aLabel.setText(this.a.value.toString());
+			this.vLabel.setText(this.v.value.toString());
 		}
 		else
 		{
@@ -171,6 +183,8 @@ public class ResultScreen extends JPanel
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		inputPanel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		inputPanel.add(this.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
+		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(inputPanel);
 
 		JButton calculate = new JButton(this.calculateAction());
@@ -181,7 +195,7 @@ public class ResultScreen extends JPanel
 		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
 		outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.labelPanel(this.errorLabel));
+		outputPanel.add(this.componentPanel(this.errorLabel));
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		outputPanel.add(this.numberDisplayPanel("Water Level Elevation (m)", "", this.levelLabel));
 		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -201,17 +215,18 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	private JPanel labelPanel(JLabel label)
+	private JPanel componentPanel(JComponent component)
 	{
 		JPanel panel = this.labelPanel();
-		panel.add(label);
+		panel.add(component);
 		return panel;
 	}
 
 	private JPanel numberDisplayPanel(String name, String defaultString, JLabel numberLabel)
 	{
-		JPanel panel = this.labelPanel(new JLabel(String.format("%s: ", name)));
+		JPanel panel = this.labelPanel();
 
+		panel.add(new JLabel(String.format("%s: ", name)));
 		numberLabel.setText(defaultString);
 		panel.add(numberLabel);
 		return panel;
@@ -245,6 +260,30 @@ public class ResultScreen extends JPanel
 		panel.add(new JLabel(String.format("%s: ", name)));
 		panel.add(numberText);
 		return panel;
+	}
+
+	private JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, int min, int max, int step)
+	{
+		JPanel panel = this.labelPanel();
+		panel.add(new JLabel(label));
+		panel.add(this.createIntegerSpinner(controller, min, max, step));
+		return panel;
+	}
+
+	private JSpinner createIntegerSpinner(SpinnerController<Integer> controller, Integer min, Integer max, Number step)
+	{
+		JSpinner spinner = new JSpinner(new SpinnerNumberModel(controller.getValue(), min, max, step))
+		{
+			@Override
+			public Dimension getMaximumSize()
+			{
+				Dimension size = super.getMaximumSize();
+				size.height = super.getPreferredSize().height;
+				return size;
+			}
+		};
+		controller.setSpinner(spinner);
+		return spinner;
 	}
 
 	private Action calculateAction()
@@ -332,7 +371,7 @@ public class ResultScreen extends JPanel
 			}
 		}
 		
-		CalcWorker worker = new CalcWorker(this.model, q, ResultScreen.DISPLAYED_SCALE);
+		CalcWorker worker = new CalcWorker(this.model, q, this.outputPrecision.value);
 		this.workerDialog.open(worker);
 	}
 
@@ -345,9 +384,9 @@ public class ResultScreen extends JPanel
 			this.v.value = null;
 			return;
 		}
-		this.level.value = new BigDecimal(level);
-		this.a.value = new BigDecimal(this.model.calcArea(level));
-		this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level));
+		this.level.value = new BigDecimal(level).setScale(this.outputPrecision.value, RoundingMode.HALF_UP);
+		this.a.value = new BigDecimal(this.model.calcArea(level)).setScale(this.outputPrecision.value, RoundingMode.HALF_UP);
+		this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level)).setScale(this.outputPrecision.value, RoundingMode.HALF_UP);
 	}
 
 	private void waterLevelError(ModelError error)
