@@ -77,10 +77,7 @@ public class Axis extends JPanel
 			this.getNumbers().setPrecision(numbers.getPrecision());
 			this.getNumbers().getRange().copy(numbers.getRange());
 			this.getNumbers().getFontRange().copy(numbers.getFontRange());
-			if (this.getGraphics() != null)
-			{
-				this.getNumbers().fitFont();
-			}
+			this.getNumbers().fitFont();
 		}
 		else
 		{

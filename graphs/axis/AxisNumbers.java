@@ -107,6 +107,11 @@ public abstract class AxisNumbers extends JComponent
 	// Algorithm is less efficient than resizeFitFont, but always works
 	public void fitFont()
 	{
+		if (this.getGraphics() == null)
+		{
+			return;
+		}
+
 		float size = this.fontRange.getUpper();
 		this.setFont(this.getFont().deriveFont(size));
 		while (size > this.fontRange.getLower() && this.isOverlapping())
@@ -117,9 +122,14 @@ public abstract class AxisNumbers extends JComponent
 	}
 	
 	// Fits font after resizing along the changing length
-	// Does not work if the changing length didn't change
+	// Does not work if the length along which the font size should change didn't change
 	public void resizeFitFont()
 	{
+		if (this.getGraphics() == null)
+		{
+			return;
+		}
+		
 		int currLength = this.getChangingLength();
 		float size = this.getFont().getSize2D();
 		// Size has shrunk

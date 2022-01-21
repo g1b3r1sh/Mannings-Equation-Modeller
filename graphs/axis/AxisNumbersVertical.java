@@ -30,6 +30,11 @@ public class AxisNumbersVertical extends AxisNumbers
 	@Override
 	public boolean isOverlapping()
 	{
+		if (this.getGraphics() == null)
+		{
+			return false;
+		}
+		
 		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
 		// Vertical axis goes from bottom to top
 		int firstTopX = this.getHeight() - this.getNumberHeight(metrics) - this.getPadding();

@@ -27,6 +27,11 @@ public class AxisNumbersHorizontal extends AxisNumbers
 	@Override
 	public boolean isOverlapping()
 	{
+		if (this.getGraphics() == null)
+		{
+			return false;
+		}
+		
 		FontMetrics metrics = this.getGraphics().getFontMetrics(this.getFont());
 		int firstRightX = metrics.stringWidth(this.getNumberString(0)) + this.getPadding();
 		for (int i = 1; i < this.getNumTicks() - 1; i++)
