@@ -149,45 +149,66 @@ public class ResultScreen extends JPanel
 		}
 	}
 
+	private void showErrorMessage(String message)
+	{
+		this.errorLabel.setText(message);
+		this.errorLabel.setVisible(true);
+	}
+
+	private void hideErrorMessage()
+	{
+		this.errorLabel.setText("");
+		this.errorLabel.setVisible(false);
+	}
+
 	private JPanel createSidePanel()
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		JButton editButton = new JButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph"));
-		editButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(editButton);
+		panel.add(this.centerAlignX(new JButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph"))));
+		panel.add(this.createInputPanel());
+		panel.add(this.centerAlignX(new JButton(this.calculateAction())));
+		panel.add(this.createOutputPanel());
 
-		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
-		inputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		inputPanel.add(this.numberEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
-		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		inputPanel.add(this.numberEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
-		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		inputPanel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", () -> this.controller.getQ(), (q) -> this.controller.setQ(q)));
-		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		inputPanel.add(this.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
-		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(inputPanel);
+		return panel;
+	}
 
-		JButton calculate = new JButton(this.calculateAction());
-		calculate.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(calculate);
+	private JComponent centerAlignX(JComponent component)
+	{
+		component.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return component;
+	}
 
-		JPanel outputPanel = new JPanel();
-		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.Y_AXIS));
-		outputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.componentPanel(this.errorLabel));
-		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.numberDisplayPanel("Water Level Elevation (m)", "", this.levelLabel));
-		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.numberDisplayPanel("Cross-Section Area (m^2)", "", this.aLabel));
-		outputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		outputPanel.add(this.numberDisplayPanel("Velocity (m/s)", "", this.vLabel));
-		panel.add(outputPanel);
+	private JPanel createInputPanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(this.numberEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", () -> this.controller.getQ(), (q) -> this.controller.setQ(q)));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		return panel;
+	}
 
+	private JPanel createOutputPanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.componentPanel(this.errorLabel));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberDisplayPanel("Water Level Elevation (m)", "", this.levelLabel));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberDisplayPanel("Cross-Section Area (m^2)", "", this.aLabel));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberDisplayPanel("Velocity (m/s)", "", this.vLabel));
 		return panel;
 	}
 
@@ -289,18 +310,6 @@ public class ResultScreen extends JPanel
 	private void calcOutputValues()
 	{
 		this.workerDialog.open(this.controller.createCalcDialogWorker(this.outputPrecision.value));
-	}
-
-	private void showErrorMessage(String message)
-	{
-		this.errorLabel.setText(message);
-		this.errorLabel.setVisible(true);
-	}
-
-	private void hideErrorMessage()
-	{
-		this.errorLabel.setText("");
-		this.errorLabel.setVisible(false);
 	}
 
 	private GraphContainer createGraphContainer(Graph graph)
