@@ -21,7 +21,7 @@ public class MainWindow extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 600);
 		this.setLocation(10, 10);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		this.screenSwitcher = new ProgramScreenSwitcher(this, this.model);
 		this.initializeFrame();

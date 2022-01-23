@@ -10,24 +10,22 @@ public class ManningsFunction implements ContinuousFunction
 {
 	private ManningsModel model;
 	private double lowestElevation;
-	private double highestElevation; 
 
 	public ManningsFunction(ManningsModel model)
 	{
 		this.model = model;
 		this.lowestElevation = 0;
-		this.highestElevation = -1;
 		this.updateRange();
 	}
 
 	@Override
 	public boolean hasY(Double x)
 	{
-		if (!this.model.constantsSet() || this.model.getSectionData().size() == 0)
+		if (!this.model.areConstantsSet() || this.model.getSectionData().size() < 2)
 		{
 			return false;
 		}
-		return this.lowestElevation <= x && x < this.highestElevation;
+		return x >= this.lowestElevation;
 	}
 
 	@Override
@@ -40,30 +38,18 @@ public class ManningsFunction implements ContinuousFunction
 		return this.model.calcDischarge(x);
 	}
 
-	public void updateRange()
+	public void update()
+	{
+		this.updateRange();
+	}
+
+	private void updateRange()
 	{
 		Number lowest = ManningsFunction.getMinLevelY(this.model.getSectionData());
 		if (lowest != null)
 		{
 			this.lowestElevation = lowest.doubleValue();
 		}
-
-		Number highest = ManningsFunction.getMaxLevelY(this.model.getSectionData());
-		if (highest != null)
-		{
-			this.highestElevation = highest.doubleValue();
-		}
-	}
-
-	private static <M extends Number, N extends Number> N getMaxLevelY(DiscreteData<M, N> data)
-	{
-		if (data.size() == 0)
-		{
-			return null;
-		}
-		N left = data.y(data.getXSet().first());
-		N right = data.y(data.getXSet().last());
-		return left.doubleValue() < right.doubleValue() ? left : right;
 	}
 
 	private static <M extends Number, N extends Number> N getMinLevelY(DiscreteData<M, N> data)

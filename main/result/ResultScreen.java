@@ -55,7 +55,7 @@ public class ResultScreen extends JPanel
 
 	private static enum ModelError
 	{
-		DISCHARGE_OVERFLOW, DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NONE
+		DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NOT_ENOUGH_DATA, NONE
 	}
 
 	private JFrame parent;
@@ -124,7 +124,7 @@ public class ResultScreen extends JPanel
 
 	public void refreshVisuals()
 	{
-		this.function.updateRange();
+		this.function.update();
 		this.manningsGraph.repaint();
 		this.refreshOutputLabels();
 		this.refreshErrorMessage();
@@ -153,11 +153,11 @@ public class ResultScreen extends JPanel
 			case CONSTANTS_NOT_SET:
 				this.showErrorMessage("Constants not set!");
 				break;
-			case DISCHARGE_OVERFLOW:
-				this.showErrorMessage("Discharge too high!");
-				break;
 			case DISCHARGE_UNDERFLOW:
 				this.showErrorMessage("Discharge too low!");
+				break;
+			case NOT_ENOUGH_DATA:
+				this.showErrorMessage("Not enough data points!");
 				break;
 			case NONE:
 			default:
@@ -325,7 +325,7 @@ public class ResultScreen extends JPanel
 			@Override
 			protected Double doInBackground() throws Exception
 			{
-				if (this.model.constantsSet() && this.model.dischargeWithinData(this.discharge))
+				if (this.model.areConstantsSet() && !this.model.dischargeUnderflow(this.discharge) && this.model.canUseData())
 				{
 					return this.model.calcWaterLevel(this.discharge, this.displayScale, () -> !this.isCancelled());
 				}
@@ -351,17 +351,17 @@ public class ResultScreen extends JPanel
 					}
 					ResultScreen.this.updateWaterLevel(this.discharge, level);
 
-					if (!this.model.constantsSet())
+					if (!this.model.areConstantsSet())
 					{
 						ResultScreen.this.waterLevelError(ModelError.CONSTANTS_NOT_SET);
-					}
-					else if (this.model.dischargeOverflow(this.discharge))
-					{
-						ResultScreen.this.waterLevelError(ModelError.DISCHARGE_OVERFLOW);
 					}
 					else if (this.model.dischargeUnderflow(this.discharge))
 					{
 						ResultScreen.this.waterLevelError(ModelError.DISCHARGE_UNDERFLOW);
+					}
+					else if (!this.model.canUseData())
+					{
+						ResultScreen.this.waterLevelError(ModelError.NOT_ENOUGH_DATA);
 					}
 					else
 					{
@@ -377,7 +377,7 @@ public class ResultScreen extends JPanel
 
 	private void updateWaterLevel(double discharge, Double level)
 	{
-		if (level == null || !this.model.withinBounds(level) || (discharge != 0 && this.model.calcArea(level) == 0))
+		if (level == null || (discharge != 0 && this.model.calcArea(level) == 0))
 		{
 			this.level.value = null;
 			this.a.value = null;

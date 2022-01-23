@@ -32,10 +32,7 @@ public class WaterLevelVisualiser extends DataVisualiser
 	protected void paintComponent(Graphics g)
 	{
 		g.setColor(this.getColor());
-		if (this.calculator.withinBounds())
-		{
-			drawWater(g);
-		}
+		this.drawWater(g);
 		g.drawLine(0, this.waterYConversion(), this.getWidth(), this.waterYConversion());
 	}
 	

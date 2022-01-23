@@ -1,6 +1,8 @@
 package data;
 
 import java.util.Iterator;
+import java.util.NavigableSet;
+import java.util.function.BiConsumer;
 
 /**
  * Represents continuous function constructed by connecting all points in DiscreteData
@@ -60,23 +62,32 @@ public class ContinuousData<M extends Number, N extends Number> implements Conti
 		}
 		throw new IllegalArgumentException("Number is higher than bounds of data.");
 	}
-	
+
 	// Slope equation for line between two data points
 	public double getSlope(M x1, M x2)
 	{
 		return (this.data.y(x2).doubleValue() - this.data.y(x1).doubleValue()) / (x2.doubleValue() - x1.doubleValue());
 	}
 
-	// Returns point x of intersection between line created by two data points and flat line
-	// Point form equation
-	public double xIntersection(M x1, M x2, Number y)
-	{
-		return ((y.doubleValue() - this.data.y(x1).doubleValue()) / this.getSlope(x1, x2)) + x1.doubleValue();
-	}
-
 	// Length of segment between two points
 	public double segmentLength(double x1, double x2)
 	{
 		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(this.y(x1) - this.y(x2), 2));
+	}
+
+	// Passes left and right x-value of each line segments in data in order of left to right to the operation
+	public void iterateSegments(BiConsumer<M, M> operation)
+	{
+		NavigableSet<M> xSet = this.data.getXSet();
+		if (xSet.size() > 1)
+		{
+			Iterator<M> itRight = xSet.iterator();
+			itRight.next();
+			while (itRight.hasNext())
+			{
+				M right = itRight.next();
+				operation.accept(xSet.lower(right), right);
+			}
+		}
 	}
 }
