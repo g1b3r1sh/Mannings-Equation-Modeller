@@ -93,14 +93,13 @@ public class Graph extends JComponent
 	// Does not copy datalist nor graphcomponents
 	public void lightCopy(Graph graph)
 	{
-		if (this.getPlane() != null && graph.getPlane() != null)
+		if (this.plane != null && graph.plane != null)
 		{
-			Plane plane = graph.getPlane();
-			this.getPlane().getRangeX().copy(plane.getRangeX());
-			this.getPlane().getRangeY().copy(plane.getRangeY());
+			this.plane.getRangeX().copy(graph.plane.getRangeX());
+			this.plane.getRangeY().copy(graph.plane.getRangeY());
 		}
-		this.getGrid().setNumCols(graph.getGrid().getNumCols());
-		this.getGrid().setNumRows(graph.getGrid().getNumRows());
+		this.grid.setNumCols(graph.grid.getNumCols());
+		this.grid.setNumRows(graph.grid.getNumRows());
 	}
 	
 	// Get dimensions on which pixels are visible, since pixels on edge are not visible

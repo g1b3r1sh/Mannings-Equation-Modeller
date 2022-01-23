@@ -22,8 +22,8 @@ public class Range
 
 	public void copy(Range range)
 	{
-		this.lower = range.getLower();
-		this.setUpper(range.getUpper());
+		this.lower = range.lower;
+		this.upper = range.upper;
 	}
 
 	public int getLower()

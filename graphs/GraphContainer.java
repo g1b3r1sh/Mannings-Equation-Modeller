@@ -74,7 +74,7 @@ public class GraphContainer extends JComponent
 
 	public void lightCopy(GraphContainer container)
 	{
-		this.graph.lightCopy(container.getGraph());
+		this.graph.lightCopy(container.graph);
 		for (Direction d : Direction.values())
 		{
 			if (this.getAxis(d) != null && container.getAxis(d) != null)
@@ -82,13 +82,8 @@ public class GraphContainer extends JComponent
 				this.getAxis(d).lightCopy(container.getAxis(d));
 			}
 		}
-		this.getDefaultAxisPrecision().setX(container.getDefaultAxisPrecision().getX());
-		this.getDefaultAxisPrecision().setY(container.getDefaultAxisPrecision().getY());
-	}
-
-	public DataPrecision getDefaultAxisPrecision()
-	{
-		return this.defaultAxisPrecision;
+		this.defaultAxisPrecision.setX(container.defaultAxisPrecision.getX());
+		this.defaultAxisPrecision.setY(container.defaultAxisPrecision.getY());
 	}
 	
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center
