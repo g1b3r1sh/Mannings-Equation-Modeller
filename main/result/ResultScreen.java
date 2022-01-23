@@ -118,16 +118,22 @@ public class ResultScreen extends JPanel
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
-
 		this.add(this.manningsGraphContainer, BorderLayout.CENTER);
+
+		this.updateModelConstants();
+		this.refreshGraph();
 	}
 
-	public void refreshVisuals()
+	private void refreshOutput()
+	{
+		this.refreshOutputLabels();
+		this.refreshErrorMessage();
+	}
+
+	private void refreshGraph()
 	{
 		this.function.update();
 		this.manningsGraph.repaint();
-		this.refreshOutputLabels();
-		this.refreshErrorMessage();
 	}
 
 	private void refreshOutputLabels()
@@ -249,6 +255,8 @@ public class ResultScreen extends JPanel
 					{
 						number.value = new BigDecimal(output);
 						numberText.setText(number.value.toString());
+						ResultScreen.this.updateModelConstants();
+						ResultScreen.this.refreshGraph();
 					}
 					catch (NumberFormatException exception) {}
 				}
@@ -295,7 +303,7 @@ public class ResultScreen extends JPanel
 			{
 				ResultScreen.this.updateModelConstants();
 				ResultScreen.this.calcOutputValues(ResultScreen.this.q.value.doubleValue());
-				ResultScreen.this.refreshVisuals();
+				ResultScreen.this.refreshOutput();
 			}
 		};
 	}
