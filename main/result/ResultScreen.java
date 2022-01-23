@@ -1,12 +1,13 @@
 package main.result;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -20,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingWorker;
 
 import data.DataPrecision;
 import data.MapDiscreteData;
@@ -31,8 +31,6 @@ import graphs.Range;
 import graphs.GraphContainer.Direction;
 import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import graphs.visualiser.VerticalLineVisualiser;
-import hydraulics.ManningsFunction;
-import hydraulics.ManningsModel;
 import main.dialogs.GraphController;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
@@ -46,29 +44,13 @@ import ui.Wrapper;
 
 public class ResultScreen extends JPanel
 {
-	private static final String INITIAL_N = "0.025";
-	private static final String INITIAL_S = "1";
-	private static final String INITIAL_Q = "1";
 	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final int MIN_DISPLAYED_SCALE = 0;
 	private static final int MAX_DISPLAYED_SCALE = 9;
 
-	private static enum ModelError
-	{
-		DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NOT_ENOUGH_DATA, NONE
-	}
-
 	private JFrame parent;
 
-	private ManningsModel model;
-	private ManningsFunction function;
-	private Wrapper<BigDecimal> n;
-	private Wrapper<BigDecimal> s;
-	private Wrapper<BigDecimal> q;
-	private Wrapper<BigDecimal> level;
-	private Wrapper<BigDecimal> a;
-	private Wrapper<BigDecimal> v;
-	private ModelError error = ModelError.NONE;
+	private ResultScreenController controller;
 
 	private JLabel levelLabel;
 	private JLabel vLabel;
@@ -89,15 +71,9 @@ public class ResultScreen extends JPanel
 		super();
 		this.parent = parent;
 
+		this.controller = new ResultScreenController(data);
+
 		this.setLayout(new BorderLayout(10, 10));
-		this.model = new ManningsModel(data);
-		this.function = new ManningsFunction(this.model);
-		this.n = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_N));
-		this.s = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_S));
-		this.q = new Wrapper<>(new BigDecimal(ResultScreen.INITIAL_Q));
-		this.level = new Wrapper<>(null);
-		this.a = new Wrapper<>(null);
-		this.v = new Wrapper<>(null);
 
 		this.levelLabel = new JLabel();
 		this.aLabel = new JLabel();
@@ -120,7 +96,6 @@ public class ResultScreen extends JPanel
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 		this.add(this.manningsGraphContainer, BorderLayout.CENTER);
 
-		this.updateModelConstants();
 		this.refreshGraph();
 	}
 
@@ -132,17 +107,20 @@ public class ResultScreen extends JPanel
 
 	private void refreshGraph()
 	{
-		this.function.update();
+		this.controller.getFunction().update();
 		this.manningsGraph.repaint();
 	}
 
 	private void refreshOutputLabels()
 	{
-		if (this.level.value != null && this.a.value != null && this.v.value != null)
+		BigDecimal level = this.controller.getLevel();
+		BigDecimal a = this.controller.getA();
+		BigDecimal v = this.controller.getV();
+		if (level != null && a != null && v != null)
 		{
-			this.levelLabel.setText(this.level.value.toString());
-			this.aLabel.setText(this.a.value.toString());
-			this.vLabel.setText(this.v.value.toString());
+			this.levelLabel.setText(level.toString());
+			this.aLabel.setText(a.toString());
+			this.vLabel.setText(v.toString());
 		}
 		else
 		{
@@ -154,7 +132,7 @@ public class ResultScreen extends JPanel
 
 	private void refreshErrorMessage()
 	{
-		switch (this.error)
+		switch (this.controller.getError())
 		{
 			case CONSTANTS_NOT_SET:
 				this.showErrorMessage("Constants not set!");
@@ -183,11 +161,11 @@ public class ResultScreen extends JPanel
 		JPanel inputPanel = new JPanel();
 		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
 		inputPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		inputPanel.add(this.numberEditPanel("Manning's Constant", this.n));
+		inputPanel.add(this.numberEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		inputPanel.add(this.numberEditPanel("Channel Bed Slope", this.s));
+		inputPanel.add(this.numberEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		inputPanel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", this.q));
+		inputPanel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", () -> this.controller.getQ(), (q) -> this.controller.setQ(q)));
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		inputPanel.add(this.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
 		inputPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -238,24 +216,24 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	private JPanel numberEditPanel(String name, Wrapper<BigDecimal> number)
+	private JPanel numberEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
 	{
 		JPanel panel = this.labelPanel();
 
-		JLabel numberText = new JLabel(number.value.toString());
+		JLabel numberText = new JLabel(get.get().toString());
 		JButton editButton = new JButton(new AbstractAction("Edit")
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String output = JOptionPane.showInputDialog(ResultScreen.this, "Input new value", number.value.toString());
+				String output = JOptionPane.showInputDialog(ResultScreen.this, "Input new value", get.get().toString());
 				if (output != null)
 				{
 					try
 					{
-						number.value = new BigDecimal(output);
-						numberText.setText(number.value.toString());
-						ResultScreen.this.updateModelConstants();
+						set.accept(new BigDecimal(output));
+						numberText.setText(get.get().toString());
+						ResultScreen.this.controller.updateModelConstants();
 						ResultScreen.this.refreshGraph();
 					}
 					catch (NumberFormatException exception) {}
@@ -301,105 +279,16 @@ public class ResultScreen extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ResultScreen.this.updateModelConstants();
-				ResultScreen.this.calcOutputValues(ResultScreen.this.q.value.doubleValue());
+				ResultScreen.this.controller.updateModelConstants();
+				ResultScreen.this.calcOutputValues();
 				ResultScreen.this.refreshOutput();
 			}
 		};
 	}
 
-	private void updateModelConstants()
+	private void calcOutputValues()
 	{
-		this.model.setN(this.n.value);
-		this.model.setS(this.s.value);
-	}
-
-	private void calcOutputValues(double q)
-	{
-		class CalcWorker extends SwingWorker<Double, Object>
-		{
-			private ManningsModel model;
-			private double discharge;
-			private int displayScale;
-	
-			public CalcWorker(ManningsModel model, double discharge, int displayScale)
-			{
-				super();
-				this.model = new ManningsModel(model);
-				this.discharge = discharge;
-				this.displayScale = displayScale;
-			}
-
-			@Override
-			protected Double doInBackground() throws Exception
-			{
-				if (this.model.areConstantsSet() && !this.model.dischargeUnderflow(this.discharge) && this.model.canUseData())
-				{
-					return this.model.calcWaterLevel(this.discharge, this.displayScale, () -> !this.isCancelled());
-				}
-				else
-				{
-					return null;
-				}
-			}
-
-			@Override
-			protected void done()
-			{
-				if (!this.isCancelled())
-				{
-					Double level = null;
-					try
-					{
-						level = this.get();
-					}
-					catch (InterruptedException | ExecutionException e)
-					{
-						e.printStackTrace();
-					}
-					ResultScreen.this.updateWaterLevel(this.discharge, level);
-
-					if (!this.model.areConstantsSet())
-					{
-						ResultScreen.this.waterLevelError(ModelError.CONSTANTS_NOT_SET);
-					}
-					else if (this.model.dischargeUnderflow(this.discharge))
-					{
-						ResultScreen.this.waterLevelError(ModelError.DISCHARGE_UNDERFLOW);
-					}
-					else if (!this.model.canUseData())
-					{
-						ResultScreen.this.waterLevelError(ModelError.NOT_ENOUGH_DATA);
-					}
-					else
-					{
-						ResultScreen.this.waterLevelError(ModelError.NONE);
-					}
-				}
-			}
-		}
-		
-		CalcWorker worker = new CalcWorker(this.model, q, this.outputPrecision.value);
-		this.workerDialog.open(worker);
-	}
-
-	private void updateWaterLevel(double discharge, Double level)
-	{
-		if (level == null || (discharge != 0 && this.model.calcArea(level) == 0))
-		{
-			this.level.value = null;
-			this.a.value = null;
-			this.v.value = null;
-			return;
-		}
-		this.level.value = new BigDecimal(level).setScale(this.outputPrecision.value, RoundingMode.HALF_UP);
-		this.a.value = new BigDecimal(this.model.calcArea(level)).setScale(this.outputPrecision.value, RoundingMode.HALF_UP);
-		this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level)).setScale(this.outputPrecision.value, RoundingMode.HALF_UP);
-	}
-
-	private void waterLevelError(ModelError error)
-	{
-		this.error = error;
+		this.workerDialog.open(this.controller.createCalcDialogWorker(this.outputPrecision.value));
 	}
 
 	private void showErrorMessage(String message)
@@ -432,7 +321,7 @@ public class ResultScreen extends JPanel
 		// graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
 		graph.setLinearPlane(new Range(0, 500), new Range(0, 10));
 		graph.fitGridPlane(100, 2);
-		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.function));
+		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.controller.getFunction()));
 		// graph.getGraphComponents().add(new VerticalLineVisualiser(graph, 493.66637)); // Line that the default function should touch and end
 		// graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
 		return graph;
