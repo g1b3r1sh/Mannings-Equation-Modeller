@@ -42,6 +42,7 @@ import ui.PrecisionSpinnerModel;
 public class InputScreen extends JPanel
 {
 	private static final String X_LABEL = "Distance from bank (m)";
+	private static final String TABLE_X_LABEL = "<html>Distance from<br>bank(m)</html>";
 	private static final String Y_LABEL = "Elevation (m)";
 	private static final String GRAPH_TITLE = "Cross-section of River Bank";
 
@@ -56,7 +57,7 @@ public class InputScreen extends JPanel
 	{
 		super(new BorderLayout());
 
-		this.editDialog = new DataEditDialog(parent, new DataEditScreen(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL));
+		this.editDialog = new DataEditDialog(parent, new DataEditScreen(data, precision, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL));
 
 		// Init components
 		this.graph = this.createGraph();
@@ -68,7 +69,9 @@ public class InputScreen extends JPanel
 		this.graphDialog = new GraphEditDialog(parent, new GraphEditScreen(graphContainer));
 		this.graphDialog.addPropertyChangeListener(this.graphController);
 
-		JTable table = this.createTable(data, precision);
+		this.tableModel = new GraphTableModel(data, precision, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL);
+
+		JTable table = this.createTable();
 		this.add(this.createSidePanel(table, waterCalculator, precision.getY(), graphContainer.getGraph(), precision), BorderLayout.WEST);
 
 		// Connect data to components
@@ -100,9 +103,8 @@ public class InputScreen extends JPanel
 		return this.waterLevelSpinner;
 	}
 
-	private JTable createTable(DiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision)
+	private JTable createTable()
 	{
-		this.tableModel = new GraphTableModel(data, precision, InputScreen.X_LABEL, InputScreen.Y_LABEL);
 		JTable table = new JTable(this.tableModel);
 		table.setCellSelectionEnabled(true);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -111,10 +113,10 @@ public class InputScreen extends JPanel
 	
 	private JScrollPane createTablePane(JTable table)
 	{
-		JScrollPane panel = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane pane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		// Default width: 200
-		panel.setPreferredSize(new Dimension(200, 1080));
-		return panel;
+		pane.setPreferredSize(new Dimension(200, 1080));
+		return pane;
 	}
 	
 	private JPanel createSidePanel(JTable table, WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int spinnerPrecision, Graph graph, DataPrecision precision)
