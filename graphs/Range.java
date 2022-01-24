@@ -70,7 +70,7 @@ public class Range
 		return this.getUpper() - this.getLower();
 	}
 
-	public class Double
+	public static class Double
 	{
 		private double lower;
 		private double upper;

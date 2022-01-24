@@ -8,4 +8,14 @@ public class Wrapper<T>
 	{
 		this.value = value;
 	}
+
+	public T get()
+	{
+		return this.value;
+	}
+
+	public void set(T value)
+	{
+		this.value = value;
+	}
 }

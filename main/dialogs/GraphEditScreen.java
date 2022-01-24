@@ -19,6 +19,7 @@ import graphs.Range;
 import graphs.axis.Axis;
 import ui.RangeSpinnerController;
 import ui.SpinnerController;
+import ui.SpinnerWrapperController;
 import ui.Wrapper;
 
 import java.awt.BorderLayout;
@@ -62,16 +63,16 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		this.yRangeController = new RangeSpinnerController(this.yAxis.getNumbers().getRange(), this);
 		this.xScale = new Wrapper<>(this.xAxis.getPrecision());
 		this.yScale = new Wrapper<>(this.yAxis.getPrecision());
-		this.xScaleController = new SpinnerController<>(this.xScale, this);
-		this.yScaleController = new SpinnerController<>(this.yScale, this);
+		this.xScaleController = new SpinnerWrapperController<>(this.xScale, this);
+		this.yScaleController = new SpinnerWrapperController<>(this.yScale, this);
 		this.xTicks = new Wrapper<>(this.xAxis.getTickmarks().getNumTicks());
 		this.yTicks = new Wrapper<>(this.yAxis.getTickmarks().getNumTicks());
-		this.xTicksController = new SpinnerController<>(this.xTicks, this);
-		this.yTicksController = new SpinnerController<>(this.yTicks, this);
+		this.xTicksController = new SpinnerWrapperController<>(this.xTicks, this);
+		this.yTicksController = new SpinnerWrapperController<>(this.yTicks, this);
 		this.gridX = new Wrapper<>(this.getGrid().getNumCols());
 		this.gridY = new Wrapper<>(this.getGrid().getNumRows());
-		this.gridXController = new SpinnerController<>(this.gridX, this);
-		this.gridYController = new SpinnerController<>(this.gridY, this);
+		this.gridXController = new SpinnerWrapperController<>(this.gridX, this);
+		this.gridYController = new SpinnerWrapperController<>(this.gridY, this);
 
 		this.add(this.previewGraphContainer, BorderLayout.CENTER);
 		this.add(this.createSidePanel(), BorderLayout.WEST);

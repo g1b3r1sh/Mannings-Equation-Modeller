@@ -36,6 +36,7 @@ import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
 import ui.SpinnerController;
+import ui.SpinnerWrapperController;
 import ui.Wrapper;
 
 /**
@@ -89,7 +90,7 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
 		this.outputPrecision = new Wrapper<>(ResultScreen.DEFAULT_DISPLAYED_SCALE);
-		this.outputPrecisionController = new SpinnerController<>(this.outputPrecision);
+		this.outputPrecisionController = new SpinnerWrapperController<>(this.outputPrecision);
 
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 

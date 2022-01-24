@@ -1,35 +1,34 @@
 package ui;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class SpinnerController<T> implements ChangeListener
 {
+	private ChangeListener listener = null;
 	private JSpinner spinner;
-	private Wrapper<T> value;
-	private ChangeListener listener;
+	private Supplier<T> get;
+	private Consumer<T> set;
 
-	public SpinnerController(Wrapper<T> value, ChangeListener listener)
+	public SpinnerController(Supplier<T> get, Consumer<T> set)
 	{
-		this.value = value;
-		this.listener = listener;
-	}
-
-	public SpinnerController(Wrapper<T> value)
-	{
-		this(value, null);
+		this.get = get;
+		this.set = set;
 	}
 
 	public T getValue()
 	{
-		return this.value.value;
+		return this.get.get();
 	}
 
 	public void setValue(T value)
 	{
-		this.value.value = value;
-		this.spinner.setValue(this.value.value);
+		this.set.accept(value);
+		this.spinner.setValue(value);
 	}
 
 	public void setSpinner(JSpinner spinner)
@@ -51,9 +50,14 @@ public class SpinnerController<T> implements ChangeListener
 	{
 		if (e.getSource() == this.spinner)
 		{
-			this.value.value = (T) this.spinner.getValue();
+			this.set.accept((T) this.spinner.getValue());
 			this.notifyListener();
 		}
+	}
+
+	public void setListener(ChangeListener listener)
+	{
+		this.listener = listener;
 	}
 
 	private void notifyListener()
