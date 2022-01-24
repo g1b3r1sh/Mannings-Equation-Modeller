@@ -80,11 +80,11 @@ public class ManningsModel
 		}
 		if (initStep == 0)
 		{
-			throw new IllegalArgumentException("Step cannot be 0");
+			throw new IllegalArgumentException("Step cannot be 0.");
 		}
 		if (!this.canUseData())
 		{
-			return null;
+			throw new IllegalArgumentException("Data cannot be used to calculate water level.");
 		}
 
 		// If hint is not inside data, set it to the closest data point
@@ -141,7 +141,7 @@ public class ManningsModel
 	{
 		if (!this.canUseData())
 		{
-			return null;
+			throw new IllegalArgumentException("Data cannot be used to calculate water level.");
 		}
 
 		Double waterLevel = this.calculator.getLowest().doubleValue();
@@ -149,6 +149,10 @@ public class ManningsModel
 		for (int i = 0 < displayScale ? 0 : displayScale; i <= displayScale; i++)
 		{
 			waterLevel = this.calcWaterLevel(discharge, this.defaultStep(i), waterLevel, runCondition);
+			if (waterLevel == null)
+			{
+				return null;
+			}
 		}
 		return waterLevel;
 	}
