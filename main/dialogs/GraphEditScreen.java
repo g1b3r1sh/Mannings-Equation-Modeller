@@ -17,9 +17,9 @@ import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.Grid;
 import graphs.axis.Axis;
-import ui.RangeSpinnerController;
-import ui.SpinnerController;
-import ui.SpinnerWrapperController;
+import spinner.RangeSpinnerController;
+import spinner.SpinnerController;
+import spinner.SpinnerWrapperController;
 import utility.Wrapper;
 
 import java.awt.BorderLayout;

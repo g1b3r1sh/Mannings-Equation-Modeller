@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 import data.DataPrecision;
 import main.dialogs.DataEditDialog;
 import main.input.InputScreen;
+import spinner.PrecisionSpinnerModel;
 import table.EditableDiscreteDataModel;
-import ui.PrecisionSpinnerModel;
 import utility.Pair;
 
 public class CrossSectionController implements PropertyChangeListener

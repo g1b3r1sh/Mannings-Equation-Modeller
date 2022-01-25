@@ -1,4 +1,4 @@
-package ui;
+package spinner;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -39,8 +39,8 @@ import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
-import ui.SpinnerController;
-import ui.SpinnerWrapperController;
+import spinner.SpinnerController;
+import spinner.SpinnerWrapperController;
 import utility.Wrapper;
 
 /**

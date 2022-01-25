@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import main.dialogs.DataEditDialog;
 import main.dialogs.EditDialog;
-import ui.PrecisionSpinnerModel;
+import spinner.PrecisionSpinnerModel;
 
 import java.awt.event.ActionEvent;
 

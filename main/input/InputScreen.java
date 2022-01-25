@@ -32,8 +32,8 @@ import main.dialogs.DataEditDialog;
 import main.dialogs.DataEditScreen;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
+import spinner.PrecisionSpinnerModel;
 import table.EditableDiscreteDataModel;
-import ui.PrecisionSpinnerModel;
 
 /**
  * Contains methods for constructing input screen
