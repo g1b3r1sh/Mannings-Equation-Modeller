@@ -87,23 +87,23 @@ public class ManningsModel
 			throw new IllegalArgumentException("Data cannot be used to calculate water level.");
 		}
 
-		// If hint is not inside data, set it to the closest data point
-		if (hint < this.calculator.getLowest().doubleValue())
-		{
-			hint = this.calculator.getLowest().doubleValue();
-		}
-
 		this.equation.q = discharge;
-
+		double lowestWaterLevel = this.calculator.getLowest().doubleValue();
+		hint = Math.max(hint, lowestWaterLevel);
 		int offsetDir = this.calcConsistent(hint, -1);
-
 		// Increment is positive or negative, depending on if desired discharge is greater or less than discharge calculated using hint
 		double increment = offsetDir == -1 ? Math.abs(initStep) : -1 * Math.abs(initStep);
+
+		// Special case to avoid infinite loop, since rest of algorithm assumes hint is not the correct water level
+		if (this.calcConsistent(hint, 0) == 0)
+		{
+			return hint;
+		}
 
 		// Starting with water level set to hint, increment it until calculated exceeds the desired discharge, 
 		// 		meaning that the current water level has passed the correct water level
 		double waterLevel;
-		for (waterLevel = this.calculator.getWaterLevel().doubleValue(); 
+		for (waterLevel = hint;
 			this.calcConsistent(waterLevel, -1) == offsetDir; 
 			waterLevel += increment)
 		{
