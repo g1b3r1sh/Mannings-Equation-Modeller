@@ -217,6 +217,6 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 
 	private void widenSpinner(JSpinner spinner)
 	{
-		((DefaultEditor) spinner.getEditor()).getTextField().setColumns(2);
+		((DefaultEditor) spinner.getEditor()).getTextField().setColumns(3);
 	}
 }
