@@ -20,7 +20,7 @@ public class ResultScreenController
 
 	protected static enum ModelError
 	{
-		DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NOT_ENOUGH_DATA, NONE
+		DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NOT_ENOUGH_DATA, INVALID_DISCHARGE_RANGE, NONE
 	}
 
 	protected class Result
@@ -212,7 +212,7 @@ public class ResultScreenController
 		return new CalcWorker(this.model, this.q.value.doubleValue(), scale);
 	}
 
-	public SwingWorker<Result[], ?> createResultsWorker(Range.Double dischargeRange, int numRows, int scale)
+	public SwingWorker<Result[], ?> createResultsWorker(double minDischarge, double maxDischarge, int numRows, int scale)
 	{
 		class TableCalcWorker extends SwingWorker<Result[], Object>
 		{
@@ -221,11 +221,11 @@ public class ResultScreenController
 			private int numRows;
 			private int scale;
 
-			public TableCalcWorker(ManningsModel model, Range.Double dischargeRange, int numRows, int scale)
+			public TableCalcWorker(ManningsModel model, double minDischarge, double maxDischarge, int numRows, int scale)
 			{
 				super();
 				this.model = new ManningsModel(model);
-				this.dischargeRange = dischargeRange;
+				this.dischargeRange = minDischarge > maxDischarge ? null : new Range.Double(minDischarge, maxDischarge);
 				this.numRows = numRows;
 				this.scale = scale;
 			}
@@ -234,6 +234,14 @@ public class ResultScreenController
 			protected Result[] doInBackground() throws Exception
 			{
 				Result[] results = new Result[this.numRows];
+				if (this.dischargeRange == null)
+				{
+					for (int i = 0; i < results.length; i++)
+					{
+						results[i] = this.createErrorResult(ModelError.INVALID_DISCHARGE_RANGE);
+					}
+					return results;
+				}
 				for (int i = 0; i < this.numRows; i++)
 				{
 					results[i] = this.calcResult(this.dischargeRange.getNumber(this.specialDivide(i, (this.numRows - 1))), this.scale);
@@ -290,7 +298,7 @@ public class ResultScreenController
 		{
 			throw new IllegalArgumentException("Cannot have negative number of rows");
 		}
-		return new TableCalcWorker(this.model, dischargeRange, numRows, scale);
+		return new TableCalcWorker(this.model, minDischarge, maxDischarge, numRows, scale);
 	}
 
 	private void updateWaterLevel(double discharge, Double level, int scale)

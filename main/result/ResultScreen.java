@@ -190,10 +190,10 @@ public class ResultScreen extends JPanel
 	private void processResults(ResultScreenController.Result[] results)
 	{
 		this.tableModel.setData(results);
-		this.showErrors(this.unionErrorSet(results));
+		this.showErrors(this.createErrorSet(results));
 	}
 
-	private EnumSet<ResultScreenController.ModelError> unionErrorSet(ResultScreenController.Result[] results)
+	private EnumSet<ResultScreenController.ModelError> createErrorSet(ResultScreenController.Result[] results)
 	{
 		EnumSet<ResultScreenController.ModelError> errors = EnumSet.noneOf(ResultScreenController.ModelError.class);
 		errors.add(ResultScreenController.ModelError.NONE);
@@ -222,6 +222,7 @@ public class ResultScreen extends JPanel
 		labels.put(ResultScreenController.ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
 		labels.put(ResultScreenController.ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
 		labels.put(ResultScreenController.ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
+		labels.put(ResultScreenController.ModelError.INVALID_DISCHARGE_RANGE, this.createErrorLabel("Min value cannot be greater than max value!"));
 		return labels;
 	}
 
@@ -457,8 +458,9 @@ public class ResultScreen extends JPanel
 	{
 		SwingWorker<ResultScreenController.Result[], ?> worker = this.controller.createResultsWorker
 		(
-			new Range.Double(this.dischargeLower.value.doubleValue(), this.dischargeUpper.value.doubleValue()), 
-			this.numDischargeRows.value, 
+			this.dischargeLower.value.doubleValue(),
+			this.dischargeUpper.value.doubleValue(),
+			this.numDischargeRows.value,
 			this.outputPrecision.value
 		);
 		this.workerDialog.open(worker);
