@@ -3,14 +3,13 @@ package main;
 import javax.swing.JFrame;
 
 import main.input.InputScreen;
-import ui.ScreenSwitcher;
 
 public class MainWindow extends JFrame
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
 
 	private CrossSectionModel model;
-	ProgramScreenSwitcher screenSwitcher;
+	MainScreenSwitcher screenSwitcher;
 
 	public MainWindow(CrossSectionModel model)
 	{
@@ -23,7 +22,7 @@ public class MainWindow extends JFrame
 		this.setLocation(10, 10);
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		this.screenSwitcher = new ProgramScreenSwitcher(this, this.model);
+		this.screenSwitcher = new MainScreenSwitcher(this, this.model);
 		this.initializeFrame();
 	}
 

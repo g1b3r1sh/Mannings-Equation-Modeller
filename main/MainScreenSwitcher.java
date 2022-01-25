@@ -4,13 +4,12 @@ import javax.swing.JFrame;
 
 import main.input.InputScreen;
 import main.result.ResultScreen;
-import ui.ScreenSwitcher;
 
-public class ProgramScreenSwitcher extends ScreenSwitcher
+public class MainScreenSwitcher extends ScreenSwitcher
 {
 	private InputScreen inputScreen;
 
-	public ProgramScreenSwitcher(JFrame parent, CrossSectionModel model)
+	public MainScreenSwitcher(JFrame parent, CrossSectionModel model)
 	{
 		super();
 		this.inputScreen = new InputScreen(model.getData(), model.getPrecision(), model.getCalculator(), parent);
