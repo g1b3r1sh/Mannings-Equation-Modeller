@@ -41,7 +41,7 @@ public class DataPlotter extends DataVisualiser
 		}
 	}
 
-	protected void paintPlotSymbol(Graphics g, int centerX, int centerY)
+	private void paintPlotSymbol(Graphics g, int centerX, int centerY)
 	{
 		g.fillOval(centerX - this.circleSize / 2, centerY - this.circleSize / 2, this.circleSize, this.circleSize);
 	}

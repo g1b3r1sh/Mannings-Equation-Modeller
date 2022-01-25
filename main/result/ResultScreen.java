@@ -25,7 +25,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
@@ -84,6 +83,7 @@ public class ResultScreen extends JPanel
 	private SpinnerController<Integer> outputPrecisionController;
 
 	private ResultsTableModel tableModel;
+	private ResultsVisualiser resultsVisualiser;
 
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
 	{
@@ -116,6 +116,8 @@ public class ResultScreen extends JPanel
 		this.outputPrecisionController = new SpinnerWrapperController<>(this.outputPrecision);
 
 		this.tableModel = new ResultsTableModel();
+		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
+		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
 
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
@@ -191,6 +193,8 @@ public class ResultScreen extends JPanel
 	{
 		this.tableModel.setData(results);
 		this.showErrors(this.createErrorSet(results));
+		this.resultsVisualiser.setResults(results);
+		this.manningsGraph.repaint();
 	}
 
 	private EnumSet<ResultScreenController.ModelError> createErrorSet(ResultScreenController.Result[] results)
@@ -322,7 +326,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	private JPanel numberEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set, Consumer<BigDecimal> after)
+	private JPanel numberEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set, Consumer<BigDecimal> setSuccess)
 	{
 		JPanel panel = this.labelPanel();
 
@@ -337,7 +341,9 @@ public class ResultScreen extends JPanel
 				{
 					try
 					{
-						set.accept(new BigDecimal(output));
+						BigDecimal newValue = new BigDecimal(output);
+						set.accept(newValue);
+						setSuccess.accept(newValue);
 						numberText.setText(get.get().toString());
 					}
 					catch (NumberFormatException exception) {}
