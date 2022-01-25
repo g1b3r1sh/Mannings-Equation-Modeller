@@ -1,4 +1,4 @@
-package hydraulics;
+package utility;
 
 /**
  * A pair of two objects that can be different classes

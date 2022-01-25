@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import javax.swing.table.AbstractTableModel;
 
 import data.functions.DiscreteData;
-import hydraulics.Pair;
+import utility.Pair;
 
 /**
  * The TableModel of DiscreteData. As such, it is restricted to two columns.

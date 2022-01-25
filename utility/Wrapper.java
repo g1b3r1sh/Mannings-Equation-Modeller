@@ -1,4 +1,4 @@
-package ui;
+package utility;
 
 public class Wrapper<T>
 {

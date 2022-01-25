@@ -10,7 +10,7 @@ import data.Range;
 import data.functions.MapDiscreteData;
 import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
-import ui.Wrapper;
+import utility.Wrapper;
 
 public class ResultScreenController
 {

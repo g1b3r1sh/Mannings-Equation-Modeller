@@ -41,7 +41,7 @@ import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
 import ui.SpinnerController;
 import ui.SpinnerWrapperController;
-import ui.Wrapper;
+import utility.Wrapper;
 
 /**
  * Contains methods for constructing results screen

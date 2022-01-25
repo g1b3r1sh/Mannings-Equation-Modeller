@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import data.functions.ContinuousData;
 import data.functions.DiscreteData;
-import ui.Wrapper;
+import utility.Wrapper;
 
 import java.awt.geom.Path2D;
 

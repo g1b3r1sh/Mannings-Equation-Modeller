@@ -1,11 +1,10 @@
 package ui;
 
-import hydraulics.Pair;
-
 import java.math.BigDecimal;
 
 import data.DataPrecision;
 import data.functions.DiscreteData;
+import utility.Pair;
 
 /**
  * GraphTableModel that takes in BigDecimal as data

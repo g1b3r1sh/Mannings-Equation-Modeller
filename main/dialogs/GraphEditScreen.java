@@ -20,7 +20,7 @@ import graphs.axis.Axis;
 import ui.RangeSpinnerController;
 import ui.SpinnerController;
 import ui.SpinnerWrapperController;
-import ui.Wrapper;
+import utility.Wrapper;
 
 import java.awt.BorderLayout;
 

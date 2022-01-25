@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.event.ChangeListener;
 
+import utility.Wrapper;
+
 public class SpinnerWrapperController<T> extends SpinnerController<T>
 {
 	public SpinnerWrapperController(Wrapper<T> value)
