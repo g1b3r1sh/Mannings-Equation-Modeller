@@ -1,9 +1,7 @@
-package main.dialogs;
+package graphs;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-
-import graphs.GraphContainer;
 
 public class GraphController implements PropertyChangeListener
 {
