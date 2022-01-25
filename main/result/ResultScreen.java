@@ -6,6 +6,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -19,8 +22,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingWorker;
 
 import data.DataPrecision;
 import data.MapDiscreteData;
@@ -48,6 +55,10 @@ public class ResultScreen extends JPanel
 	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final int MIN_DISPLAYED_SCALE = 0;
 	private static final int MAX_DISPLAYED_SCALE = 9;
+	private static final BigDecimal DEFAULT_MIN_DISCHARGE = new BigDecimal(100);
+	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(1000);
+	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
+	private static final int MIN_NUM_DISCHARGE_ROWS = 0;
 
 	private JFrame parent;
 
@@ -57,6 +68,7 @@ public class ResultScreen extends JPanel
 	private JLabel vLabel;
 	private JLabel aLabel;
 	private JLabel errorLabel;
+	private EnumMap<ResultScreenController.ModelError, JLabel> errorLabels;
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
@@ -64,8 +76,14 @@ public class ResultScreen extends JPanel
 	private GraphEditDialog manningsGraphEditDialog;
 	private SwingWorkerDialog workerDialog;
 
+	private Wrapper<BigDecimal> dischargeLower;
+	private Wrapper<BigDecimal> dischargeUpper;
+	private Wrapper<Integer> numDischargeRows;
 	private Wrapper<Integer> outputPrecision;
+	private SpinnerController<Integer> numDischargeRowsController;
 	private SpinnerController<Integer> outputPrecisionController;
+
+	private ResultsTableModel tableModel;
 
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
 	{
@@ -82,6 +100,7 @@ public class ResultScreen extends JPanel
 		this.errorLabel = new JLabel("");
 		this.errorLabel.setForeground(Color.RED);
 		this.errorLabel.setVisible(false);
+		this.errorLabels = this.createErrorLabelsMap();
 
 		this.manningsGraph = this.createGraph();
 		this.manningsGraphContainer = this.createGraphContainer(this.manningsGraph);
@@ -89,8 +108,14 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
+		this.dischargeLower = new Wrapper<>(ResultScreen.DEFAULT_MIN_DISCHARGE);
+		this.dischargeUpper = new Wrapper<>(ResultScreen.DEFAULT_MAX_DISCHARGE);
+		this.numDischargeRows = new Wrapper<>(ResultScreen.DEFAULT_NUM_DISCHARGE_ROWS);
 		this.outputPrecision = new Wrapper<>(ResultScreen.DEFAULT_DISPLAYED_SCALE);
+		this.numDischargeRowsController = new SpinnerWrapperController<>(this.numDischargeRows);
 		this.outputPrecisionController = new SpinnerWrapperController<>(this.outputPrecision);
+
+		this.tableModel = new ResultsTableModel();
 
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
@@ -162,6 +187,52 @@ public class ResultScreen extends JPanel
 		this.errorLabel.setVisible(false);
 	}
 
+	private void processResults(ResultScreenController.Result[] results)
+	{
+		this.tableModel.setData(results);
+		this.showErrors(this.unionErrorSet(results));
+	}
+
+	private EnumSet<ResultScreenController.ModelError> unionErrorSet(ResultScreenController.Result[] results)
+	{
+		EnumSet<ResultScreenController.ModelError> errors = EnumSet.noneOf(ResultScreenController.ModelError.class);
+		errors.add(ResultScreenController.ModelError.NONE);
+		for (ResultScreenController.Result result : results)
+		{
+			errors.add(result.getError());
+		}
+		return errors;
+	}
+
+	private void showErrors(EnumSet<ResultScreenController.ModelError> errors)
+	{
+		for (ResultScreenController.ModelError error : ResultScreenController.ModelError.values())
+		{
+			if (this.errorLabels.containsKey(error))
+			{
+				this.errorLabels.get(error).setVisible(errors.contains(error));
+				
+			}
+		}
+	}
+
+	private EnumMap<ResultScreenController.ModelError, JLabel> createErrorLabelsMap()
+	{
+		EnumMap<ResultScreenController.ModelError, JLabel> labels = new EnumMap<>(ResultScreenController.ModelError.class);
+		labels.put(ResultScreenController.ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
+		labels.put(ResultScreenController.ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
+		labels.put(ResultScreenController.ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
+		return labels;
+	}
+
+	private JLabel createErrorLabel(String message)
+	{
+		JLabel label = new JLabel(message);
+		label.setVisible(false);
+		label.setForeground(Color.RED);
+		return label;
+	}
+
 	private JPanel createSidePanel()
 	{
 		JPanel panel = new JPanel();
@@ -170,7 +241,13 @@ public class ResultScreen extends JPanel
 		panel.add(this.centerAlignX(new JButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph"))));
 		panel.add(this.createInputPanel());
 		panel.add(this.centerAlignX(new JButton(this.calculateAction())));
+		panel.add(this.centerAlignX(new JButton(this.calculateResultsAction())));
 		panel.add(this.createOutputPanel());
+
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.createErrorPanel());
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.createTablePane(this.createOutputTable()));
 
 		return panel;
 	}
@@ -186,13 +263,19 @@ public class ResultScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(this.numberEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
+		panel.add(this.parameterEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.numberEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
+		panel.add(this.parameterEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.numberEditPanel("Cross-Section Discharge (m^3/s)", () -> this.controller.getQ(), (q) -> this.controller.setQ(q)));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		panel.add(this.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, ResultScreen.MIN_NUM_DISCHARGE_ROWS, null, 1));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberEditPanel("Discharge Min", () -> this.dischargeLower.get(), (discharge) -> this.dischargeLower.set(discharge)));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.numberEditPanel("Discharge Max", () -> this.dischargeUpper.get(), (discharge) -> this.dischargeUpper.set(discharge)));
 		panel.add(Box.createRigidArea(new Dimension(0, 10)));
 		return panel;
 	}
@@ -238,7 +321,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	private JPanel numberEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
+	private JPanel numberEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set, Consumer<BigDecimal> after)
 	{
 		JPanel panel = this.labelPanel();
 
@@ -255,8 +338,6 @@ public class ResultScreen extends JPanel
 					{
 						set.accept(new BigDecimal(output));
 						numberText.setText(get.get().toString());
-						ResultScreen.this.controller.updateModelConstants();
-						ResultScreen.this.refreshGraph();
 					}
 					catch (NumberFormatException exception) {}
 				}
@@ -270,7 +351,21 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	private JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, int min, int max, int step)
+	private JPanel numberEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
+	{
+		return this.numberEditPanel(name, get, set, (value) -> {});
+	}
+
+	private JPanel parameterEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
+	{
+		return this.numberEditPanel(name, get, set, (value) ->
+		{
+			ResultScreen.this.controller.updateModelConstants();
+			ResultScreen.this.refreshGraph();
+		});
+	}
+
+	private JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, Integer min, Integer max, int step)
 	{
 		JPanel panel = this.labelPanel();
 		panel.add(new JLabel(label));
@@ -294,6 +389,34 @@ public class ResultScreen extends JPanel
 		return spinner;
 	}
 
+	private JTable createOutputTable()
+	{
+		JTable table = new JTable(this.tableModel);
+		table.setCellSelectionEnabled(true);
+		table.getTableHeader().setReorderingAllowed(false);
+		return table;
+	}
+
+	private JScrollPane createTablePane(JTable table)
+	{
+		JScrollPane pane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		// Default width: 350
+		pane.setPreferredSize(new Dimension(350, 1080));
+		return pane;
+	}
+
+	private JPanel createErrorPanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		for (ResultScreenController.ModelError error : this.errorLabels.keySet())
+		{
+			panel.add(this.errorLabels.get(error));
+		}
+		return panel;
+	}
+
 	private Action calculateAction()
 	{
 		return new AbstractAction("Calculate")
@@ -310,7 +433,51 @@ public class ResultScreen extends JPanel
 
 	private void calcOutputValues()
 	{
-		this.workerDialog.open(this.controller.createCalcDialogWorker(this.outputPrecision.value));
+		this.workerDialog.open(this.controller.createWaterLevelWorker(this.outputPrecision.value));
+	}
+
+	private Action calculateResultsAction()
+	{
+		return new AbstractAction("Calculate Table")
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				ResultScreen.this.controller.updateModelConstants();
+				ResultScreenController.Result[] results = ResultScreen.this.calcResults();
+				if (results != null)
+				{
+					ResultScreen.this.processResults(results);
+				}
+			}
+		};
+	}
+
+	private ResultScreenController.Result[] calcResults()
+	{
+		SwingWorker<ResultScreenController.Result[], ?> worker = this.controller.createResultsWorker
+		(
+			new Range.Double(this.dischargeLower.value.doubleValue(), this.dischargeUpper.value.doubleValue()), 
+			this.numDischargeRows.value, 
+			this.outputPrecision.value
+		);
+		this.workerDialog.open(worker);
+		if (worker.isCancelled())
+		{
+			return null;
+		}
+		else
+		{
+			try
+			{
+				return worker.get();
+			}
+			catch (InterruptedException | ExecutionException e)
+			{
+				e.printStackTrace();
+				return null;
+			}
+		}
 	}
 
 	private GraphContainer createGraphContainer(Graph graph)
@@ -336,4 +503,5 @@ public class ResultScreen extends JPanel
 		// graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
 		return graph;
 	}
+
 }

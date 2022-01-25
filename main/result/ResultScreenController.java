@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import data.MapDiscreteData;
+import graphs.Range;
 import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
 import ui.Wrapper;
@@ -20,6 +21,42 @@ public class ResultScreenController
 	protected static enum ModelError
 	{
 		DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NOT_ENOUGH_DATA, NONE
+	}
+
+	protected class Result
+	{
+		private ModelError error;
+		private BigDecimal q;
+		private BigDecimal level;
+		private BigDecimal v;
+
+		public Result(ModelError error, BigDecimal q, BigDecimal level, BigDecimal v)
+		{
+			this.error = error;
+			this.q = q;
+			this.level = level;
+			this.v = v;
+		}
+
+		public ModelError getError()
+		{
+			return this.error;
+		}
+
+		public BigDecimal getQ()
+		{
+			return this.q;
+		}
+
+		public BigDecimal getLevel()
+		{
+			return this.level;
+		}
+
+		public BigDecimal getV()
+		{
+			return this.v;
+		}
 	}
 
 	private ManningsModel model;
@@ -107,7 +144,7 @@ public class ResultScreenController
 		this.model.setS(this.s.value);
 	}
 
-	public SwingWorker<?, ?> createCalcDialogWorker(int scale)
+	public SwingWorker<?, ?> createWaterLevelWorker(int scale)
 	{
 		class CalcWorker extends SwingWorker<Double, Object>
 		{
@@ -173,6 +210,87 @@ public class ResultScreenController
 		}
 		
 		return new CalcWorker(this.model, this.q.value.doubleValue(), scale);
+	}
+
+	public SwingWorker<Result[], ?> createResultsWorker(Range.Double dischargeRange, int numRows, int scale)
+	{
+		class TableCalcWorker extends SwingWorker<Result[], Object>
+		{
+			private ManningsModel model;
+			private Range.Double dischargeRange;
+			private int numRows;
+			private int scale;
+
+			public TableCalcWorker(ManningsModel model, Range.Double dischargeRange, int numRows, int scale)
+			{
+				super();
+				this.model = new ManningsModel(model);
+				this.dischargeRange = dischargeRange;
+				this.numRows = numRows;
+				this.scale = scale;
+			}
+
+			@Override
+			protected Result[] doInBackground() throws Exception
+			{
+				Result[] results = new Result[this.numRows];
+				for (int i = 0; i < this.numRows; i++)
+				{
+					results[i] = this.calcResult(this.dischargeRange.getNumber(this.specialDivide(i, (this.numRows - 1))), this.scale);
+					if (results[i] == null)
+					{
+						return null;
+					}
+				}
+				return results;
+			}
+
+			private Result calcResult(double discharge, int scale)
+			{
+				if (!this.model.areConstantsSet())
+				{
+					return this.createErrorResult(ModelError.CONSTANTS_NOT_SET);
+				}
+				else if (this.model.dischargeUnderflow(discharge))
+				{
+					return this.createErrorResult(ModelError.DISCHARGE_UNDERFLOW);
+				}
+				else if (!this.model.canUseData())
+				{
+					return this.createErrorResult(ModelError.NOT_ENOUGH_DATA);
+				}
+
+				Double level = this.model.calcWaterLevel(discharge, this.scale, () -> !this.isCancelled());
+				if (level == null)
+				{
+					return null;
+				}
+				double velocity = this.model.calcVelocity(discharge, level);
+
+				return new Result
+				(
+					ModelError.NONE,
+					new BigDecimal(discharge).setScale(scale, RoundingMode.HALF_UP),
+					new BigDecimal(level).setScale(scale, RoundingMode.HALF_UP),
+					new BigDecimal(velocity).setScale(scale, RoundingMode.HALF_UP)
+				);
+			}
+
+			private double specialDivide(double dividend, double divisor)
+			{
+				return dividend == 0 && divisor == 0 ? 0 : dividend / divisor;
+			}
+
+			private Result createErrorResult(ModelError error)
+			{
+				return new Result(error, null, null, null);
+			}
+		}
+		if (numRows < 0)
+		{
+			throw new IllegalArgumentException("Cannot have negative number of rows");
+		}
+		return new TableCalcWorker(this.model, dischargeRange, numRows, scale);
 	}
 
 	private void updateWaterLevel(double discharge, Double level, int scale)
