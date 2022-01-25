@@ -1,4 +1,4 @@
-package ui;
+package table;
 
 import javax.swing.AbstractAction;
 import javax.swing.JTable;

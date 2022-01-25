@@ -1,4 +1,4 @@
-package ui;
+package table;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -6,11 +6,11 @@ import javax.swing.event.ChangeListener;
 
 public class TablePrecisionController implements ChangeListener
 {
-	GraphTableModel model;
+	EditableDiscreteDataModel model;
 	SpinnerNumberModel spinnerX = null;
 	SpinnerNumberModel spinnerY = null;
 	
-	public TablePrecisionController(GraphTableModel model)
+	public TablePrecisionController(EditableDiscreteDataModel model)
 	{
 		this.model = model;
 	}

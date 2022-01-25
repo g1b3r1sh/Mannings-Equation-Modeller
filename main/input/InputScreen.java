@@ -32,7 +32,7 @@ import main.dialogs.DataEditDialog;
 import main.dialogs.DataEditScreen;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
-import ui.GraphTableModel;
+import table.EditableDiscreteDataModel;
 import ui.PrecisionSpinnerModel;
 
 /**
@@ -48,7 +48,7 @@ public class InputScreen extends JPanel
 
 	private DataEditDialog editDialog;
 	private GraphEditDialog graphDialog;
-	private GraphTableModel tableModel;
+	private EditableDiscreteDataModel tableModel;
 	private Graph graph;
 	private JSpinner waterLevelSpinner;
 	private GraphController graphController;
@@ -69,7 +69,7 @@ public class InputScreen extends JPanel
 		this.graphDialog = new GraphEditDialog(parent, new GraphEditScreen(graphContainer));
 		this.graphDialog.addPropertyChangeListener(this.graphController);
 
-		this.tableModel = new GraphTableModel(data, precision, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL);
+		this.tableModel = new EditableDiscreteDataModel(data, precision, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL);
 
 		JTable table = this.createTable();
 		this.add(this.createSidePanel(table, waterCalculator, precision.getY(), graphContainer.getGraph(), precision), BorderLayout.WEST);
@@ -88,7 +88,7 @@ public class InputScreen extends JPanel
 		return this.graphDialog;
 	}
 
-	public GraphTableModel getTableModel()
+	public EditableDiscreteDataModel getTableModel()
 	{
 		return this.tableModel;
 	}

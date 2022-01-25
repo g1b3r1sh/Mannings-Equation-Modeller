@@ -1,4 +1,4 @@
-package ui;
+package table;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;

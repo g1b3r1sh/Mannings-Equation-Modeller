@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import data.DataPrecision;
 import main.dialogs.DataEditDialog;
 import main.input.InputScreen;
-import ui.GraphTableModel;
+import table.EditableDiscreteDataModel;
 import ui.PrecisionSpinnerModel;
 import utility.Pair;
 
@@ -32,7 +32,7 @@ public class CrossSectionController implements PropertyChangeListener
 		{
 			if ("update".equals(evt.getPropertyName()))
 			{
-				GraphTableModel newData = (GraphTableModel) evt.getNewValue();
+				EditableDiscreteDataModel newData = (EditableDiscreteDataModel) evt.getNewValue();
 
 				this.matchData(newData);
 				this.matchPrecision(newData.getPrecision());
@@ -42,7 +42,7 @@ public class CrossSectionController implements PropertyChangeListener
 		}
 	}
 
-	private void matchData(GraphTableModel newData)
+	private void matchData(EditableDiscreteDataModel newData)
 	{
 
 		this.model.getData().clear();

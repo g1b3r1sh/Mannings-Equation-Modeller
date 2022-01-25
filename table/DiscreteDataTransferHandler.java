@@ -1,4 +1,4 @@
-package ui;
+package table;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -10,7 +10,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-public class GraphTableTransferHandler extends JTableTransferHandler
+public class DiscreteDataTransferHandler extends JTableTransferHandler
 {
 	@Override
 	public int getSourceActions(JComponent c)
@@ -24,9 +24,9 @@ public class GraphTableTransferHandler extends JTableTransferHandler
 		if (action == TransferHandler.MOVE && source instanceof JTable)
 		{
 			JTable table = (JTable) source;
-			if (table.getModel() instanceof GraphTableModel)
+			if (table.getModel() instanceof EditableDiscreteDataModel)
 			{
-				GraphTableModel model = (GraphTableModel) table.getModel();
+				EditableDiscreteDataModel model = (EditableDiscreteDataModel) table.getModel();
 				if (table.getSelectedColumnCount() == 1)
 				{
 					for (int row : table.getSelectedRows())
@@ -58,9 +58,9 @@ public class GraphTableTransferHandler extends JTableTransferHandler
 				e.printStackTrace();
 				return false;
 			}
-			if (table.getModel() instanceof GraphTableModel)
+			if (table.getModel() instanceof EditableDiscreteDataModel)
 			{
-				GraphTableModel model = (GraphTableModel) table.getModel();
+				EditableDiscreteDataModel model = (EditableDiscreteDataModel) table.getModel();
 				if (this.canInsert(data))
 				{
 					String[] rows = this.splitRows(data);

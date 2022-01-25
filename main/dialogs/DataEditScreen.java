@@ -30,14 +30,14 @@ import java.awt.event.KeyEvent;
 
 import data.DataPrecision;
 import data.functions.MapDiscreteData;
-import ui.DiscreteDataTableController;
-import ui.TablePrecisionController;
-import ui.GraphTableModel;
-import ui.GraphTableTransferHandler;
+import table.DiscreteDataTableController;
+import table.DiscreteDataTransferHandler;
+import table.EditableDiscreteDataModel;
+import table.TablePrecisionController;
 
 public class DataEditScreen extends JPanel
 {
-	private GraphTableModel tableModel;
+	private EditableDiscreteDataModel tableModel;
 	private JTable table;
 	private TablePrecisionController precisionController;
 	private DiscreteDataTableController tableController;
@@ -46,7 +46,7 @@ public class DataEditScreen extends JPanel
 	{
 		super(new BorderLayout());
 
-		this.tableModel = new GraphTableModel(data, precision, xLabel, yLabel)
+		this.tableModel = new EditableDiscreteDataModel(data, precision, xLabel, yLabel)
 		{
 			@Override
 			public boolean isCellEditable(int row, int col)
@@ -60,7 +60,7 @@ public class DataEditScreen extends JPanel
 		this.add(this.createControlPanel(this.table), BorderLayout.CENTER);
 	}
 
-	public GraphTableModel getModel()
+	public EditableDiscreteDataModel getModel()
 	{
 		return this.tableModel;
 	}
@@ -140,7 +140,7 @@ public class DataEditScreen extends JPanel
 		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), controller.getClearSelectedAction());
 		
 		// Allow use of document editing commands by using a custom transfer handler
-		this.table.setTransferHandler(new GraphTableTransferHandler());
+		this.table.setTransferHandler(new DiscreteDataTransferHandler());
 		// Disable windows key so that it's possible to paste from windows clipboard history using Win+V
 		this.addShortcut(KeyStroke.getKeyStroke(KeyEvent.VK_WINDOWS, 0), new AbstractAction()
 		{

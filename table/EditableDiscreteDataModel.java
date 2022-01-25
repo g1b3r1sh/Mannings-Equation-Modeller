@@ -1,4 +1,4 @@
-package ui;
+package table;
 
 import java.math.BigDecimal;
 
@@ -11,12 +11,12 @@ import utility.Pair;
  * Overrides setValueAt method to allow for data to be changed
 **/
 
-public class GraphTableModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
+public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
 {
 	private DataPrecision precision;
 	private DataPrecision outsidePrecision;
 
-	public GraphTableModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision outsidePrecision, String nameX, String nameY)
+	public EditableDiscreteDataModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision outsidePrecision, String nameX, String nameY)
 	{
 		super(outsideData, nameX, nameY);
 		this.outsidePrecision = outsidePrecision;
