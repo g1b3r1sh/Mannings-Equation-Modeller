@@ -130,7 +130,6 @@ public class MainWindowMenu extends JMenuBar
 			contained by the banks, it won't be drawn.
 			"""
 		));
-		// TODO: Add help for calculating
 
 		return help;
 	}

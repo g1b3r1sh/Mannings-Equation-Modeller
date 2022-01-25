@@ -30,13 +30,11 @@ import javax.swing.SwingWorker;
 
 import data.DataPrecision;
 import data.MapDiscreteData;
-import data.Parabola;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.Range;
 import graphs.GraphContainer.Direction;
 import graphs.visualiser.InverseContinuousFunctionVisualiser;
-import graphs.visualiser.VerticalLineVisualiser;
 import main.dialogs.GraphController;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
@@ -503,12 +501,9 @@ public class ResultScreen extends JPanel
 	private Graph createGraph()
 	{
 		Graph graph = new Graph();
-		// graph.setLinearPlane(new Range(0, 10), new Range(0, 5));
 		graph.setLinearPlane(new Range(0, 500), new Range(0, 10));
 		graph.fitGridPlane(100, 2);
 		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.controller.getFunction()));
-		// graph.getGraphComponents().add(new VerticalLineVisualiser(graph, 493.66637)); // Line that the default function should touch and end
-		// graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, new Parabola(1, 0, 0)));
 		return graph;
 	}
 
