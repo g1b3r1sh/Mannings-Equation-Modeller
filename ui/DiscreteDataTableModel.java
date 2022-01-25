@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 
 import javax.swing.table.AbstractTableModel;
 
-import data.DiscreteData;
+import data.functions.DiscreteData;
 import hydraulics.Pair;
 
 /**

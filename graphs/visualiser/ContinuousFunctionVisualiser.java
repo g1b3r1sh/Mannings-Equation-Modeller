@@ -3,7 +3,7 @@ package graphs.visualiser;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import data.ContinuousFunction;
+import data.functions.ContinuousFunction;
 import graphs.Graph;
 import graphs.GraphComponent;
 import graphs.Plane;

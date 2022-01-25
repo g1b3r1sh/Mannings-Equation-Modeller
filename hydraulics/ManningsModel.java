@@ -2,7 +2,7 @@ package hydraulics;
 
 import java.util.function.BooleanSupplier;
 
-import data.DiscreteData;
+import data.functions.DiscreteData;
 
 /* Equation Analysis
 Givens: n, S

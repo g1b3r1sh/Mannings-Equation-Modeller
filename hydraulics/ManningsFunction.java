@@ -2,8 +2,8 @@ package hydraulics;
 
 import java.util.Map.Entry;
 
-import data.ContinuousFunction;
-import data.DiscreteData;
+import data.functions.ContinuousFunction;
+import data.functions.DiscreteData;
 
 // Function mapping water level to discharge
 public class ManningsFunction implements ContinuousFunction

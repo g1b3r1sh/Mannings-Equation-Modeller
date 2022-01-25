@@ -3,8 +3,8 @@ package hydraulics;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
-import data.ContinuousData;
-import data.DiscreteData;
+import data.functions.ContinuousData;
+import data.functions.DiscreteData;
 import ui.Wrapper;
 
 import java.awt.geom.Path2D;

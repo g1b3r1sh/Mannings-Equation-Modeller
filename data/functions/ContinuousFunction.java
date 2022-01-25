@@ -1,4 +1,4 @@
-package data;
+package data.functions;
 
 /**
  * Represents continuous function. As such, can only input and output doubles.

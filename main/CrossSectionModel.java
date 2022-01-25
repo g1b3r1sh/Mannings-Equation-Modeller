@@ -3,7 +3,7 @@ package main;
 import java.math.BigDecimal;
 
 import data.DataPrecision;
-import data.MapDiscreteData;
+import data.functions.MapDiscreteData;
 import hydraulics.WaterLevelCalculator;
 
 public class CrossSectionModel

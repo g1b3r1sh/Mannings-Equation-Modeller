@@ -29,7 +29,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
 import data.DataPrecision;
-import data.MapDiscreteData;
+import data.functions.MapDiscreteData;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.Range;

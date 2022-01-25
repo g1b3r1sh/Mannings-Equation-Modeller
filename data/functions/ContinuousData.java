@@ -1,4 +1,4 @@
-package data;
+package data.functions;
 
 import java.util.Iterator;
 import java.util.NavigableSet;

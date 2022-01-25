@@ -5,7 +5,7 @@ import hydraulics.Pair;
 import java.math.BigDecimal;
 
 import data.DataPrecision;
-import data.DiscreteData;
+import data.functions.DiscreteData;
 
 /**
  * GraphTableModel that takes in BigDecimal as data

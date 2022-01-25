@@ -12,8 +12,8 @@ import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
 
 import data.DataPrecision;
-import data.DiscreteData;
-import data.MapDiscreteData;
+import data.functions.DiscreteData;
+import data.functions.MapDiscreteData;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

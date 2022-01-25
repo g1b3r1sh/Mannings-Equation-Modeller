@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
-import data.DiscreteData;
+import data.functions.DiscreteData;
 import graphs.visualiser.ConnectedDataVisualiser;
 import graphs.visualiser.DataPlotter;
 import graphs.visualiser.DataVisualiser;

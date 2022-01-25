@@ -1,4 +1,4 @@
-package data;
+package data.functions;
 
 /**
  * Represents a mathematical function

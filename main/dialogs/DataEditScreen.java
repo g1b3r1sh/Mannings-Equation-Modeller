@@ -29,7 +29,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import data.DataPrecision;
-import data.MapDiscreteData;
+import data.functions.MapDiscreteData;
 import ui.DiscreteDataTableController;
 import ui.TablePrecisionController;
 import ui.GraphTableModel;

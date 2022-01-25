@@ -2,7 +2,7 @@ package graphs.visualiser;
 
 import java.awt.Graphics;
 
-import data.DiscreteData;
+import data.functions.DiscreteData;
 import graphs.Graph;
 import graphs.Plane;
 
