@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import data.Range;
 import data.functions.MapDiscreteData;
-import graphs.Range;
 import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
 import ui.Wrapper;

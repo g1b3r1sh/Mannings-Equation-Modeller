@@ -2,6 +2,8 @@ package graphs;
 
 import javax.swing.JComponent;
 
+import data.Range;
+
 import java.awt.Graphics;
 
 // NOTE: Graph should be able to implement bar graphs as well

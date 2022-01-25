@@ -5,7 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import graphs.Range;
+import data.Range;
 
 /**
  * A vertical instance of GraphAxisNumbers

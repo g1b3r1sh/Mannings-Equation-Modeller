@@ -1,5 +1,7 @@
 package graphs;
 
+import data.Range;
+
 /**
  * An instance of Plane where the scales are linear (i.e. Numbers scale up in increments rather than by logs or multiples)
 **/

@@ -2,7 +2,7 @@ package graphs.axis;
 
 import javax.swing.JComponent;
 
-import graphs.Range;
+import data.Range;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

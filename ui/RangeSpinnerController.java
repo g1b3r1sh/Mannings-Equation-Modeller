@@ -4,7 +4,7 @@ import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import graphs.Range;
+import data.Range;
 
 public class RangeSpinnerController implements ChangeListener
 {

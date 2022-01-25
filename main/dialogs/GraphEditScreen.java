@@ -12,10 +12,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import data.Range;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.Grid;
-import graphs.Range;
 import graphs.axis.Axis;
 import ui.RangeSpinnerController;
 import ui.SpinnerController;

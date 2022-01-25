@@ -29,10 +29,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
 import data.DataPrecision;
+import data.Range;
 import data.functions.MapDiscreteData;
 import graphs.Graph;
 import graphs.GraphContainer;
-import graphs.Range;
 import graphs.GraphContainer.Direction;
 import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import main.dialogs.GraphController;
@@ -52,8 +52,8 @@ public class ResultScreen extends JPanel
 	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final int MIN_DISPLAYED_SCALE = 0;
 	private static final int MAX_DISPLAYED_SCALE = 9;
-	private static final BigDecimal DEFAULT_MIN_DISCHARGE = new BigDecimal(100);
-	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(1000);
+	private static final BigDecimal DEFAULT_MIN_DISCHARGE = new BigDecimal(0);
+	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(500);
 	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
 	private static final int MIN_NUM_DISCHARGE_ROWS = 0;
 
