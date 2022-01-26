@@ -33,7 +33,7 @@ public class TableOutputPanel extends OutputPanel
 		super(parent, resultModel);
 
 		this.errorLabels = this.createErrorLabelsMap();
-		this.numDischargeRowsController = new SpinnerWrapperController<>(this.getController().getNumDischargeRows());
+		this.numDischargeRowsController = new SpinnerWrapperController<>(this.getModel().getNumDischargeRows());
 		this.tableModel = new ResultsTableModel();
 
 		this.addComponents();
@@ -60,9 +60,9 @@ public class TableOutputPanel extends OutputPanel
 	{
 		JPanel panel = ResultScreen.mainSidePanel();
 		
-		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min", this.getController().getDischargeLower()));
+		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min", this.getModel().getDischargeLower()));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max", this.getController().getDischargeUpper()));
+		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max", this.getModel().getDischargeUpper()));
 		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, ManningsResultModel.MIN_NUM_DISCHARGE_ROWS, null, 1));
 		panel.add(ResultScreen.sidePadding());
@@ -159,13 +159,13 @@ public class TableOutputPanel extends OutputPanel
 
 	private Result[] calcResults()
 	{
-		this.getController().updateModelConstants();
-		return this.runWorker(this.getController().createResultsWorker
+		this.getModel().updateModelConstants();
+		return this.runWorker(this.getModel().createResultsWorker
 		(
-			this.getController().getDischargeLower().value.doubleValue(),
-			this.getController().getDischargeUpper().value.doubleValue(),
-			this.getController().getNumDischargeRows().value,
-			this.getController().getOutputPrecision()
+			this.getModel().getDischargeLower().value.doubleValue(),
+			this.getModel().getDischargeUpper().value.doubleValue(),
+			this.getModel().getNumDischargeRows().value,
+			this.getModel().getOutputPrecision()
 		));
 	}
 

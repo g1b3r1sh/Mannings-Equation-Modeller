@@ -26,7 +26,7 @@ public class OutputPanel extends JPanel
 		return this.parent;
 	}
 
-	public ManningsResultModel getController()
+	public ManningsResultModel getModel()
 	{
 		return this.resultModel;
 	}
