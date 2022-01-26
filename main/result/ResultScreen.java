@@ -23,6 +23,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
+import javax.swing.text.JTextComponent;
 
 import data.DataPrecision;
 import data.Range;
@@ -213,7 +214,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	protected static JPanel numberDisplayPanel(String name, String defaultString, JLabel numberLabel)
+	protected static JPanel numberDisplayPanel(String name, String defaultString, JTextComponent numberLabel)
 	{
 		JPanel panel = ResultScreen.labelPanel();
 		panel.add(new JLabel(String.format("%s: ", name)));

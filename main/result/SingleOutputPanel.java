@@ -1,6 +1,7 @@
 package main.result;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 
@@ -8,29 +9,42 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import main.result.ManningsResultModel.Result;
 import main.result.ManningsResultModel.ModelError;
 
 public class SingleOutputPanel extends OutputPanel
 {
-	private JLabel levelLabel;
-	private JLabel vLabel;
 	private JLabel errorLabel;
+	private JTextField levelLabel;
+	private JTextField vLabel;
 
 	public SingleOutputPanel(ResultScreen parent, ManningsResultModel resultModel)
 	{
 		super(parent, resultModel);
-		
-		this.levelLabel = new JLabel();
-		this.vLabel = new JLabel();
+
 		this.errorLabel = new JLabel("");
 		this.errorLabel.setForeground(Color.RED);
 		this.errorLabel.setVisible(false);
+		this.levelLabel = this.createOutputField();
+		this.vLabel = this.createOutputField();
 		this.addComponents();
 	}
 
 	/// Panel methods
+
+	private JTextField createOutputField()
+	{
+		return new JTextField(10)
+		{
+			@Override
+			public Dimension getMaximumSize()
+			{
+				return this.getPreferredSize();
+			}
+		};
+	}
 
 	private void addComponents()
 	{
