@@ -29,7 +29,7 @@ public class TableOutputPanel extends OutputPanel
 	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
 	private static final int MIN_NUM_DISCHARGE_ROWS = 0;
 	
-	private EnumMap<ResultScreenController.ModelError, JLabel> errorLabels;
+	private EnumMap<ManningsModelController.ModelError, JLabel> errorLabels;
 
 	private Wrapper<BigDecimal> dischargeLower;
 	private Wrapper<BigDecimal> dischargeUpper;
@@ -37,7 +37,7 @@ public class TableOutputPanel extends OutputPanel
 	private SpinnerController<Integer> numDischargeRowsController;
 	private ResultsTableModel tableModel;
 
-	public TableOutputPanel(ResultScreen parent, ResultScreenController controller)
+	public TableOutputPanel(ResultScreen parent, ManningsModelController controller)
 	{
 		super(parent, controller);
 
@@ -114,16 +114,16 @@ public class TableOutputPanel extends OutputPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		for (ResultScreenController.ModelError error : this.errorLabels.keySet())
+		for (ManningsModelController.ModelError error : this.errorLabels.keySet())
 		{
 			panel.add(this.errorLabels.get(error));
 		}
 		return panel;
 	}
 
-	private void showErrors(EnumSet<ResultScreenController.ModelError> errors)
+	private void showErrors(EnumSet<ManningsModelController.ModelError> errors)
 	{
-		for (ResultScreenController.ModelError error : ResultScreenController.ModelError.values())
+		for (ManningsModelController.ModelError error : ManningsModelController.ModelError.values())
 		{
 			if (this.errorLabels.containsKey(error))
 			{
@@ -133,13 +133,13 @@ public class TableOutputPanel extends OutputPanel
 		}
 	}
 
-	private EnumMap<ResultScreenController.ModelError, JLabel> createErrorLabelsMap()
+	private EnumMap<ManningsModelController.ModelError, JLabel> createErrorLabelsMap()
 	{
-		EnumMap<ResultScreenController.ModelError, JLabel> labels = new EnumMap<>(ResultScreenController.ModelError.class);
-		labels.put(ResultScreenController.ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
-		labels.put(ResultScreenController.ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
-		labels.put(ResultScreenController.ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
-		labels.put(ResultScreenController.ModelError.INVALID_DISCHARGE_RANGE, this.createErrorLabel("Min value cannot be greater than max value!"));
+		EnumMap<ManningsModelController.ModelError, JLabel> labels = new EnumMap<>(ManningsModelController.ModelError.class);
+		labels.put(ManningsModelController.ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
+		labels.put(ManningsModelController.ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
+		labels.put(ManningsModelController.ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
+		labels.put(ManningsModelController.ModelError.INVALID_DISCHARGE_RANGE, this.createErrorLabel("Min value cannot be greater than max value!"));
 		return labels;
 	}
 
@@ -161,7 +161,7 @@ public class TableOutputPanel extends OutputPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				TableOutputPanel.this.getController().updateModelConstants();
-				ResultScreenController.Result[] results = TableOutputPanel.this.calcResults();
+				ManningsModelController.Result[] results = TableOutputPanel.this.calcResults();
 				if (results != null)
 				{
 					TableOutputPanel.this.internalProcessResults(results);
@@ -170,9 +170,9 @@ public class TableOutputPanel extends OutputPanel
 		};
 	}
 
-	private ResultScreenController.Result[] calcResults()
+	private ManningsModelController.Result[] calcResults()
 	{
-		SwingWorker<ResultScreenController.Result[], ?> worker = this.getController().createResultsWorker
+		SwingWorker<ManningsModelController.Result[], ?> worker = this.getController().createResultsWorker
 		(
 			this.dischargeLower.value.doubleValue(),
 			this.dischargeUpper.value.doubleValue(),
@@ -198,18 +198,18 @@ public class TableOutputPanel extends OutputPanel
 		}
 	}
 
-	private void internalProcessResults(ResultScreenController.Result[] results)
+	private void internalProcessResults(ManningsModelController.Result[] results)
 	{
 		this.tableModel.setData(results);
 		this.showErrors(this.createErrorSet(results));
 		this.processResults(results);
 	}
 
-	private EnumSet<ResultScreenController.ModelError> createErrorSet(ResultScreenController.Result[] results)
+	private EnumSet<ManningsModelController.ModelError> createErrorSet(ManningsModelController.Result[] results)
 	{
-		EnumSet<ResultScreenController.ModelError> errors = EnumSet.noneOf(ResultScreenController.ModelError.class);
-		errors.add(ResultScreenController.ModelError.NONE);
-		for (ResultScreenController.Result result : results)
+		EnumSet<ManningsModelController.ModelError> errors = EnumSet.noneOf(ManningsModelController.ModelError.class);
+		errors.add(ManningsModelController.ModelError.NONE);
+		for (ManningsModelController.Result result : results)
 		{
 			errors.add(result.getError());
 		}

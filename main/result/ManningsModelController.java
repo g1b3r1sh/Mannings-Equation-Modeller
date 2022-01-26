@@ -12,7 +12,7 @@ import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
 import utility.Wrapper;
 
-public class ResultScreenController
+public class ManningsModelController
 {
 	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final String INITIAL_N = "0.025";
@@ -71,14 +71,14 @@ public class ResultScreenController
 	private Wrapper<BigDecimal> v;
 	private ModelError error = ModelError.NONE;
 
-	public ResultScreenController(MapDiscreteData<BigDecimal, BigDecimal> data)
+	public ManningsModelController(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
 		this.model = new ManningsModel(data);
 		this.function = new ManningsFunction(this.model);
-		this.outputPrecision = new Wrapper<>(ResultScreenController.DEFAULT_DISPLAYED_SCALE);
-		this.n = new Wrapper<>(new BigDecimal(ResultScreenController.INITIAL_N));
-		this.s = new Wrapper<>(new BigDecimal(ResultScreenController.INITIAL_S));
-		this.q = new Wrapper<>(new BigDecimal(ResultScreenController.INITIAL_Q));
+		this.outputPrecision = new Wrapper<>(ManningsModelController.DEFAULT_DISPLAYED_SCALE);
+		this.n = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_N));
+		this.s = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_S));
+		this.q = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_Q));
 		this.level = new Wrapper<>(null);
 		this.a = new Wrapper<>(null);
 		this.v = new Wrapper<>(null);
@@ -200,23 +200,23 @@ public class ResultScreenController
 					{
 						e.printStackTrace();
 					}
-					ResultScreenController.this.updateWaterLevel(this.discharge, level, this.scale);
+					ManningsModelController.this.updateWaterLevel(this.discharge, level, this.scale);
 
 					if (!this.model.areConstantsSet())
 					{
-						ResultScreenController.this.waterLevelError(ModelError.CONSTANTS_NOT_SET);
+						ManningsModelController.this.waterLevelError(ModelError.CONSTANTS_NOT_SET);
 					}
 					else if (this.model.dischargeUnderflow(this.discharge))
 					{
-						ResultScreenController.this.waterLevelError(ModelError.DISCHARGE_UNDERFLOW);
+						ManningsModelController.this.waterLevelError(ModelError.DISCHARGE_UNDERFLOW);
 					}
 					else if (!this.model.canUseData())
 					{
-						ResultScreenController.this.waterLevelError(ModelError.NOT_ENOUGH_DATA);
+						ManningsModelController.this.waterLevelError(ModelError.NOT_ENOUGH_DATA);
 					}
 					else
 					{
-						ResultScreenController.this.waterLevelError(ModelError.NONE);
+						ManningsModelController.this.waterLevelError(ModelError.NONE);
 					}
 				}
 			}

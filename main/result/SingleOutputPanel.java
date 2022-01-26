@@ -15,7 +15,7 @@ public class SingleOutputPanel extends OutputPanel
 	private JLabel vLabel;
 	private JLabel errorLabel;
 
-	public SingleOutputPanel(ResultScreen parent, ResultScreenController controller)
+	public SingleOutputPanel(ResultScreen parent, ManningsModelController controller)
 	{
 		super(parent, controller);
 		

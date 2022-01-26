@@ -48,7 +48,7 @@ public class ResultScreen extends JPanel
 
 	private JFrame parent;
 
-	private ResultScreenController controller;
+	private ManningsModelController controller;
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
@@ -65,7 +65,7 @@ public class ResultScreen extends JPanel
 		super();
 		this.parent = parent;
 
-		this.controller = new ResultScreenController(data);
+		this.controller = new ManningsModelController(data);
 
 		this.setLayout(new BorderLayout(10, 10));
 
@@ -98,7 +98,7 @@ public class ResultScreen extends JPanel
 		this.workerDialog.open(worker);
 	}
 
-	protected void processResults(ResultScreenController.Result[] results)
+	protected void processResults(ManningsModelController.Result[] results)
 	{
 		this.resultsVisualiser.setResults(results);
 		this.manningsGraph.repaint();
