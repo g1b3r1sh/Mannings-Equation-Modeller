@@ -86,6 +86,10 @@ public class ResultScreen extends JPanel
 		this.refreshGraph();
 	}
 
+	protected void openWorker(SwingWorker<?, ?> worker)
+	{
+		this.workerDialog.open(worker);
+	}
 
 	protected void processResults(ResultScreenController.Result[] results)
 	{
@@ -112,6 +116,28 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
+	private JPanel createInputPanel()
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(this.constantEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(this.constantEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
+		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
+		return panel;
+	}
+
+	private JPanel constantEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
+	{
+		return ResultScreen.numberEditPanel(this, name, get, set, (value) ->
+		{
+			ResultScreen.this.controller.updateModelConstants();
+			ResultScreen.this.refreshGraph();
+		});
+	}
+
 	protected static JButton sideButton(Action action)
 	{
 		JButton button = new JButton(action);
@@ -129,19 +155,6 @@ public class ResultScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		return panel;
-	}
-
-	private JPanel createInputPanel()
-	{
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(this.parameterEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(this.parameterEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
 		return panel;
 	}
 
@@ -206,15 +219,6 @@ public class ResultScreen extends JPanel
 		return ResultScreen.numberEditPanel(parent, name, get, set, (value) -> {});
 	}
 
-	private JPanel parameterEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
-	{
-		return ResultScreen.numberEditPanel(this, name, get, set, (value) ->
-		{
-			ResultScreen.this.controller.updateModelConstants();
-			ResultScreen.this.refreshGraph();
-		});
-	}
-
 	protected static JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, Integer min, Integer max, int step)
 	{
 		JPanel panel = ResultScreen.labelPanel();
@@ -237,11 +241,6 @@ public class ResultScreen extends JPanel
 		};
 		controller.setSpinner(spinner);
 		return spinner;
-	}
-
-	protected void openWorker(SwingWorker<?, ?> worker)
-	{
-		this.workerDialog.open(worker);
 	}
 
 	private GraphContainer createGraphContainer(Graph graph)
