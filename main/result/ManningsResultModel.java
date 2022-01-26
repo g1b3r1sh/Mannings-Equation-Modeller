@@ -14,10 +14,18 @@ import utility.Wrapper;
 
 public class ManningsResultModel
 {
-	private static final int DEFAULT_DISPLAYED_SCALE = 3;
+	protected static final int MIN_DISPLAY_SCALE = 0;
+	protected static final int MAX_DISPLAY_SCALE = 9;
+	private static final int DEFAULT_DISPLAY_SCALE = 3;
+
 	private static final String INITIAL_N = "0.025";
 	private static final String INITIAL_S = "1";
 	private static final String INITIAL_Q = "1";
+
+	protected static final int MIN_NUM_DISCHARGE_ROWS = 0;
+	private static final BigDecimal DEFAULT_MIN_DISCHARGE = new BigDecimal(0);
+	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(500);
+	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
 
 	protected static enum ModelError
 	{
@@ -62,19 +70,30 @@ public class ManningsResultModel
 
 	private ManningsModel model;
 	private ManningsFunction function;
-	private Wrapper<Integer> outputPrecision;
+
 	private Wrapper<BigDecimal> n;
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
+
+	private Wrapper<Integer> outputPrecision;
+	private Wrapper<BigDecimal> dischargeLower;
+	private Wrapper<BigDecimal> dischargeUpper;
+	private Wrapper<Integer> numDischargeRows;
 
 	public ManningsResultModel(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
 		this.model = new ManningsModel(data);
 		this.function = new ManningsFunction(this.model);
-		this.outputPrecision = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAYED_SCALE);
+
 		this.n = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_N));
 		this.s = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_S));
 		this.q = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_Q));
+
+		this.outputPrecision = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAY_SCALE);
+		this.dischargeLower = new Wrapper<>(ManningsResultModel.DEFAULT_MIN_DISCHARGE);
+		this.dischargeUpper = new Wrapper<>(ManningsResultModel.DEFAULT_MAX_DISCHARGE);
+		this.numDischargeRows = new Wrapper<>(ManningsResultModel.DEFAULT_NUM_DISCHARGE_ROWS);
+
 		this.updateModelConstants();
 	}
 
@@ -121,6 +140,21 @@ public class ManningsResultModel
 	public void setQ(BigDecimal q)
 	{
 		this.q.value = q;
+	}
+
+	public Wrapper<BigDecimal> getDischargeLower()
+	{
+		return this.dischargeLower;
+	}
+
+	public Wrapper<BigDecimal> getDischargeUpper()
+	{
+		return this.dischargeUpper;
+	}
+
+	public Wrapper<Integer> getNumDischargeRows()
+	{
+		return this.numDischargeRows;
 	}
 
 	public void updateModelConstants()

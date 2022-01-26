@@ -36,6 +36,7 @@ import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
 import spinner.SpinnerController;
+import utility.Wrapper;
 
 /**
  * Contains methods for constructing results screen
@@ -43,9 +44,6 @@ import spinner.SpinnerController;
 
 public class ResultScreen extends JPanel
 {
-	private static final int MIN_DISPLAYED_SCALE = 0;
-	private static final int MAX_DISPLAYED_SCALE = 9;
-
 	private JFrame parent;
 
 	private ManningsResultModel resultModel;
@@ -135,7 +133,7 @@ public class ResultScreen extends JPanel
 		panel.add(ResultScreen.sidePadding());
 		panel.add(this.constantEditPanel("Channel Bed Slope", () -> this.resultModel.getS(), (s) -> this.resultModel.setS(s)));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
+		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ManningsResultModel.MIN_DISPLAY_SCALE, ManningsResultModel.MAX_DISPLAY_SCALE, 1));
 
 		return panel;
 	}
@@ -258,6 +256,11 @@ public class ResultScreen extends JPanel
 	protected static JPanel numberEditPanel(Component parent, String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
 	{
 		return ResultScreen.numberEditPanel(parent, name, get, set, (value) -> {});
+	}
+
+	protected static JPanel numberEditPanel(Component parent, String name, Wrapper<BigDecimal> wrapper)
+	{
+		return ResultScreen.numberEditPanel(parent, name, wrapper::get, wrapper::set);
 	}
 
 	protected static JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, Integer min, Integer max, int step)

@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
@@ -20,20 +19,12 @@ import main.result.ManningsResultModel.Result;
 import main.result.ManningsResultModel.ModelError;
 import spinner.SpinnerController;
 import spinner.SpinnerWrapperController;
-import utility.Wrapper;
 
 public class TableOutputPanel extends OutputPanel
 {
-	private static final BigDecimal DEFAULT_MIN_DISCHARGE = new BigDecimal(0);
-	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(500);
-	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
-	private static final int MIN_NUM_DISCHARGE_ROWS = 0;
 	
 	private EnumMap<ModelError, JLabel> errorLabels;
 
-	private Wrapper<BigDecimal> dischargeLower;
-	private Wrapper<BigDecimal> dischargeUpper;
-	private Wrapper<Integer> numDischargeRows;
 	private SpinnerController<Integer> numDischargeRowsController;
 	private ResultsTableModel tableModel;
 
@@ -42,10 +33,7 @@ public class TableOutputPanel extends OutputPanel
 		super(parent, resultModel);
 
 		this.errorLabels = this.createErrorLabelsMap();
-		this.dischargeLower = new Wrapper<>(TableOutputPanel.DEFAULT_MIN_DISCHARGE);
-		this.dischargeUpper = new Wrapper<>(TableOutputPanel.DEFAULT_MAX_DISCHARGE);
-		this.numDischargeRows = new Wrapper<>(TableOutputPanel.DEFAULT_NUM_DISCHARGE_ROWS);
-		this.numDischargeRowsController = new SpinnerWrapperController<>(this.numDischargeRows);
+		this.numDischargeRowsController = new SpinnerWrapperController<>(this.getController().getNumDischargeRows());
 		this.tableModel = new ResultsTableModel();
 
 		this.addComponents();
@@ -72,11 +60,11 @@ public class TableOutputPanel extends OutputPanel
 	{
 		JPanel panel = ResultScreen.mainSidePanel();
 		
-		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min", () -> this.dischargeLower.get(), (discharge) -> this.dischargeLower.set(discharge)));
+		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min", this.getController().getDischargeLower()));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max", () -> this.dischargeUpper.get(), (discharge) -> this.dischargeUpper.set(discharge)));
+		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max", this.getController().getDischargeUpper()));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(ResultScreen.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, TableOutputPanel.MIN_NUM_DISCHARGE_ROWS, null, 1));
+		panel.add(ResultScreen.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, ManningsResultModel.MIN_NUM_DISCHARGE_ROWS, null, 1));
 		panel.add(ResultScreen.sidePadding());
 
 		return panel;
@@ -174,9 +162,9 @@ public class TableOutputPanel extends OutputPanel
 		this.getController().updateModelConstants();
 		return this.runWorker(this.getController().createResultsWorker
 		(
-			this.dischargeLower.value.doubleValue(),
-			this.dischargeUpper.value.doubleValue(),
-			this.numDischargeRows.value,
+			this.getController().getDischargeLower().value.doubleValue(),
+			this.getController().getDischargeUpper().value.doubleValue(),
+			this.getController().getNumDischargeRows().value,
 			this.getController().getOutputPrecision()
 		));
 	}
