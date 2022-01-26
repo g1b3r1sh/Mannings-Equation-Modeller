@@ -68,8 +68,8 @@ public class MainWindow extends JFrame
 	private ScreenSwitcher createScreenSwitcher()
 	{
 		ScreenSwitcher switcher = new ScreenSwitcher();
-		switcher.addScreen(this.inputScreen, "Input");
-		switcher.addScreen(this.resultScreen, "Calculate");
+		switcher.addScreen(this.inputScreen, "Cross-Section Dataset");
+		switcher.addScreen(this.resultScreen, "Manning's Equation Model");
 		return switcher;
 	}
 }

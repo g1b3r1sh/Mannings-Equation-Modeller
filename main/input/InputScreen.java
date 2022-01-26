@@ -44,7 +44,7 @@ public class InputScreen extends JPanel
 	private static final String X_LABEL = "Distance from bank (m)";
 	private static final String TABLE_X_LABEL = "<html>Distance from<br>bank(m)</html>";
 	private static final String Y_LABEL = "Elevation (m)";
-	private static final String GRAPH_TITLE = "Cross-section of River Bank";
+	private static final String GRAPH_TITLE = "Cross-Section of River Bank";
 
 	private DataEditDialog editDialog;
 	private GraphEditDialog graphDialog;
@@ -124,7 +124,7 @@ public class InputScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		panel.add(new JLabel("Cross-section Data"));
+		panel.add(new JLabel("Cross-Section Data"));
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
 		panel.add(new JButton(this.editDialog.createOpenAction("Edit Dataset")));
 		panel.add(new JLabel("Water Level:"));

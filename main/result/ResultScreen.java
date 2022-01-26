@@ -287,7 +287,7 @@ public class ResultScreen extends JPanel
 	private GraphContainer createGraphContainer(Graph graph)
 	{
 		GraphContainer container = new GraphContainer(graph, new DataPrecision(2, 1));
-		container.getAxis(Direction.TOP).addName("Cross-section Discharge vs Water Elevation");
+		container.getAxis(Direction.TOP).addName("Cross-Section Discharge vs Water Elevation");
 		container.getAxis(Direction.BOTTOM).addTickmarks();
 		container.getAxis(Direction.BOTTOM).addNumbers();
 		container.getAxis(Direction.BOTTOM).addName("Discharge, Q");
