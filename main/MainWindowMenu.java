@@ -7,7 +7,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import main.dialogs.DataEditDialog;
-import main.dialogs.EditDialog;
 import spinner.PrecisionSpinnerModel;
 
 import java.awt.event.ActionEvent;
@@ -27,91 +26,64 @@ public class MainWindowMenu extends JMenuBar
 
 	private JMenu editMenu()
 	{
-		JMenu edit = new JMenu("Edit");
-		edit.add(menuItem("New Dataset", new Runnable()
+		JMenu menu = new JMenu("Edit");
+		menu.add(menuItem("New Dataset", () ->
 		{
-			@Override
-			public void run()
+			this.window.getScreenSwitcher().switchInputScreen();
+			this.window.getInputScreen().getEditDialog().open((dialog) ->
 			{
-				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchInputScreen();
-				window.getInputScreen().getEditDialog().open(
-					(EditDialog t) ->
-					{
-						DataEditDialog dialog = (DataEditDialog) t;
-						dialog.getEditScreen().getController().getNewTableAction().actionPerformed(null);
-					}
-				);
-			}
+				DataEditDialog dataEditDialog = (DataEditDialog) dialog;
+				dataEditDialog.getEditScreen().getController().getNewTableAction().actionPerformed(null);
+			});
 		}));
-		edit.add(menuItem("Edit Dataset", new Runnable() {
-			@Override
-			public void run()
-			{
-				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchInputScreen();
-				window.getInputScreen().getEditDialog().open();
-			}
+		menu.add(menuItem("Edit Dataset", () ->
+		{
+			this.window.getScreenSwitcher().switchInputScreen();
+			this.window.getInputScreen().getEditDialog().open();
 		}));
-		edit.add(menuItem("Load Sample Dataset", new Runnable() {
-			@Override
-			public void run()
-			{
-				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchInputScreen();
-				window.getModel().loadSampleData();
-				window.getInputScreen().getTableModel().refresh();
-				window.getInputScreen().getGraph().repaint();
-				((PrecisionSpinnerModel) window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(window.getModel().getCalculator().getWaterLevel());
-			}
+		menu.add(menuItem("Load Sample Dataset", () ->
+		{
+			this.window.getScreenSwitcher().switchInputScreen();
+			this.window.getModel().loadSampleData();
+			this.window.getInputScreen().getTableModel().refresh();
+			this.window.getInputScreen().getGraph().repaint();
+			((PrecisionSpinnerModel) this.window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(this.window.getModel().getCalculator().getWaterLevel());
 		}));
-		return edit;
+		return menu;
 	}
 
 	private JMenu windowMenu()
 	{
-		JMenu window = new JMenu("Window");
-		window.add(menuItem("Edit Input Graph", new Runnable()
+		JMenu menu = new JMenu("Window");
+		menu.add(menuItem("Edit Input Graph", () ->
 		{
-			@Override
-			public void run()
-			{
-				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchInputScreen();
-				window.getInputScreen().getGraphEditDialog().open();
-			}
+				this.window.getScreenSwitcher().switchInputScreen();
+				this.window.getInputScreen().getGraphEditDialog().open();
 		}));
-		window.addSeparator();
-		window.add(menuItem("Exit", new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				MainWindowMenu.this.window.dispose();
-			}
-		}));
-		return window;
+		menu.addSeparator();
+		menu.add(menuItem("Exit", () -> { this.window.dispose(); }));
+		return menu;
 	}
 
 	private JMenu helpMenu()
 	{
-		JMenu help = new JMenu("Help");
+		JMenu menu = new JMenu("Help");
 		
-		help.add(helpItem("What is this?", 
+		menu.add(helpItem("What is this?", 
 			"""
 			This application calculates the area of the cross-section of a river. The plot on the graph represents\n
 			 the waterbed and the blue represent water. The water level can be adjusted to calculate the area under different conditions.
 			"""
 		));
-		help.addSeparator();
-		help.add(helpItem("How to modify data", 
+		menu.addSeparator();
+		menu.add(helpItem("How to modify data", 
 			"""
 			To modify the data, click the \"Edit\" button above the table to open the edit dialog. You can\n
 			edit the data by selecting the cells and typing a number, click on the buttons in the panel to the right,\n
 			or use keyboard shortcuts.
 			"""
 		));
-		help.add(helpItem("Data Editing Keyboard Shortcuts",
+		menu.add(helpItem("Data Editing Keyboard Shortcuts",
 			"""
 			This is a non-exhaustive list of possible shortcuts when editing table data:\n
 			CTRL+C - Copy selected cells\n
@@ -123,7 +95,7 @@ public class MainWindowMenu extends JMenuBar
 			ESC - Cancel edit
 			"""
 		));
-		help.add(helpItem("How to modify water level", 
+		menu.add(helpItem("How to modify water level", 
 			"""
 			To modify water level on the graph, modify the number in the number field below the table.\n
 			You can also click on the arrows to increment it by small amounts. If the water cannot be \n
@@ -131,19 +103,12 @@ public class MainWindowMenu extends JMenuBar
 			"""
 		));
 
-		return help;
+		return menu;
 	}
 	
 	public JMenuItem helpItem(String title, String dialog)
 	{
-		return menuItem(title, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				JOptionPane.showMessageDialog(MainWindowMenu.this.window, dialog);
-			}
-		});
+		return menuItem(title, () -> { JOptionPane.showMessageDialog(MainWindowMenu.this.window, dialog); });
 	}
 
 	public static JMenuItem menuItem(String title, Runnable action)
