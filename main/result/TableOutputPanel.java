@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import main.result.ManningsModelController.Result;
-import main.result.ManningsModelController.ModelError;
+import main.result.ManningsResultModel.Result;
+import main.result.ManningsResultModel.ModelError;
 import spinner.SpinnerController;
 import spinner.SpinnerWrapperController;
 import utility.Wrapper;
@@ -37,9 +37,9 @@ public class TableOutputPanel extends OutputPanel
 	private SpinnerController<Integer> numDischargeRowsController;
 	private ResultsTableModel tableModel;
 
-	public TableOutputPanel(ResultScreen parent, ManningsModelController controller)
+	public TableOutputPanel(ResultScreen parent, ManningsResultModel resultModel)
 	{
-		super(parent, controller);
+		super(parent, resultModel);
 
 		this.errorLabels = this.createErrorLabelsMap();
 		this.dischargeLower = new Wrapper<>(TableOutputPanel.DEFAULT_MIN_DISCHARGE);

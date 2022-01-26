@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import graphs.Graph;
 import graphs.GraphComponent;
 import graphs.Plane;
-import main.result.ManningsModelController.Result;
+import main.result.ManningsResultModel.Result;
 
 public class ResultsVisualiser extends GraphComponent
 {

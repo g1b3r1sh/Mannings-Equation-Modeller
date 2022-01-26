@@ -12,7 +12,7 @@ import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
 import utility.Wrapper;
 
-public class ManningsModelController
+public class ManningsResultModel
 {
 	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final String INITIAL_N = "0.025";
@@ -67,14 +67,14 @@ public class ManningsModelController
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
 
-	public ManningsModelController(MapDiscreteData<BigDecimal, BigDecimal> data)
+	public ManningsResultModel(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
 		this.model = new ManningsModel(data);
 		this.function = new ManningsFunction(this.model);
-		this.outputPrecision = new Wrapper<>(ManningsModelController.DEFAULT_DISPLAYED_SCALE);
-		this.n = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_N));
-		this.s = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_S));
-		this.q = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_Q));
+		this.outputPrecision = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAYED_SCALE);
+		this.n = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_N));
+		this.s = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_S));
+		this.q = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_Q));
 		this.updateModelConstants();
 	}
 
@@ -133,15 +133,15 @@ public class ManningsModelController
 	{
 		if (!model.areConstantsSet())
 		{
-			return ManningsModelController.createErrorResult(ModelError.CONSTANTS_NOT_SET);
+			return ManningsResultModel.createErrorResult(ModelError.CONSTANTS_NOT_SET);
 		}
 		else if (model.dischargeUnderflow(discharge))
 		{
-			return ManningsModelController.createErrorResult(ModelError.DISCHARGE_UNDERFLOW);
+			return ManningsResultModel.createErrorResult(ModelError.DISCHARGE_UNDERFLOW);
 		}
 		else if (!model.canUseData())
 		{
-			return ManningsModelController.createErrorResult(ModelError.NOT_ENOUGH_DATA);
+			return ManningsResultModel.createErrorResult(ModelError.NOT_ENOUGH_DATA);
 		}
 
 		Double level = model.calcWaterLevel(discharge, scale, () -> !cancelFunction.getAsBoolean());
@@ -187,7 +187,7 @@ public class ManningsModelController
 			{
 				if (this.model.areConstantsSet() && !this.model.dischargeUnderflow(this.discharge) && this.model.canUseData())
 				{
-					return ManningsModelController.calcResult(this.model, this.discharge, this.scale, this::isCancelled);
+					return ManningsResultModel.calcResult(this.model, this.discharge, this.scale, this::isCancelled);
 				}
 				else
 				{
@@ -226,13 +226,13 @@ public class ManningsModelController
 				{
 					for (int i = 0; i < results.length; i++)
 					{
-						results[i] = ManningsModelController.createErrorResult(ModelError.INVALID_DISCHARGE_RANGE);
+						results[i] = ManningsResultModel.createErrorResult(ModelError.INVALID_DISCHARGE_RANGE);
 					}
 					return results;
 				}
 				for (int i = 0; i < this.numRows; i++)
 				{
-					results[i] = ManningsModelController.calcResult(this.model, this.dischargeRange.getNumber(this.specialDivide(i, (this.numRows - 1))), this.scale, this::isCancelled);
+					results[i] = ManningsResultModel.calcResult(this.model, this.dischargeRange.getNumber(this.specialDivide(i, (this.numRows - 1))), this.scale, this::isCancelled);
 					if (results[i] == null)
 					{
 						return null;

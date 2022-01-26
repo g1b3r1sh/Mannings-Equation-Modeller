@@ -9,14 +9,14 @@ import javax.swing.SwingWorker;
 public class OutputPanel extends JPanel
 {
 	private ResultScreen parent;
-	private ManningsModelController controller;
+	private ManningsResultModel resultModel;
 
-	public OutputPanel(ResultScreen parent, ManningsModelController controller)
+	public OutputPanel(ResultScreen parent, ManningsResultModel controller)
 	{
 		super();
 
 		this.parent = parent;
-		this.controller = controller;
+		this.resultModel = controller;
 
 		this.initPanel();
 	}
@@ -26,9 +26,9 @@ public class OutputPanel extends JPanel
 		return this.parent;
 	}
 
-	public ManningsModelController getController()
+	public ManningsResultModel getController()
 	{
-		return this.controller;
+		return this.resultModel;
 	}
 
 	protected <T> T runWorker(SwingWorker<T, ?> worker)
@@ -36,7 +36,7 @@ public class OutputPanel extends JPanel
 		return this.parent.runWorker(worker);
 	}
 
-	protected void processResults(ManningsModelController.Result[] results)
+	protected void processResults(ManningsResultModel.Result[] results)
 	{
 		this.parent.processResults(results);
 	}

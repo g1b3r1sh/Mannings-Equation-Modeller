@@ -9,8 +9,8 @@ import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import main.result.ManningsModelController.Result;
-import main.result.ManningsModelController.ModelError;
+import main.result.ManningsResultModel.Result;
+import main.result.ManningsResultModel.ModelError;
 
 public class SingleOutputPanel extends OutputPanel
 {
@@ -18,9 +18,9 @@ public class SingleOutputPanel extends OutputPanel
 	private JLabel vLabel;
 	private JLabel errorLabel;
 
-	public SingleOutputPanel(ResultScreen parent, ManningsModelController controller)
+	public SingleOutputPanel(ResultScreen parent, ManningsResultModel resultModel)
 	{
-		super(parent, controller);
+		super(parent, resultModel);
 		
 		this.levelLabel = new JLabel();
 		this.vLabel = new JLabel();

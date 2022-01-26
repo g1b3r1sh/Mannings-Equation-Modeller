@@ -48,7 +48,7 @@ public class ResultScreen extends JPanel
 
 	private JFrame parent;
 
-	private ManningsModelController controller;
+	private ManningsResultModel resultModel;
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
@@ -65,7 +65,7 @@ public class ResultScreen extends JPanel
 		super();
 		this.parent = parent;
 
-		this.controller = new ManningsModelController(data);
+		this.resultModel = new ManningsResultModel(data);
 
 		this.setLayout(new BorderLayout(10, 10));
 
@@ -75,7 +75,7 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
-		this.outputPrecisionController = new SpinnerController<>(this.controller::getOutputPrecision, this.controller::setOutputPrecision);
+		this.outputPrecisionController = new SpinnerController<>(this.resultModel::getOutputPrecision, this.resultModel::setOutputPrecision);
 
 		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
@@ -98,7 +98,7 @@ public class ResultScreen extends JPanel
 		return this.workerDialog.runWorker(worker);
 	}
 
-	protected void processResults(ManningsModelController.Result[] results)
+	protected void processResults(ManningsResultModel.Result[] results)
 	{
 		this.resultsVisualiser.setResults(results);
 		this.manningsGraph.repaint();
@@ -106,7 +106,7 @@ public class ResultScreen extends JPanel
 
 	private void refreshGraph()
 	{
-		this.controller.getFunction().update();
+		this.resultModel.getFunction().update();
 		this.manningsGraph.repaint();
 	}
 
@@ -131,9 +131,9 @@ public class ResultScreen extends JPanel
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		panel.add(this.constantEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
+		panel.add(this.constantEditPanel("Manning's Constant", () -> this.resultModel.getN(), (n) -> this.resultModel.setN(n)));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(this.constantEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
+		panel.add(this.constantEditPanel("Channel Bed Slope", () -> this.resultModel.getS(), (s) -> this.resultModel.setS(s)));
 		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
 
@@ -144,7 +144,7 @@ public class ResultScreen extends JPanel
 	{
 		return ResultScreen.numberEditPanel(this, name, get, set, (value) ->
 		{
-			ResultScreen.this.controller.updateModelConstants();
+			ResultScreen.this.resultModel.updateModelConstants();
 			ResultScreen.this.refreshGraph();
 		});
 	}
@@ -152,8 +152,8 @@ public class ResultScreen extends JPanel
 	private JTabbedPane createOutputPane()
 	{
 		JTabbedPane pane = new JTabbedPane();
-		pane.addTab("Single Output", new SingleOutputPanel(this, this.controller));
-		pane.addTab("Table Output", new TableOutputPanel(this, this.controller));
+		pane.addTab("Single Output", new SingleOutputPanel(this, this.resultModel));
+		pane.addTab("Table Output", new TableOutputPanel(this, this.resultModel));
 		return pane;
 	}
 
@@ -302,7 +302,7 @@ public class ResultScreen extends JPanel
 		Graph graph = new Graph();
 		graph.setLinearPlane(new Range(0, 500), new Range(0, 10));
 		graph.fitGridPlane(100, 2);
-		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.controller.getFunction()));
+		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.resultModel.getFunction()));
 		return graph;
 	}
 }

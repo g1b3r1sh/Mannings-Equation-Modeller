@@ -2,7 +2,7 @@ package main.result;
 
 import javax.swing.table.AbstractTableModel;
 
-import main.result.ManningsModelController.Result;
+import main.result.ManningsResultModel.Result;
 
 public class ResultsTableModel extends AbstractTableModel
 {
