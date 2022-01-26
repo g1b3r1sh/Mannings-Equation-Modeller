@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -16,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingWorker;
 
 import spinner.SpinnerController;
 import spinner.SpinnerWrapperController;
@@ -160,7 +158,6 @@ public class TableOutputPanel extends OutputPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				TableOutputPanel.this.getController().updateModelConstants();
 				ManningsModelController.Result[] results = TableOutputPanel.this.calcResults();
 				if (results != null)
 				{
@@ -172,30 +169,14 @@ public class TableOutputPanel extends OutputPanel
 
 	private ManningsModelController.Result[] calcResults()
 	{
-		SwingWorker<ManningsModelController.Result[], ?> worker = this.getController().createResultsWorker
+		this.getController().updateModelConstants();
+		return this.runWorker(this.getController().createResultsWorker
 		(
 			this.dischargeLower.value.doubleValue(),
 			this.dischargeUpper.value.doubleValue(),
 			this.numDischargeRows.value,
 			this.getController().getOutputPrecision()
-		);
-		this.openWorker(worker);
-		if (worker.isCancelled())
-		{
-			return null;
-		}
-		else
-		{
-			try
-			{
-				return worker.get();
-			}
-			catch (InterruptedException | ExecutionException e)
-			{
-				e.printStackTrace();
-				return null;
-			}
-		}
+		));
 	}
 
 	private void internalProcessResults(ManningsModelController.Result[] results)

@@ -2,7 +2,7 @@ package main.result;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.concurrent.ExecutionException;
+import java.util.function.BooleanSupplier;
 
 import javax.swing.SwingWorker;
 
@@ -24,7 +24,7 @@ public class ManningsModelController
 		DISCHARGE_UNDERFLOW, CONSTANTS_NOT_SET, NOT_ENOUGH_DATA, INVALID_DISCHARGE_RANGE, NONE
 	}
 
-	protected class Result
+	protected static class Result
 	{
 		private ModelError error;
 		private BigDecimal q;
@@ -66,10 +66,6 @@ public class ManningsModelController
 	private Wrapper<BigDecimal> n;
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
-	private Wrapper<BigDecimal> level;
-	private Wrapper<BigDecimal> a;
-	private Wrapper<BigDecimal> v;
-	private ModelError error = ModelError.NONE;
 
 	public ManningsModelController(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
@@ -79,10 +75,6 @@ public class ManningsModelController
 		this.n = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_N));
 		this.s = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_S));
 		this.q = new Wrapper<>(new BigDecimal(ManningsModelController.INITIAL_Q));
-		this.level = new Wrapper<>(null);
-		this.a = new Wrapper<>(null);
-		this.v = new Wrapper<>(null);
-
 		this.updateModelConstants();
 	}
 
@@ -131,35 +123,51 @@ public class ManningsModelController
 		this.q.value = q;
 	}
 
-	public BigDecimal getLevel()
-	{
-		return this.level.value;
-	}
-
-	public BigDecimal getA()
-	{
-		return this.a.value;
-	}
-
-	public BigDecimal getV()
-	{
-		return this.v.value;
-	}
-
-	public ModelError getError()
-	{
-		return this.error;
-	}
-
 	public void updateModelConstants()
 	{
 		this.model.setN(this.n.value);
 		this.model.setS(this.s.value);
 	}
 
-	public SwingWorker<?, ?> createWaterLevelWorker(int scale)
+	private static Result calcResult(ManningsModel model, double discharge, int scale, BooleanSupplier cancelFunction)
 	{
-		class CalcWorker extends SwingWorker<Double, Object>
+		if (!model.areConstantsSet())
+		{
+			return ManningsModelController.createErrorResult(ModelError.CONSTANTS_NOT_SET);
+		}
+		else if (model.dischargeUnderflow(discharge))
+		{
+			return ManningsModelController.createErrorResult(ModelError.DISCHARGE_UNDERFLOW);
+		}
+		else if (!model.canUseData())
+		{
+			return ManningsModelController.createErrorResult(ModelError.NOT_ENOUGH_DATA);
+		}
+
+		Double level = model.calcWaterLevel(discharge, scale, () -> !cancelFunction.getAsBoolean());
+		if (level == null)
+		{
+			return null;
+		}
+		double velocity = model.calcVelocity(discharge, level);
+
+		return new Result
+		(
+			ModelError.NONE,
+			new BigDecimal(discharge).setScale(scale, RoundingMode.HALF_UP),
+			new BigDecimal(level).setScale(scale, RoundingMode.HALF_UP),
+			new BigDecimal(velocity).setScale(scale, RoundingMode.HALF_UP)
+		);
+	}
+
+	private static Result createErrorResult(ModelError error)
+	{
+		return new Result(error, null, null, null);
+	}
+
+	public SwingWorker<Result, ?> createWaterLevelWorker(int scale)
+	{
+		class CalcWorker extends SwingWorker<Result, Object>
 		{
 			private ManningsModel model;
 			private double discharge;
@@ -168,56 +176,22 @@ public class ManningsModelController
 			public CalcWorker(ManningsModel model, double discharge, int scale)
 			{
 				super();
+				// Copy model to avoid threading conflicts
 				this.model = new ManningsModel(model);
 				this.discharge = discharge;
 				this.scale = scale;
 			}
 
 			@Override
-			protected Double doInBackground() throws Exception
+			protected Result doInBackground() throws Exception
 			{
 				if (this.model.areConstantsSet() && !this.model.dischargeUnderflow(this.discharge) && this.model.canUseData())
 				{
-					return this.model.calcWaterLevel(this.discharge, this.scale, () -> !this.isCancelled());
+					return ManningsModelController.calcResult(this.model, this.discharge, this.scale, this::isCancelled);
 				}
 				else
 				{
 					return null;
-				}
-			}
-
-			@Override
-			protected void done()
-			{
-				if (!this.isCancelled())
-				{
-					Double level = null;
-					try
-					{
-						level = this.get();
-					}
-					catch (InterruptedException | ExecutionException e)
-					{
-						e.printStackTrace();
-					}
-					ManningsModelController.this.updateWaterLevel(this.discharge, level, this.scale);
-
-					if (!this.model.areConstantsSet())
-					{
-						ManningsModelController.this.waterLevelError(ModelError.CONSTANTS_NOT_SET);
-					}
-					else if (this.model.dischargeUnderflow(this.discharge))
-					{
-						ManningsModelController.this.waterLevelError(ModelError.DISCHARGE_UNDERFLOW);
-					}
-					else if (!this.model.canUseData())
-					{
-						ManningsModelController.this.waterLevelError(ModelError.NOT_ENOUGH_DATA);
-					}
-					else
-					{
-						ManningsModelController.this.waterLevelError(ModelError.NONE);
-					}
 				}
 			}
 		}
@@ -237,6 +211,7 @@ public class ManningsModelController
 			public TableCalcWorker(ManningsModel model, double minDischarge, double maxDischarge, int numRows, int scale)
 			{
 				super();
+				// Copy model to avoid threading conflicts
 				this.model = new ManningsModel(model);
 				this.dischargeRange = minDischarge > maxDischarge ? null : new Range.Double(minDischarge, maxDischarge);
 				this.numRows = numRows;
@@ -251,13 +226,13 @@ public class ManningsModelController
 				{
 					for (int i = 0; i < results.length; i++)
 					{
-						results[i] = this.createErrorResult(ModelError.INVALID_DISCHARGE_RANGE);
+						results[i] = ManningsModelController.createErrorResult(ModelError.INVALID_DISCHARGE_RANGE);
 					}
 					return results;
 				}
 				for (int i = 0; i < this.numRows; i++)
 				{
-					results[i] = this.calcResult(this.dischargeRange.getNumber(this.specialDivide(i, (this.numRows - 1))), this.scale);
+					results[i] = ManningsModelController.calcResult(this.model, this.dischargeRange.getNumber(this.specialDivide(i, (this.numRows - 1))), this.scale, this::isCancelled);
 					if (results[i] == null)
 					{
 						return null;
@@ -266,45 +241,9 @@ public class ManningsModelController
 				return results;
 			}
 
-			private Result calcResult(double discharge, int scale)
-			{
-				if (!this.model.areConstantsSet())
-				{
-					return this.createErrorResult(ModelError.CONSTANTS_NOT_SET);
-				}
-				else if (this.model.dischargeUnderflow(discharge))
-				{
-					return this.createErrorResult(ModelError.DISCHARGE_UNDERFLOW);
-				}
-				else if (!this.model.canUseData())
-				{
-					return this.createErrorResult(ModelError.NOT_ENOUGH_DATA);
-				}
-
-				Double level = this.model.calcWaterLevel(discharge, this.scale, () -> !this.isCancelled());
-				if (level == null)
-				{
-					return null;
-				}
-				double velocity = this.model.calcVelocity(discharge, level);
-
-				return new Result
-				(
-					ModelError.NONE,
-					new BigDecimal(discharge).setScale(scale, RoundingMode.HALF_UP),
-					new BigDecimal(level).setScale(scale, RoundingMode.HALF_UP),
-					new BigDecimal(velocity).setScale(scale, RoundingMode.HALF_UP)
-				);
-			}
-
 			private double specialDivide(double dividend, double divisor)
 			{
 				return dividend == 0 && divisor == 0 ? 0 : dividend / divisor;
-			}
-
-			private Result createErrorResult(ModelError error)
-			{
-				return new Result(error, null, null, null);
 			}
 		}
 		if (numRows < 0)
@@ -312,24 +251,5 @@ public class ManningsModelController
 			throw new IllegalArgumentException("Cannot have negative number of rows");
 		}
 		return new TableCalcWorker(this.model, minDischarge, maxDischarge, numRows, scale);
-	}
-
-	private void updateWaterLevel(double discharge, Double level, int scale)
-	{
-		if (level == null || (discharge != 0 && this.model.calcArea(level) == 0))
-		{
-			this.level.value = null;
-			this.a.value = null;
-			this.v.value = null;
-			return;
-		}
-		this.level.value = new BigDecimal(level).setScale(scale, RoundingMode.HALF_UP);
-		this.a.value = new BigDecimal(this.model.calcArea(level)).setScale(scale, RoundingMode.HALF_UP);
-		this.v.value = new BigDecimal(this.model.calcVelocity(discharge, level)).setScale(scale, RoundingMode.HALF_UP);
-	}
-
-	private void waterLevelError(ModelError error)
-	{
-		this.error = error;
 	}
 }

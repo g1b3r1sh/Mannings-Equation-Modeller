@@ -9,6 +9,8 @@ import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import main.result.ManningsModelController.Result;
+
 public class SingleOutputPanel extends OutputPanel
 {
 	private JLabel levelLabel;
@@ -83,28 +85,31 @@ public class SingleOutputPanel extends OutputPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				SingleOutputPanel.this.getController().updateModelConstants();
-				SingleOutputPanel.this.calcOutputValues();
-				SingleOutputPanel.this.refreshOutput();
+				Result result = SingleOutputPanel.this.calcResult();
+				if (result != null)
+				{
+					SingleOutputPanel.this.setOutput(result);
+				}
 			}
 		};
 	}
 
-	private void calcOutputValues()
+	private Result calcResult()
 	{
-		this.openWorker(this.getController().createWaterLevelWorker(this.getController().getOutputPrecision()));
+		this.getController().updateModelConstants();
+		return this.runWorker(this.getController().createWaterLevelWorker(this.getController().getOutputPrecision()));
 	}
 
-	private void refreshOutput()
+	private void setOutput(Result result)
 	{
-		this.refreshOutputLabels();
-		this.refreshErrorMessage();
+		this.setOutputLabels(result);
+		this.showErrorMessage(result.getError());
 	}
 
-	private void refreshOutputLabels()
+	private void setOutputLabels(Result result)
 	{
-		BigDecimal level = this.getController().getLevel();
-		BigDecimal v = this.getController().getV();
+		BigDecimal level = result.getLevel();
+		BigDecimal v = result.getV();
 		if (level != null && v != null)
 		{
 			this.levelLabel.setText(level.toString());
@@ -117,9 +122,9 @@ public class SingleOutputPanel extends OutputPanel
 		}
 	}
 
-	private void refreshErrorMessage()
+	private void showErrorMessage(ManningsModelController.ModelError error)
 	{
-		switch (this.getController().getError())
+		switch (error)
 		{
 			case CONSTANTS_NOT_SET:
 				this.showErrorMessage("Constants not set!");

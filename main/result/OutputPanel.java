@@ -31,9 +31,9 @@ public class OutputPanel extends JPanel
 		return this.controller;
 	}
 
-	protected void openWorker(SwingWorker<?, ?> worker)
+	protected <T> T runWorker(SwingWorker<T, ?> worker)
 	{
-		this.parent.openWorker(worker);
+		return this.parent.runWorker(worker);
 	}
 
 	protected void processResults(ManningsModelController.Result[] results)

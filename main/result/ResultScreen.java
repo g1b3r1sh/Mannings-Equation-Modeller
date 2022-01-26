@@ -93,9 +93,9 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog.open();
 	}
 
-	protected void openWorker(SwingWorker<?, ?> worker)
+	protected <T> T runWorker(SwingWorker<T, ?> worker)
 	{
-		this.workerDialog.open(worker);
+		return this.workerDialog.runWorker(worker);
 	}
 
 	protected void processResults(ManningsModelController.Result[] results)

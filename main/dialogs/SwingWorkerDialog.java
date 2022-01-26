@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
@@ -48,6 +49,25 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 		JProgressBar bar = new JProgressBar();
 		bar.setIndeterminate(true);
 		return bar;
+	}
+
+	// Returns null if worker was cancelled or if an exception occurs
+	public <T> T runWorker(SwingWorker<T, ?> worker)
+	{
+		this.open(worker);
+		if (worker.isCancelled())
+		{
+			return null;
+		}
+		try
+		{
+			return worker.get();
+		}
+		catch (InterruptedException | ExecutionException e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public void open(SwingWorker<?, ?> worker)
