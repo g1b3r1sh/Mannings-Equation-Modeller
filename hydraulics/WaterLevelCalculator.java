@@ -81,6 +81,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 
 	public double crossSectionArea()
 	{
+		// Data must be wrapped in Wrapper to be passed to lambda function
 		Wrapper<Double> area = new Wrapper<>(0d);
 		this.data.iterateSegments
 		(
@@ -94,6 +95,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 
 	public double wettedPerimeter()
 	{
+		// Data must be wrapped in Wrapper to be passed to lambda function
 		Wrapper<Double> perimeter = new Wrapper<>(0d);
 		this.data.iterateSegments
 		(
