@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 
@@ -110,8 +111,8 @@ public class ResultScreen extends JPanel
 
 		panel.add(ResultScreen.sideButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph")));
 		panel.add(this.createInputPanel());
-		panel.add(new SingleOutputPanel(this, this.controller));
-		panel.add(new TableOutputPanel(this, this.controller));
+		panel.add(ResultScreen.sidePadding());
+		panel.add(this.createOutputPane());
 
 		return panel;
 	}
@@ -136,6 +137,14 @@ public class ResultScreen extends JPanel
 			ResultScreen.this.controller.updateModelConstants();
 			ResultScreen.this.refreshGraph();
 		});
+	}
+
+	private JTabbedPane createOutputPane()
+	{
+		JTabbedPane pane = new JTabbedPane();
+		pane.addTab("Single Output", new SingleOutputPanel(this, this.controller));
+		pane.addTab("Table Output", new TableOutputPanel(this, this.controller));
+		return pane;
 	}
 
 	protected static JButton sideButton(Action action)

@@ -66,11 +66,11 @@ public class TableOutputPanel extends OutputPanel
 	{
 		JPanel panel = ResultScreen.mainSidePanel();
 		
-		panel.add(ResultScreen.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, TableOutputPanel.MIN_NUM_DISCHARGE_ROWS, null, 1));
-		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min", () -> this.dischargeLower.get(), (discharge) -> this.dischargeLower.set(discharge)));
 		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max", () -> this.dischargeUpper.get(), (discharge) -> this.dischargeUpper.set(discharge)));
+		panel.add(ResultScreen.sidePadding());
+		panel.add(ResultScreen.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, TableOutputPanel.MIN_NUM_DISCHARGE_ROWS, null, 1));
 		panel.add(ResultScreen.sidePadding());
 
 		return panel;
