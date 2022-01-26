@@ -15,11 +15,21 @@ public class MainScreenSwitcher extends ScreenSwitcher
 		this.inputScreen = new InputScreen(model.getData(), model.getPrecision(), model.getCalculator(), parent);
 		this.addScreen(this.inputScreen, "Input");
 		this.addScreen(new ResultScreen(model.getData(), parent), "Calculate");
-		this.switchFirst();
+		this.switchInputScreen();
 	}
 
 	public InputScreen getInputScreen()
 	{
 		return this.inputScreen;
+	}
+
+	public void switchInputScreen()
+	{
+		this.switchScreen(0);
+	}
+
+	public void switchCalculateScreen()
+	{
+		this.switchScreen(1);
 	}
 }

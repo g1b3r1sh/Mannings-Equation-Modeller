@@ -50,7 +50,6 @@ public class ScreenSwitcher extends JPanel
 	public ScreenSwitcher(JComponent initScreen, String name)
 	{
 		super();
-
 		this.addScreen(initScreen, name);
 	}
 
@@ -61,21 +60,14 @@ public class ScreenSwitcher extends JPanel
 		this.refreshButtons();
 	}
 
-	public void switchScreen(String name)
+	public void switchScreen(int index)
 	{
-		if (this.names.contains(name))
+		if (index >= 0 && index < this.names.size())
 		{
-			this.cardLayout.show(this.cards, name);
-			this.index = this.names.indexOf(name);
+			this.cardLayout.show(this.cards, this.names.get(index));
+			this.index = index;
 			this.refreshButtons();
 		}
-	}
-
-	public void switchFirst()
-	{
-		this.cardLayout.first(this.cards);
-		this.index = 0;
-		this.refreshButtons();
 	}
 
 	public Action createNextAction()

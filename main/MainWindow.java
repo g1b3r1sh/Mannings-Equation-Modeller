@@ -31,7 +31,7 @@ public class MainWindow extends JFrame
 		return this.model;
 	}
 
-	public ScreenSwitcher getScreenSwitcher()
+	public MainScreenSwitcher getScreenSwitcher()
 	{
 		return this.screenSwitcher;
 	}

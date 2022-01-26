@@ -34,7 +34,7 @@ public class MainWindowMenu extends JMenuBar
 			public void run()
 			{
 				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchFirst();
+				window.getScreenSwitcher().switchInputScreen();
 				window.getInputScreen().getEditDialog().open(
 					(EditDialog t) ->
 					{
@@ -49,7 +49,7 @@ public class MainWindowMenu extends JMenuBar
 			public void run()
 			{
 				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchFirst();
+				window.getScreenSwitcher().switchInputScreen();
 				window.getInputScreen().getEditDialog().open();
 			}
 		}));
@@ -58,7 +58,7 @@ public class MainWindowMenu extends JMenuBar
 			public void run()
 			{
 				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchFirst();
+				window.getScreenSwitcher().switchInputScreen();
 				window.getModel().loadSampleData();
 				window.getInputScreen().getTableModel().refresh();
 				window.getInputScreen().getGraph().repaint();
@@ -77,7 +77,7 @@ public class MainWindowMenu extends JMenuBar
 			public void run()
 			{
 				MainWindow window = MainWindowMenu.this.window;
-				window.getScreenSwitcher().switchFirst();
+				window.getScreenSwitcher().switchInputScreen();
 				window.getInputScreen().getGraphEditDialog().open();
 			}
 		}));
