@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.result.ManningsModelController.Result;
+import main.result.ManningsModelController.ModelError;
 
 public class SingleOutputPanel extends OutputPanel
 {
@@ -122,7 +123,7 @@ public class SingleOutputPanel extends OutputPanel
 		}
 	}
 
-	private void showErrorMessage(ManningsModelController.ModelError error)
+	private void showErrorMessage(ModelError error)
 	{
 		switch (error)
 		{

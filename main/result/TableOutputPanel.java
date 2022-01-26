@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import main.result.ManningsModelController.Result;
+import main.result.ManningsModelController.ModelError;
 import spinner.SpinnerController;
 import spinner.SpinnerWrapperController;
 import utility.Wrapper;
@@ -27,7 +29,7 @@ public class TableOutputPanel extends OutputPanel
 	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
 	private static final int MIN_NUM_DISCHARGE_ROWS = 0;
 	
-	private EnumMap<ManningsModelController.ModelError, JLabel> errorLabels;
+	private EnumMap<ModelError, JLabel> errorLabels;
 
 	private Wrapper<BigDecimal> dischargeLower;
 	private Wrapper<BigDecimal> dischargeUpper;
@@ -112,16 +114,16 @@ public class TableOutputPanel extends OutputPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		for (ManningsModelController.ModelError error : this.errorLabels.keySet())
+		for (ModelError error : this.errorLabels.keySet())
 		{
 			panel.add(this.errorLabels.get(error));
 		}
 		return panel;
 	}
 
-	private void showErrors(EnumSet<ManningsModelController.ModelError> errors)
+	private void showErrors(EnumSet<ModelError> errors)
 	{
-		for (ManningsModelController.ModelError error : ManningsModelController.ModelError.values())
+		for (ModelError error : ModelError.values())
 		{
 			if (this.errorLabels.containsKey(error))
 			{
@@ -131,13 +133,13 @@ public class TableOutputPanel extends OutputPanel
 		}
 	}
 
-	private EnumMap<ManningsModelController.ModelError, JLabel> createErrorLabelsMap()
+	private EnumMap<ModelError, JLabel> createErrorLabelsMap()
 	{
-		EnumMap<ManningsModelController.ModelError, JLabel> labels = new EnumMap<>(ManningsModelController.ModelError.class);
-		labels.put(ManningsModelController.ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
-		labels.put(ManningsModelController.ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
-		labels.put(ManningsModelController.ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
-		labels.put(ManningsModelController.ModelError.INVALID_DISCHARGE_RANGE, this.createErrorLabel("Min value cannot be greater than max value!"));
+		EnumMap<ModelError, JLabel> labels = new EnumMap<>(ModelError.class);
+		labels.put(ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
+		labels.put(ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
+		labels.put(ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
+		labels.put(ModelError.INVALID_DISCHARGE_RANGE, this.createErrorLabel("Min value cannot be greater than max value!"));
 		return labels;
 	}
 
@@ -158,7 +160,7 @@ public class TableOutputPanel extends OutputPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				ManningsModelController.Result[] results = TableOutputPanel.this.calcResults();
+				Result[] results = TableOutputPanel.this.calcResults();
 				if (results != null)
 				{
 					TableOutputPanel.this.internalProcessResults(results);
@@ -167,7 +169,7 @@ public class TableOutputPanel extends OutputPanel
 		};
 	}
 
-	private ManningsModelController.Result[] calcResults()
+	private Result[] calcResults()
 	{
 		this.getController().updateModelConstants();
 		return this.runWorker(this.getController().createResultsWorker
@@ -179,18 +181,18 @@ public class TableOutputPanel extends OutputPanel
 		));
 	}
 
-	private void internalProcessResults(ManningsModelController.Result[] results)
+	private void internalProcessResults(Result[] results)
 	{
 		this.tableModel.setData(results);
 		this.showErrors(this.createErrorSet(results));
 		this.processResults(results);
 	}
 
-	private EnumSet<ManningsModelController.ModelError> createErrorSet(ManningsModelController.Result[] results)
+	private EnumSet<ModelError> createErrorSet(Result[] results)
 	{
-		EnumSet<ManningsModelController.ModelError> errors = EnumSet.noneOf(ManningsModelController.ModelError.class);
-		errors.add(ManningsModelController.ModelError.NONE);
-		for (ManningsModelController.Result result : results)
+		EnumSet<ModelError> errors = EnumSet.noneOf(ModelError.class);
+		errors.add(ModelError.NONE);
+		for (Result result : results)
 		{
 			errors.add(result.getError());
 		}
