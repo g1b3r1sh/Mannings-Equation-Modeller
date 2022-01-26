@@ -14,6 +14,7 @@ import utility.Wrapper;
 
 public class ResultScreenController
 {
+	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final String INITIAL_N = "0.025";
 	private static final String INITIAL_S = "1";
 	private static final String INITIAL_Q = "1";
@@ -61,6 +62,7 @@ public class ResultScreenController
 
 	private ManningsModel model;
 	private ManningsFunction function;
+	private Wrapper<Integer> outputPrecision;
 	private Wrapper<BigDecimal> n;
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
@@ -73,6 +75,7 @@ public class ResultScreenController
 	{
 		this.model = new ManningsModel(data);
 		this.function = new ManningsFunction(this.model);
+		this.outputPrecision = new Wrapper<>(ResultScreenController.DEFAULT_DISPLAYED_SCALE);
 		this.n = new Wrapper<>(new BigDecimal(ResultScreenController.INITIAL_N));
 		this.s = new Wrapper<>(new BigDecimal(ResultScreenController.INITIAL_S));
 		this.q = new Wrapper<>(new BigDecimal(ResultScreenController.INITIAL_Q));
@@ -86,6 +89,16 @@ public class ResultScreenController
 	public ManningsFunction getFunction()
 	{
 		return this.function;
+	}
+
+	protected int getOutputPrecision()
+	{
+		return this.outputPrecision.value;
+	}
+
+	protected void setOutputPrecision(int precision)
+	{
+		this.outputPrecision.value = precision;
 	}
 
 	public BigDecimal getN()

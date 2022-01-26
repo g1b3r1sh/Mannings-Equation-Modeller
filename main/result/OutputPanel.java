@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 public class OutputPanel extends JPanel
 {
@@ -20,7 +21,7 @@ public class OutputPanel extends JPanel
 		this.initPanel();
 	}
 
-	public ResultScreen getParentScreen()
+	public Component getParentComponent()
 	{
 		return this.parent;
 	}
@@ -28,6 +29,16 @@ public class OutputPanel extends JPanel
 	public ResultScreenController getController()
 	{
 		return this.controller;
+	}
+
+	protected void openWorker(SwingWorker<?, ?> worker)
+	{
+		this.parent.openWorker(worker);
+	}
+
+	protected void processResults(ResultScreenController.Result[] results)
+	{
+		this.parent.processResults(results);
 	}
 
 	private void initPanel()

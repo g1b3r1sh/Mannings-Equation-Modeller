@@ -158,7 +158,7 @@ public class TableOutputPanel extends OutputPanel
 				ResultScreenController.Result[] results = TableOutputPanel.this.calcResults();
 				if (results != null)
 				{
-					TableOutputPanel.this.processResults(results);
+					TableOutputPanel.this.internalProcessResults(results);
 				}
 			}
 		};
@@ -171,9 +171,9 @@ public class TableOutputPanel extends OutputPanel
 			this.dischargeLower.value.doubleValue(),
 			this.dischargeUpper.value.doubleValue(),
 			this.numDischargeRows.value,
-			this.getParentScreen().getPrecision()
+			this.getController().getOutputPrecision()
 		);
-		this.getParentScreen().openWorker(worker);
+		this.openWorker(worker);
 		if (worker.isCancelled())
 		{
 			return null;
@@ -192,11 +192,11 @@ public class TableOutputPanel extends OutputPanel
 		}
 	}
 
-	private void processResults(ResultScreenController.Result[] results)
+	private void internalProcessResults(ResultScreenController.Result[] results)
 	{
 		this.tableModel.setData(results);
 		this.showErrors(this.createErrorSet(results));
-		this.getParentScreen().processResults(results);
+		this.processResults(results);
 	}
 
 	private EnumSet<ResultScreenController.ModelError> createErrorSet(ResultScreenController.Result[] results)

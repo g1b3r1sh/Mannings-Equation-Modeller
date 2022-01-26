@@ -34,8 +34,6 @@ import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
 import spinner.SpinnerController;
-import spinner.SpinnerWrapperController;
-import utility.Wrapper;
 
 /**
  * Contains methods for constructing results screen
@@ -43,7 +41,6 @@ import utility.Wrapper;
 
 public class ResultScreen extends JPanel
 {
-	private static final int DEFAULT_DISPLAYED_SCALE = 3;
 	private static final int MIN_DISPLAYED_SCALE = 0;
 	private static final int MAX_DISPLAYED_SCALE = 9;
 
@@ -57,7 +54,6 @@ public class ResultScreen extends JPanel
 	private GraphEditDialog manningsGraphEditDialog;
 	private SwingWorkerDialog workerDialog;
 
-	private Wrapper<Integer> outputPrecision;
 	private SpinnerController<Integer> outputPrecisionController;
 
 	private ResultsVisualiser resultsVisualiser;
@@ -77,8 +73,7 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
-		this.outputPrecision = new Wrapper<>(ResultScreen.DEFAULT_DISPLAYED_SCALE);
-		this.outputPrecisionController = new SpinnerWrapperController<>(this.outputPrecision);
+		this.outputPrecisionController = new SpinnerController<>(this.controller::getOutputPrecision, this.controller::setOutputPrecision);
 
 		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
@@ -91,10 +86,6 @@ public class ResultScreen extends JPanel
 		this.refreshGraph();
 	}
 
-	protected int getPrecision()
-	{
-		return this.outputPrecision.value;
-	}
 
 	protected void processResults(ResultScreenController.Result[] results)
 	{
