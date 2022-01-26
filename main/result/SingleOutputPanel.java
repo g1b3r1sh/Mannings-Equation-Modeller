@@ -50,7 +50,7 @@ public class SingleOutputPanel extends OutputPanel
 	private JPanel inputPanel()
 	{
 		JPanel panel = ResultScreen.mainSidePanel();
-		panel.add(ResultScreen.numberEditPanel(this.getParentComponent(), "Cross-Section Discharge (m^3/s)", () -> this.getModel().getQ(), (q) -> this.getModel().setQ(q)));
+		panel.add(ResultScreen.numberEditPanel(this.getParentComponent(), "Cross-Section Discharge (m^3/s)", this.getModel().getQ()));
 		return panel;
 	}
 
@@ -98,7 +98,7 @@ public class SingleOutputPanel extends OutputPanel
 	private Result calcResult()
 	{
 		this.getModel().updateModelConstants();
-		return this.runWorker(this.getModel().createWaterLevelWorker(this.getModel().getOutputPrecision()));
+		return this.runWorker(this.getModel().createWaterLevelWorker(this.getModel().getOutputPrecision().value));
 	}
 
 	private void setOutput(Result result)

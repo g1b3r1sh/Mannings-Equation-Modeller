@@ -102,44 +102,24 @@ public class ManningsResultModel
 		return this.function;
 	}
 
-	protected int getOutputPrecision()
+	protected Wrapper<Integer> getOutputPrecision()
 	{
-		return this.outputPrecision.value;
+		return this.outputPrecision;
 	}
 
-	protected void setOutputPrecision(int precision)
+	public Wrapper<BigDecimal> getN()
 	{
-		this.outputPrecision.value = precision;
+		return this.n;
 	}
 
-	public BigDecimal getN()
+	public Wrapper<BigDecimal> getS()
 	{
-		return this.n.value;
+		return this.s;
 	}
 
-	public void setN(BigDecimal n)
+	public Wrapper<BigDecimal> getQ()
 	{
-		this.n.value = n;
-	}
-
-	public BigDecimal getS()
-	{
-		return this.s.value;
-	}
-
-	public void setS(BigDecimal s)
-	{
-		this.s.value = s;
-	}
-
-	public BigDecimal getQ()
-	{
-		return this.q.value;
-	}
-
-	public void setQ(BigDecimal q)
-	{
-		this.q.value = q;
+		return this.q;
 	}
 
 	public Wrapper<BigDecimal> getDischargeLower()

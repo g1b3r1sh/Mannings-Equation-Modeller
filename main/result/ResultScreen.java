@@ -36,6 +36,7 @@ import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import main.dialogs.SwingWorkerDialog;
 import spinner.SpinnerController;
+import spinner.SpinnerWrapperController;
 import utility.Wrapper;
 
 /**
@@ -73,7 +74,7 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
-		this.outputPrecisionController = new SpinnerController<>(this.resultModel::getOutputPrecision, this.resultModel::setOutputPrecision);
+		this.outputPrecisionController = new SpinnerWrapperController<>(this.resultModel.getOutputPrecision());
 
 		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
@@ -129,18 +130,18 @@ public class ResultScreen extends JPanel
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-		panel.add(this.constantEditPanel("Manning's Constant", () -> this.resultModel.getN(), (n) -> this.resultModel.setN(n)));
+		panel.add(this.constantEditPanel("Manning's Constant", this.resultModel.getN()));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(this.constantEditPanel("Channel Bed Slope", () -> this.resultModel.getS(), (s) -> this.resultModel.setS(s)));
+		panel.add(this.constantEditPanel("Channel Bed Slope", this.resultModel.getS()));
 		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ManningsResultModel.MIN_DISPLAY_SCALE, ManningsResultModel.MAX_DISPLAY_SCALE, 1));
 
 		return panel;
 	}
 
-	private JPanel constantEditPanel(String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
+	private JPanel constantEditPanel(String name, Wrapper<BigDecimal> wrapper)
 	{
-		return ResultScreen.numberEditPanel(this, name, get, set, (value) ->
+		return ResultScreen.numberEditPanel(this, name, wrapper::get, wrapper::set, (value) ->
 		{
 			ResultScreen.this.resultModel.updateModelConstants();
 			ResultScreen.this.refreshGraph();
