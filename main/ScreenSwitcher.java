@@ -62,12 +62,9 @@ public class ScreenSwitcher extends JPanel
 
 	public void switchScreen(int index)
 	{
-		if (index >= 0 && index < this.names.size())
-		{
 			this.cardLayout.show(this.cards, this.names.get(index));
 			this.index = index;
 			this.refreshButtons();
-		}
 	}
 
 	public Action createNextAction()

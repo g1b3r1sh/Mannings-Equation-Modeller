@@ -29,7 +29,7 @@ public class MainWindowMenu extends JMenuBar
 		JMenu menu = new JMenu("Edit");
 		menu.add(menuItem("New Dataset", () ->
 		{
-			this.window.getScreenSwitcher().switchInputScreen();
+			this.window.switchInputScreen();
 			this.window.getInputScreen().getEditDialog().open((dialog) ->
 			{
 				DataEditDialog dataEditDialog = (DataEditDialog) dialog;
@@ -38,12 +38,12 @@ public class MainWindowMenu extends JMenuBar
 		}));
 		menu.add(menuItem("Edit Dataset", () ->
 		{
-			this.window.getScreenSwitcher().switchInputScreen();
+			this.window.switchInputScreen();
 			this.window.getInputScreen().getEditDialog().open();
 		}));
 		menu.add(menuItem("Load Sample Dataset", () ->
 		{
-			this.window.getScreenSwitcher().switchInputScreen();
+			this.window.switchInputScreen();
 			this.window.getModel().loadSampleData();
 			this.window.getInputScreen().getTableModel().refresh();
 			this.window.getInputScreen().getGraph().repaint();
@@ -57,7 +57,7 @@ public class MainWindowMenu extends JMenuBar
 		JMenu menu = new JMenu("Window");
 		menu.add(menuItem("Edit Input Graph", () ->
 		{
-				this.window.getScreenSwitcher().switchInputScreen();
+				this.window.switchInputScreen();
 				this.window.getInputScreen().getGraphEditDialog().open();
 		}));
 		menu.addSeparator();

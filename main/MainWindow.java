@@ -3,13 +3,17 @@ package main;
 import javax.swing.JFrame;
 
 import main.input.InputScreen;
+import main.result.ResultScreen;
 
 public class MainWindow extends JFrame
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
 
 	private CrossSectionModel model;
-	MainScreenSwitcher screenSwitcher;
+	private ScreenSwitcher screenSwitcher;
+
+	private InputScreen inputScreen;
+	private ResultScreen resultScreen;
 
 	public MainWindow(CrossSectionModel model)
 	{
@@ -22,7 +26,11 @@ public class MainWindow extends JFrame
 		this.setLocation(10, 10);
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		this.screenSwitcher = new MainScreenSwitcher(this, this.model);
+		this.inputScreen = new InputScreen(model.getData(), model.getPrecision(), model.getCalculator(), this);
+		this.resultScreen = new ResultScreen(model.getData(), this);
+
+		this.screenSwitcher = this.createScreenSwitcher();
+		this.switchInputScreen();
 		this.initializeFrame();
 	}
 
@@ -31,19 +39,37 @@ public class MainWindow extends JFrame
 		return this.model;
 	}
 
-	public MainScreenSwitcher getScreenSwitcher()
-	{
-		return this.screenSwitcher;
-	}
-
 	public InputScreen getInputScreen()
 	{
-		return this.screenSwitcher.getInputScreen();
+		return this.inputScreen;
+	}
+
+	public ResultScreen getResultScreen()
+	{
+		return this.resultScreen;
+	}
+
+	public void switchInputScreen()
+	{
+		this.screenSwitcher.switchScreen(0);
+	}
+
+	public void switchCalculateScreen()
+	{
+		this.screenSwitcher.switchScreen(1);
 	}
 
 	private void initializeFrame()
 	{
 		this.setJMenuBar(new MainWindowMenu(this));
 		this.add(this.screenSwitcher);
+	}
+
+	private ScreenSwitcher createScreenSwitcher()
+	{
+		ScreenSwitcher switcher = new ScreenSwitcher();
+		switcher.addScreen(this.inputScreen, "Input");
+		switcher.addScreen(this.resultScreen, "Calculate");
+		return switcher;
 	}
 }
