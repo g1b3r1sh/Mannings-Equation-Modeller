@@ -8,9 +8,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
@@ -44,7 +46,7 @@ public class ScreenSwitcher extends JPanel
 		this.index = 0;
 		this.add(this.cards);
 
-		this.add(this.createButtonPanel(), BorderLayout.NORTH);
+		this.add(this.addBottomSeparator(this.createButtonPanel()), BorderLayout.NORTH);
 	}
 
 	public ScreenSwitcher(JComponent initScreen, String name)
@@ -158,5 +160,15 @@ public class ScreenSwitcher extends JPanel
 		JLabel label = new JLabel();
 		label.setFont(label.getFont().deriveFont(20f));
 		return label;
+	}
+
+	private JPanel addBottomSeparator(JPanel contentPanel)
+	{
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(contentPanel);
+		panel.add(Box.createRigidArea(new Dimension(0, 5)));
+		panel.add(new JSeparator());
+		return panel;
 	}
 }

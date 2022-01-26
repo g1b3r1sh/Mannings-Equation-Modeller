@@ -31,6 +31,9 @@ public class SingleOutputPanel extends OutputPanel
 
 	private void addComponents()
 	{
+		this.add(ResultScreen.createHeader("Discharge Input"));
+		this.add(ResultScreen.sideSeperator());
+		this.add(ResultScreen.sidePadding());
 		this.add(this.inputPanel());
 		this.add(ResultScreen.sidePadding());
 		this.add(ResultScreen.sideButton(this.calculateAction()));
