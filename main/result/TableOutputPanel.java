@@ -59,6 +59,9 @@ public class TableOutputPanel extends OutputPanel
 		this.add(ResultScreen.sidePadding());
 		this.add(ResultScreen.sideButton(this.calculateAction()));
 		this.add(ResultScreen.sidePadding());
+		this.add(ResultScreen.createHeader("Output"));
+		this.add(ResultScreen.sideSeperator());
+		this.add(ResultScreen.sidePadding());
 		this.add(this.outputPanel());
 	}
 

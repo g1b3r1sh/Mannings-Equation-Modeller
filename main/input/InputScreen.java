@@ -122,18 +122,17 @@ public class InputScreen extends JPanel
 	private JPanel createSidePanel(JTable table, WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int spinnerPrecision, Graph graph, DataPrecision precision)
 	{
 		JPanel panel = new JPanel();
-
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		JButton button = new JButton(this.editDialog.createOpenAction("Edit"));
-		panel.add(button);
+
+		panel.add(new JLabel("Cross-section Data"));
 		panel.add(this.createTablePane(table), BorderLayout.WEST);
+		panel.add(new JButton(this.editDialog.createOpenAction("Edit Dataset")));
 		panel.add(new JLabel("Water Level:"));
 		this.waterLevelSpinner = this.createWaterSpinner(calculator, spinnerPrecision, graph);
 		panel.add(this.waterLevelSpinner);
 
 		return panel;
 	}
-
 
 	private JSpinner createWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int precision, Graph graph)
 	{

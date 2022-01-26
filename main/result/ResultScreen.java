@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
@@ -110,6 +111,9 @@ public class ResultScreen extends JPanel
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		panel.add(ResultScreen.sideButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph")));
+		panel.add(ResultScreen.createHeader("Input"));
+		panel.add(ResultScreen.sideSeperator());
+		panel.add(ResultScreen.sidePadding());
 		panel.add(this.createInputPanel());
 		panel.add(ResultScreen.sidePadding());
 		panel.add(this.createOutputPane());
@@ -122,11 +126,13 @@ public class ResultScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 		panel.add(this.constantEditPanel("Manning's Constant", () -> this.controller.getN(), (n) -> this.controller.setN(n)));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(ResultScreen.sidePadding());
 		panel.add(this.constantEditPanel("Channel Bed Slope", () -> this.controller.getS(), (s) -> this.controller.setS(s)));
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
+		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ResultScreen.MIN_DISPLAYED_SCALE, ResultScreen.MAX_DISPLAYED_SCALE, 1));
+
 		return panel;
 	}
 
@@ -147,6 +153,14 @@ public class ResultScreen extends JPanel
 		return pane;
 	}
 
+	protected static JLabel createHeader(String string)
+	{
+		JLabel label = new JLabel(string);
+		label.setFont(label.getFont().deriveFont(15f));
+		label.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return label;
+	}
+
 	protected static JButton sideButton(Action action)
 	{
 		JButton button = new JButton(action);
@@ -156,7 +170,21 @@ public class ResultScreen extends JPanel
 
 	protected static Component sidePadding()
 	{
-		return Box.createRigidArea(new Dimension(0, 10));
+		return Box.createRigidArea(new Dimension(0, 5));
+	}
+
+	protected static JSeparator sideSeperator()
+	{
+		return new JSeparator()
+		{
+			@Override
+			public Dimension getMaximumSize()
+			{
+				Dimension d = super.getMaximumSize();
+				d.height = 1;
+				return d;
+			}
+		};
 	}
 
 	protected static JPanel mainSidePanel()
@@ -254,7 +282,8 @@ public class ResultScreen extends JPanel
 
 	private GraphContainer createGraphContainer(Graph graph)
 	{
-		GraphContainer container = new GraphContainer(graph, new DataPrecision(1, 1));
+		GraphContainer container = new GraphContainer(graph, new DataPrecision(2, 1));
+		container.getAxis(Direction.TOP).addName("Cross-section Discharge vs Water Elevation");
 		container.getAxis(Direction.BOTTOM).addTickmarks();
 		container.getAxis(Direction.BOTTOM).addNumbers();
 		container.getAxis(Direction.BOTTOM).addName("Discharge, Q");
