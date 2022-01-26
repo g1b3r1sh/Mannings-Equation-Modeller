@@ -222,7 +222,7 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	protected static JPanel numberEditPanel(Component parent, String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set, Consumer<BigDecimal> setSuccess)
+	private static JPanel numberEditPanel(Component parent, String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set, Consumer<BigDecimal> setSuccess)
 	{
 		JPanel panel = ResultScreen.labelPanel();
 
@@ -254,14 +254,9 @@ public class ResultScreen extends JPanel
 		return panel;
 	}
 
-	protected static JPanel numberEditPanel(Component parent, String name, Supplier<BigDecimal> get, Consumer<BigDecimal> set)
-	{
-		return ResultScreen.numberEditPanel(parent, name, get, set, (value) -> {});
-	}
-
 	protected static JPanel numberEditPanel(Component parent, String name, Wrapper<BigDecimal> wrapper)
 	{
-		return ResultScreen.numberEditPanel(parent, name, wrapper::get, wrapper::set);
+		return ResultScreen.numberEditPanel(parent, name, wrapper::get, wrapper::set, (value) -> {});
 	}
 
 	protected static JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, Integer min, Integer max, int step)
