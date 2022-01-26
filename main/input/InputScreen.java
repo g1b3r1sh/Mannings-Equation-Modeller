@@ -83,19 +83,19 @@ public class InputScreen extends JPanel
 		return this.editDialog;
 	}
 
-	public GraphEditDialog getGraphEditDialog()
+	public void openGraphEditDialog()
 	{
-		return this.graphDialog;
+		this.graphDialog.open();
 	}
 
-	public EditableDiscreteDataModel getTableModel()
+	public void refreshTableModel()
 	{
-		return this.tableModel;
+		this.tableModel.refresh();
 	}
 
-	public Graph getGraph()
+	public void repaintGraph()
 	{
-		return this.graph;
+		this.graph.repaint();
 	}
 
 	public JSpinner getWaterLevelSpinner()

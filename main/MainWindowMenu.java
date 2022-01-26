@@ -1,6 +1,7 @@
 package main;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -45,8 +46,8 @@ public class MainWindowMenu extends JMenuBar
 		{
 			this.window.switchInputScreen();
 			this.window.getModel().loadSampleData();
-			this.window.getInputScreen().getTableModel().refresh();
-			this.window.getInputScreen().getGraph().repaint();
+			this.window.getInputScreen().refreshTableModel();
+			this.window.getInputScreen().repaintGraph();
 			((PrecisionSpinnerModel) this.window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(this.window.getModel().getCalculator().getWaterLevel());
 		}));
 		return menu;
@@ -58,7 +59,12 @@ public class MainWindowMenu extends JMenuBar
 		menu.add(menuItem("Edit Input Graph", () ->
 		{
 				this.window.switchInputScreen();
-				this.window.getInputScreen().getGraphEditDialog().open();
+				this.window.getInputScreen().openGraphEditDialog();
+		}));
+		menu.add(menuItem("Edit Output Graph", () ->
+		{
+				this.window.switchResultScreen();
+				this.window.getResultScreen().openGraphEditDialog();
 		}));
 		menu.addSeparator();
 		menu.add(menuItem("Exit", () -> { this.window.dispose(); }));
@@ -121,5 +127,10 @@ public class MainWindowMenu extends JMenuBar
 				action.run();
 			}
 		});
+	}
+
+	public static JMenuItem menuItem(Action action)
+	{
+		return new JMenuItem(action);
 	}
 }

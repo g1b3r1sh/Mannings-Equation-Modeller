@@ -54,7 +54,7 @@ public class MainWindow extends JFrame
 		this.screenSwitcher.switchScreen(0);
 	}
 
-	public void switchCalculateScreen()
+	public void switchResultScreen()
 	{
 		this.screenSwitcher.switchScreen(1);
 	}

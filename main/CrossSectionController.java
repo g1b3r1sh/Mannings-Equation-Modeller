@@ -63,8 +63,8 @@ public class CrossSectionController implements PropertyChangeListener
 
 	private void dataUpdated()
 	{
-		this.inputScreen.getTableModel().refresh();
-		this.inputScreen.getGraph().repaint();
+		this.inputScreen.refreshTableModel();
+		this.inputScreen.repaintGraph();
 		((PrecisionSpinnerModel) this.inputScreen.getWaterLevelSpinner().getModel()).setPrecision(this.model.getPrecision().getY());
 	}
 }

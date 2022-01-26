@@ -88,6 +88,11 @@ public class ResultScreen extends JPanel
 		this.refreshGraph();
 	}
 
+	public void openGraphEditDialog()
+	{
+		this.manningsGraphEditDialog.open();
+	}
+
 	protected void openWorker(SwingWorker<?, ?> worker)
 	{
 		this.workerDialog.open(worker);
@@ -110,7 +115,6 @@ public class ResultScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		panel.add(ResultScreen.sideButton(this.manningsGraphEditDialog.createOpenAction("Edit Graph")));
 		panel.add(ResultScreen.createHeader("Input"));
 		panel.add(ResultScreen.sideSeperator());
 		panel.add(ResultScreen.sidePadding());
