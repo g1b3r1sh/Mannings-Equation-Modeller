@@ -199,14 +199,7 @@ public class ManningsResultModel
 			@Override
 			protected Result doInBackground() throws Exception
 			{
-				if (this.model.areConstantsSet() && !this.model.dischargeUnderflow(this.discharge) && this.model.canUseData())
-				{
-					return ManningsResultModel.calcResult(this.model, this.discharge, this.scale, this::isCancelled);
-				}
-				else
-				{
-					return null;
-				}
+				return ManningsResultModel.calcResult(this.model, this.discharge, this.scale, this::isCancelled);
 			}
 		}
 		
