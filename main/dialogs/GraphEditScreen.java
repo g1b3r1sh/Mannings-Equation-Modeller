@@ -102,33 +102,35 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		if (e.getSource() == this.xRangeController)
 		{
 			this.xAxis.getNumbers().fitFont();
-			this.previewGraphContainer.repaint();
+			this.xAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.yRangeController)
 		{
 			this.yAxis.getNumbers().fitFont();
-			this.previewGraphContainer.repaint();
+			this.yAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.xScaleController)
 		{
 			this.xAxis.getNumbers().setPrecision(this.xScale.value);
 			this.xAxis.getNumbers().fitFont();
-			this.previewGraphContainer.repaint();
+			this.xAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.yScaleController)
 		{
 			this.yAxis.getNumbers().setPrecision(this.yScale.value);
 			this.yAxis.getNumbers().fitFont();
-			this.previewGraphContainer.repaint();
+			this.yAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.xTicksController)
 		{
 			this.xAxis.getTickmarks().setNumTicks(this.xTicks.value);
+			this.xAxis.getNumbers().fitFont();
 			this.xAxis.repaint();
 		}
 		else if (e.getSource() == this.yTicksController)
 		{
 			this.yAxis.getTickmarks().setNumTicks(this.yTicks.value);
+			this.yAxis.getNumbers().fitFont();
 			this.yAxis.repaint();
 		}
 		else if (e.getSource() == this.gridXController)
