@@ -80,7 +80,7 @@ public class AxisNumbersHorizontal extends AxisNumbers
 			g.drawString(this.getNumberString(i), this.getNumberLeftPos(metrics, i), this.getNumberBottomPos(metrics, bounds));
 		}
 	}
-	
+
 	private int getNumberBottomPos(FontMetrics metrics, Rectangle bounds)
 	{
 		return bounds.height - metrics.getDescent();
