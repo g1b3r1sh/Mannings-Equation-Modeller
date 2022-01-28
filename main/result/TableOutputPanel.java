@@ -165,7 +165,7 @@ public class TableOutputPanel extends OutputPanel
 			this.getModel().getDischargeLower().value.doubleValue(),
 			this.getModel().getDischargeUpper().value.doubleValue(),
 			this.getModel().getNumDischargeRows().value,
-			this.getModel().getOutputPrecision().value
+			this.getModel().getOutputScale().value
 		));
 	}
 

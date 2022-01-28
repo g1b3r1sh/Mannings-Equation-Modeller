@@ -13,9 +13,9 @@ import data.Range;
 
 public class AxisNumbersHorizontal extends AxisNumbers
 {
-	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, int precision, int padding)
+	public AxisNumbersHorizontal(AxisTickmarks axis, Range range, int scale, int padding)
 	{
-		super(axis, range, precision, padding);
+		super(axis, range, scale, padding);
 	}
 
 	@Override

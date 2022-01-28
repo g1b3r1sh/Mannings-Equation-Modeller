@@ -25,18 +25,18 @@ public abstract class AxisNumbers extends JComponent
 
 	private AxisTickmarks tickmarks;
 	private Range range;
-	private int precision;
+	private int scale;
 
 	private int prevLength;
 
 	// Make fontRange parameter
-	public AxisNumbers(AxisTickmarks tickmarks, Range range, int precision, int padding)
+	public AxisNumbers(AxisTickmarks tickmarks, Range range, int scale, int padding)
 	{
 		this.fontRange = new Range(10, 20);
 
 		this.tickmarks = tickmarks;
 		this.range = range;
-		this.precision = precision;
+		this.scale = scale;
 		this.padding = padding;
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
 
@@ -62,14 +62,14 @@ public abstract class AxisNumbers extends JComponent
 		return this.range;
 	}
 
-	public int getPrecision()
+	public int getScale()
 	{
-		return this.precision;
+		return this.scale;
 	}
 
-	public void setPrecision(int precision)
+	public void setScale(int scale)
 	{
-		this.precision = precision;
+		this.scale = scale;
 		this.repaint();
 	}
 
@@ -92,7 +92,7 @@ public abstract class AxisNumbers extends JComponent
 	// Get number for ith tick
 	public String getNumberString(int i)
 	{
-		return String.format("%." + this.precision + "f", this.getNumber(i));
+		return String.format("%." + this.scale + "f", this.getNumber(i));
 	}
 
 	public int getNumTicks()

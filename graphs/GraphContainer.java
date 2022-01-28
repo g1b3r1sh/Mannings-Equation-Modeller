@@ -3,7 +3,7 @@ package graphs;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import data.DataPrecision;
+import data.DataScale;
 import graphs.axis.Axis;
 
 import java.awt.BorderLayout;
@@ -28,7 +28,7 @@ public class GraphContainer extends JComponent
 	}
 
 	private Graph graph;
-	private DataPrecision defaultAxisPrecision;
+	private DataScale defaultAxisScale;
 
 	private JPanel containerPanel;
 	private Axis topAxis;
@@ -38,12 +38,12 @@ public class GraphContainer extends JComponent
 
 	//private JScrollPane scrollPane;
 
-	public GraphContainer(Graph graph, DataPrecision defaultAxisPrecision)
+	public GraphContainer(Graph graph, DataScale defaultAxisScale)
 	{
 		this.setLayout(new BorderLayout());
 		
 		this.graph = graph;
-		this.defaultAxisPrecision = defaultAxisPrecision;
+		this.defaultAxisScale = defaultAxisScale;
 
 		this.containerPanel = createContainerPanel();
 		//this.scrollPane = new JScrollPane(this.graph);
@@ -64,7 +64,7 @@ public class GraphContainer extends JComponent
 
 	public GraphContainer(Graph graph)
 	{
-		this(graph, new DataPrecision(0, 0));
+		this(graph, new DataScale(0, 0));
 	}
 
 	public Graph getGraph()
@@ -82,8 +82,8 @@ public class GraphContainer extends JComponent
 				this.getAxis(d).lightCopy(container.getAxis(d));
 			}
 		}
-		this.defaultAxisPrecision.setX(container.defaultAxisPrecision.getX());
-		this.defaultAxisPrecision.setY(container.defaultAxisPrecision.getY());
+		this.defaultAxisScale.setX(container.defaultAxisScale.getX());
+		this.defaultAxisScale.setY(container.defaultAxisScale.getY());
 	}
 	
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center
@@ -95,18 +95,18 @@ public class GraphContainer extends JComponent
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		this.bottomAxis = new Axis(this, Direction.BOTTOM, this.defaultAxisPrecision.getX());
+		this.bottomAxis = new Axis(this, Direction.BOTTOM, this.defaultAxisScale.getX());
 		panel.add(this.bottomAxis, constraints);
 		constraints.gridy = 0;
-		this.topAxis = new Axis(this, Direction.TOP, this.defaultAxisPrecision.getX());
+		this.topAxis = new Axis(this, Direction.TOP, this.defaultAxisScale.getX());
 		panel.add(this.topAxis, constraints);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		this.leftAxis = new Axis(this, Direction.LEFT, this.defaultAxisPrecision.getY());
+		this.leftAxis = new Axis(this, Direction.LEFT, this.defaultAxisScale.getY());
 		constraints.fill = GridBagConstraints.VERTICAL;
 		panel.add(this.leftAxis, constraints);
 		constraints.gridx = 2;
-		this.rightAxis = new Axis(this, Direction.RIGHT, this.defaultAxisPrecision.getY());
+		this.rightAxis = new Axis(this, Direction.RIGHT, this.defaultAxisScale.getY());
 		panel.add(this.rightAxis, constraints);
 
 		return panel;

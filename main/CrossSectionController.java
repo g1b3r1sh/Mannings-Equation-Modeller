@@ -4,10 +4,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 
-import data.DataPrecision;
+import data.DataScale;
 import main.dialogs.DataEditDialog;
 import main.input.InputScreen;
-import spinner.PrecisionSpinnerModel;
+import spinner.ScaleSpinnerModel;
 import table.EditableDiscreteDataModel;
 import utility.Pair;
 
@@ -35,7 +35,7 @@ public class CrossSectionController implements PropertyChangeListener
 				EditableDiscreteDataModel newData = (EditableDiscreteDataModel) evt.getNewValue();
 
 				this.matchData(newData);
-				this.matchPrecision(newData.getPrecision());
+				this.matchScale(newData.getScale());
 
 				this.dataUpdated();
 			}
@@ -55,16 +55,16 @@ public class CrossSectionController implements PropertyChangeListener
 		}
 	}
 
-	private void matchPrecision(DataPrecision newPrecision)
+	private void matchScale(DataScale newScale)
 	{
-		this.model.getPrecision().setX(newPrecision.getX());
-		this.model.getPrecision().setY(newPrecision.getY());
+		this.model.getScale().setX(newScale.getX());
+		this.model.getScale().setY(newScale.getY());
 	}
 
 	private void dataUpdated()
 	{
 		this.inputScreen.refreshTableModel();
 		this.inputScreen.repaintGraph();
-		((PrecisionSpinnerModel) this.inputScreen.getWaterLevelSpinner().getModel()).setPrecision(this.model.getPrecision().getY());
+		((ScaleSpinnerModel) this.inputScreen.getWaterLevelSpinner().getModel()).setScale(this.model.getScale().getY());
 	}
 }

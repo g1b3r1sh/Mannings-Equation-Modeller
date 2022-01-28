@@ -61,8 +61,8 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 
 		this.xRangeController = new RangeSpinnerController(this.xAxis.getNumbers().getRange(), this);
 		this.yRangeController = new RangeSpinnerController(this.yAxis.getNumbers().getRange(), this);
-		this.xScale = new Wrapper<>(this.xAxis.getPrecision());
-		this.yScale = new Wrapper<>(this.yAxis.getPrecision());
+		this.xScale = new Wrapper<>(this.xAxis.getScale());
+		this.yScale = new Wrapper<>(this.yAxis.getScale());
 		this.xScaleController = new SpinnerWrapperController<>(this.xScale, this);
 		this.yScaleController = new SpinnerWrapperController<>(this.yScale, this);
 		this.xTicks = new Wrapper<>(this.xAxis.getTickmarks().getNumTicks());
@@ -88,8 +88,8 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		this.previewGraphContainer.lightCopy(this.outsideGraphContainer);
 		this.xRangeController.setRange(this.xAxis.getNumbers().getRange());
 		this.yRangeController.setRange(this.yAxis.getNumbers().getRange());
-		this.xScaleController.setValue(this.xAxis.getNumbers().getPrecision());
-		this.yScaleController.setValue(this.yAxis.getNumbers().getPrecision());
+		this.xScaleController.setValue(this.xAxis.getNumbers().getScale());
+		this.yScaleController.setValue(this.yAxis.getNumbers().getScale());
 		this.xTicksController.setValue(this.xAxis.getTickmarks().getNumTicks());
 		this.yTicksController.setValue(this.yAxis.getTickmarks().getNumTicks());
 		this.gridXController.setValue(this.getGrid().getNumCols());
@@ -111,13 +111,13 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		}
 		else if (e.getSource() == this.xScaleController)
 		{
-			this.xAxis.getNumbers().setPrecision(this.xScale.value);
+			this.xAxis.getNumbers().setScale(this.xScale.value);
 			this.xAxis.getNumbers().fitFont();
 			this.xAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.yScaleController)
 		{
-			this.yAxis.getNumbers().setPrecision(this.yScale.value);
+			this.yAxis.getNumbers().setScale(this.yScale.value);
 			this.yAxis.getNumbers().fitFont();
 			this.yAxis.getNumbers().repaint();
 		}

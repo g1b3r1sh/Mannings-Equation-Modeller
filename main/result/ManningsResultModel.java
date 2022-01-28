@@ -75,7 +75,7 @@ public class ManningsResultModel
 	private Wrapper<BigDecimal> s;
 	private Wrapper<BigDecimal> q;
 
-	private Wrapper<Integer> outputPrecision;
+	private Wrapper<Integer> outputScale;
 	private Wrapper<BigDecimal> dischargeLower;
 	private Wrapper<BigDecimal> dischargeUpper;
 	private Wrapper<Integer> numDischargeRows;
@@ -89,7 +89,7 @@ public class ManningsResultModel
 		this.s = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_S));
 		this.q = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_Q));
 
-		this.outputPrecision = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAY_SCALE);
+		this.outputScale = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAY_SCALE);
 		this.dischargeLower = new Wrapper<>(ManningsResultModel.DEFAULT_MIN_DISCHARGE);
 		this.dischargeUpper = new Wrapper<>(ManningsResultModel.DEFAULT_MAX_DISCHARGE);
 		this.numDischargeRows = new Wrapper<>(ManningsResultModel.DEFAULT_NUM_DISCHARGE_ROWS);
@@ -102,9 +102,9 @@ public class ManningsResultModel
 		return this.function;
 	}
 
-	protected Wrapper<Integer> getOutputPrecision()
+	protected Wrapper<Integer> getOutputScale()
 	{
-		return this.outputPrecision;
+		return this.outputScale;
 	}
 
 	public Wrapper<BigDecimal> getN()

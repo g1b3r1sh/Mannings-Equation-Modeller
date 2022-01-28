@@ -28,25 +28,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import data.DataPrecision;
+import data.DataScale;
 import data.functions.MapDiscreteData;
 import table.DiscreteDataTableController;
 import table.DiscreteDataTransferHandler;
 import table.EditableDiscreteDataModel;
-import table.TablePrecisionController;
+import table.TableScaleController;
 
 public class DataEditScreen extends JPanel
 {
 	private EditableDiscreteDataModel tableModel;
 	private JTable table;
-	private TablePrecisionController precisionController;
+	private TableScaleController scaleController;
 	private DiscreteDataTableController tableController;
 
-	public DataEditScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, String xLabel, String yLabel)
+	public DataEditScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
 	{
 		super(new BorderLayout());
 
-		this.tableModel = new EditableDiscreteDataModel(data, precision, xLabel, yLabel)
+		this.tableModel = new EditableDiscreteDataModel(data, scale, xLabel, yLabel)
 		{
 			@Override
 			public boolean isCellEditable(int row, int col)
@@ -55,7 +55,7 @@ public class DataEditScreen extends JPanel
 			}
 		};
 
-		this.table = this.createTable(data, precision, xLabel, yLabel);
+		this.table = this.createTable(data, scale, xLabel, yLabel);
 		this.add(this.initTablePane(this.table), BorderLayout.WEST);
 		this.add(this.createControlPanel(this.table), BorderLayout.CENTER);
 	}
@@ -75,10 +75,10 @@ public class DataEditScreen extends JPanel
 		// Update screen to be consistent with current values
 		this.tableModel.refresh();
 		this.table.clearSelection();
-		this.precisionController.refreshSpinnerValues();
+		this.scaleController.refreshSpinnerValues();
 	}
 
-	private JTable createTable(MapDiscreteData<BigDecimal, BigDecimal> data, DataPrecision precision, String xLabel, String yLabel)
+	private JTable createTable(MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
 	{
 		JTable table = new JTable(this.tableModel)
 		{
@@ -114,7 +114,7 @@ public class DataEditScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(this.createTableControls(this.tableController));
-		panel.add(this.createPrecisionControls(this.tableController));
+		panel.add(this.createScaleControls(this.tableController));
 		panel.add(Box.createVerticalGlue());
 
 		this.setupShortcuts(this.tableController);
@@ -152,33 +152,33 @@ public class DataEditScreen extends JPanel
 		});
 	}
 
-	private JPanel createPrecisionControls(DiscreteDataTableController controller)
+	private JPanel createScaleControls(DiscreteDataTableController controller)
 	{
 		// Create and link spinner models to controller
-		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getPrecision().getX(), null, null, 1);
-		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getPrecision().getY(), null, null, 1);
-		this.precisionController = new TablePrecisionController(this.tableModel);
-		this.precisionController.setSpinnerX(modelX);
-		this.precisionController.setSpinnerY(modelY);
+		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getScale().getX(), null, null, 1);
+		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getScale().getY(), null, null, 1);
+		this.scaleController = new TableScaleController(this.tableModel);
+		this.scaleController.setSpinnerX(modelX);
+		this.scaleController.setSpinnerY(modelY);
 
 		// Construct panel containing controls
-		JPanel precisionControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel scaleControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		JPanel precisionXControls = new JPanel();
-		JPanel precisionYControls = new JPanel();
-		precisionXControls.setLayout(new BoxLayout(precisionXControls, BoxLayout.X_AXIS));
-		precisionYControls.setLayout(new BoxLayout(precisionYControls, BoxLayout.X_AXIS));
-		precisionXControls.add(new JLabel("Precision x: "));
-		precisionXControls.add(this.createPrecisionSpinner(modelX));
-		precisionYControls.add(new JLabel("Precision y: "));
-		precisionYControls.add(this.createPrecisionSpinner(modelY));
+		JPanel scaleXControls = new JPanel();
+		JPanel scaleYControls = new JPanel();
+		scaleXControls.setLayout(new BoxLayout(scaleXControls, BoxLayout.X_AXIS));
+		scaleYControls.setLayout(new BoxLayout(scaleYControls, BoxLayout.X_AXIS));
+		scaleXControls.add(new JLabel("Scale x: "));
+		scaleXControls.add(this.createScaleSpinner(modelX));
+		scaleYControls.add(new JLabel("Scale y: "));
+		scaleYControls.add(this.createScaleSpinner(modelY));
 
-		precisionControls.add(precisionXControls);
-		precisionControls.add(precisionYControls);
-		return precisionControls;
+		scaleControls.add(scaleXControls);
+		scaleControls.add(scaleYControls);
+		return scaleControls;
 	}
 
-	private JSpinner createPrecisionSpinner(SpinnerModel model)
+	private JSpinner createScaleSpinner(SpinnerModel model)
 	{
 		JSpinner spinner = new JSpinner(model);
 		spinner.setPreferredSize(new Dimension(50, spinner.getPreferredSize().height));

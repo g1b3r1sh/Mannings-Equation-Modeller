@@ -2,7 +2,7 @@ package table;
 
 import java.math.BigDecimal;
 
-import data.DataPrecision;
+import data.DataScale;
 import data.functions.DiscreteData;
 import utility.Pair;
 
@@ -13,31 +13,31 @@ import utility.Pair;
 
 public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
 {
-	private DataPrecision precision;
-	private DataPrecision outsidePrecision;
+	private DataScale scale;
+	private DataScale outsideScale;
 
-	public EditableDiscreteDataModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataPrecision outsidePrecision, String nameX, String nameY)
+	public EditableDiscreteDataModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataScale outsideScale, String nameX, String nameY)
 	{
 		super(outsideData, nameX, nameY);
-		this.outsidePrecision = outsidePrecision;
-		this.precision = new DataPrecision(this.outsidePrecision);
+		this.outsideScale = outsideScale;
+		this.scale = new DataScale(this.outsideScale);
 	}
 
 	@Override
 	public void refresh()
 	{
 		super.refresh();
-		if (this.precision != null)
+		if (this.scale != null)
 		{
-			if (this.precision.getX() != this.outsidePrecision.getX())
+			if (this.scale.getX() != this.outsideScale.getX())
 			{
-				this.precision.setX(this.outsidePrecision.getX());
-				this.updatePrecisionX();
+				this.scale.setX(this.outsideScale.getX());
+				this.updateScaleX();
 			}
-			if (this.precision.getY() != this.outsidePrecision.getY())
+			if (this.scale.getY() != this.outsideScale.getY())
 			{
-				this.precision.setY(this.outsidePrecision.getY());
-				this.updatePrecisionY();
+				this.scale.setY(this.outsideScale.getY());
+				this.updateScaleY();
 			}
 		}
 	}
@@ -72,13 +72,13 @@ public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal
 				BigDecimal oldValue;
 				if (columnIndex == 0)
 				{
-					newValue = this.precision.fitPrecisionX(newValue);
+					newValue = this.scale.fitScaleX(newValue);
 					oldValue = row.first;
 					row.first = newValue;
 				}
 				else
 				{
-					newValue = this.precision.fitPrecisionY(newValue);
+					newValue = this.scale.fitScaleY(newValue);
 					oldValue = row.second;
 					row.second = newValue;
 				}
@@ -122,30 +122,30 @@ public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal
 		}
 	}
 
-	public DataPrecision getPrecision()
+	public DataScale getScale()
 	{
-		return this.precision;
+		return this.scale;
 	}
 
-	public void updatePrecisionX()
+	public void updateScaleX()
 	{
 		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
 		{
 			if (pair.first != null)
 			{
-				pair.first = this.precision.fitPrecisionX(pair.first);
+				pair.first = this.scale.fitScaleX(pair.first);
 			}
 		}
 		this.fireTableRowsUpdated(0, this.getData().size() - 1);
 	}
 
-	public void updatePrecisionY()
+	public void updateScaleY()
 	{
 		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
 		{
 			if (pair.second != null)
 			{
-				pair.second = this.precision.fitPrecisionY(pair.second);
+				pair.second = this.scale.fitScaleY(pair.second);
 			}
 		}
 		this.fireTableRowsUpdated(0, this.getData().size() - 1);

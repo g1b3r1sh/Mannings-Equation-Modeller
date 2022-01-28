@@ -4,13 +4,13 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class TablePrecisionController implements ChangeListener
+public class TableScaleController implements ChangeListener
 {
 	EditableDiscreteDataModel model;
 	SpinnerNumberModel spinnerX = null;
 	SpinnerNumberModel spinnerY = null;
 	
-	public TablePrecisionController(EditableDiscreteDataModel model)
+	public TableScaleController(EditableDiscreteDataModel model)
 	{
 		this.model = model;
 	}
@@ -37,8 +37,8 @@ public class TablePrecisionController implements ChangeListener
 
 	public void refreshSpinnerValues()
 	{
-		this.spinnerX.setValue(this.model.getPrecision().getX());
-		this.spinnerY.setValue(this.model.getPrecision().getY());
+		this.spinnerX.setValue(this.model.getScale().getX());
+		this.spinnerY.setValue(this.model.getScale().getY());
 	}
 
 	@Override
@@ -46,12 +46,12 @@ public class TablePrecisionController implements ChangeListener
 	{
 		if (e.getSource() == this.spinnerX)
 		{
-			this.model.getPrecision().setX((Integer) this.spinnerX.getValue());
-			this.model.updatePrecisionX();
+			this.model.getScale().setX((Integer) this.spinnerX.getValue());
+			this.model.updateScaleX();
 		}
 		else if (e.getSource() == this.spinnerY)
 		{
-			this.model.getPrecision().setY((Integer) this.spinnerY.getValue());
-			this.model.updatePrecisionY();
+			this.model.getScale().setY((Integer) this.spinnerY.getValue());
+			this.model.updateScaleY();
 		}
 	}}

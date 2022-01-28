@@ -25,7 +25,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 
-import data.DataPrecision;
+import data.DataScale;
 import data.Range;
 import data.functions.MapDiscreteData;
 import graphs.Graph;
@@ -56,7 +56,7 @@ public class ResultScreen extends JPanel
 	private GraphEditDialog manningsGraphEditDialog;
 	private SwingWorkerDialog workerDialog;
 
-	private SpinnerController<Integer> outputPrecisionController;
+	private SpinnerController<Integer> outputScaleController;
 
 	private ResultsVisualiser resultsVisualiser;
 
@@ -75,7 +75,7 @@ public class ResultScreen extends JPanel
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
 		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 
-		this.outputPrecisionController = new SpinnerWrapperController<>(this.resultModel.getOutputPrecision());
+		this.outputScaleController = new SpinnerWrapperController<>(this.resultModel.getOutputScale());
 
 		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
@@ -135,7 +135,7 @@ public class ResultScreen extends JPanel
 		panel.add(ResultScreen.sidePadding());
 		panel.add(this.constantEditPanel("Channel Bed Slope", this.resultModel.getS()));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputPrecisionController, ManningsResultModel.MIN_DISPLAY_SCALE, ManningsResultModel.MAX_DISPLAY_SCALE, 1));
+		panel.add(ResultScreen.integerSpinnerPanel("Output Scale: ", this.outputScaleController, ManningsResultModel.MIN_DISPLAY_SCALE, ManningsResultModel.MAX_DISPLAY_SCALE, 1));
 
 		return panel;
 	}
@@ -286,7 +286,7 @@ public class ResultScreen extends JPanel
 
 	private GraphContainer createGraphContainer(Graph graph)
 	{
-		GraphContainer container = new GraphContainer(graph, new DataPrecision(2, 1));
+		GraphContainer container = new GraphContainer(graph, new DataScale(2, 1));
 		container.getAxis(Direction.TOP).addName("Cross-Section Discharge vs Water Elevation");
 		container.getAxis(Direction.BOTTOM).addTickmarks();
 		container.getAxis(Direction.BOTTOM).addNumbers();

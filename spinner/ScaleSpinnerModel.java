@@ -5,19 +5,19 @@ import java.math.RoundingMode;
 
 import javax.swing.SpinnerNumberModel;
 
-public class PrecisionSpinnerModel extends SpinnerNumberModel
+public class ScaleSpinnerModel extends SpinnerNumberModel
 {
-	private int precision;
+	private int scale;
 
-	public PrecisionSpinnerModel(Number value, BigDecimal minimum, BigDecimal maximum, int precision)
+	public ScaleSpinnerModel(Number value, BigDecimal minimum, BigDecimal maximum, int scale)
 	{
-		this(PrecisionSpinnerModel.getPreciseNumber(value, precision), minimum, maximum, precision);
+		this(ScaleSpinnerModel.getPreciseNumber(value, scale), minimum, maximum, scale);
 	}
 
-	public PrecisionSpinnerModel(BigDecimal value, BigDecimal minimum, BigDecimal maximum, int precision)
+	public ScaleSpinnerModel(BigDecimal value, BigDecimal minimum, BigDecimal maximum, int scale)
 	{
-		super(value, minimum, maximum, PrecisionSpinnerModel.getStepSize(precision));
-		this.precision = precision;
+		super(value, minimum, maximum, ScaleSpinnerModel.getStepSize(scale));
+		this.scale = scale;
 	}
 
 	@Override
@@ -43,10 +43,10 @@ public class PrecisionSpinnerModel extends SpinnerNumberModel
 		return this.getBigDecimalValue().subtract(this.getBigDecimalStepSize());
 	}
 
-	public void setPrecision(int precision)
+	public void setScale(int scale)
 	{
-		this.precision = precision;
-		this.setStepSize(PrecisionSpinnerModel.getStepSize(precision));
+		this.scale = scale;
+		this.setStepSize(ScaleSpinnerModel.getStepSize(scale));
 		this.setValue(this.getValue());
 	}
 
@@ -72,19 +72,19 @@ public class PrecisionSpinnerModel extends SpinnerNumberModel
 		}
 	}
 
-	private static BigDecimal getPreciseNumber(Number number, int precision)
+	private static BigDecimal getPreciseNumber(Number number, int scale)
 	{
 		BigDecimal unscaled = BigDecimal.valueOf(number.doubleValue());
-		return unscaled.setScale(precision, RoundingMode.HALF_UP);
+		return unscaled.setScale(scale, RoundingMode.HALF_UP);
 	}
 
-	private static BigDecimal getStepSize(int precision)
+	private static BigDecimal getStepSize(int scale)
 	{
-		return PrecisionSpinnerModel.getPreciseNumber(Math.pow(0.1d, precision), precision);
+		return ScaleSpinnerModel.getPreciseNumber(Math.pow(0.1d, scale), scale);
 	}
 
 	private BigDecimal getPreciseNumber(Number number)
 	{
-		return PrecisionSpinnerModel.getPreciseNumber(number, this.precision);
+		return ScaleSpinnerModel.getPreciseNumber(number, this.scale);
 	}
 }

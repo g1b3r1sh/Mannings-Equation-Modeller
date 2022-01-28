@@ -112,7 +112,7 @@ public class SingleOutputPanel extends OutputPanel
 	private Result calcResult()
 	{
 		this.getModel().updateModelConstants();
-		return this.runWorker(this.getModel().createWaterLevelWorker(this.getModel().getOutputPrecision().value));
+		return this.runWorker(this.getModel().createWaterLevelWorker(this.getModel().getOutputScale().value));
 	}
 
 	private void setOutput(Result result)

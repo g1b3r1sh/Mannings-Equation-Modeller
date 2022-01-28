@@ -24,13 +24,13 @@ public class Axis extends JPanel
 
 	private GraphContainer graphContainer;
 	private Direction direction;
-	private int precision;
+	private int scale;
 
-	public Axis(GraphContainer graphContainer, Direction direction, int precision)
+	public Axis(GraphContainer graphContainer, Direction direction, int scale)
 	{
 		this.graphContainer = graphContainer;
 		this.direction = direction;
-		this.precision = precision;
+		this.scale = scale;
 
 		this.setLayout(new BoxLayout(this, this.horizontal() ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS));
 	}
@@ -40,24 +40,24 @@ public class Axis extends JPanel
 		return this.graphContainer.getGraph();
 	}
 
-	public int getPrecision()
+	public int getScale()
 	{
-		return this.precision;
+		return this.scale;
 	}
 
-	public void setPrecision(int precision)
+	public void setScale(int scale)
 	{
-		this.precision = precision;
+		this.scale = scale;
 		if (this.containsNumbers())
 		{
-			this.getNumbers().setPrecision(precision);
+			this.getNumbers().setScale(scale);
 		}
 	}
 
 	// Only copies tickmarks and numbers
 	public void lightCopy(Axis axis)
 	{
-		this.setPrecision(axis.getPrecision());
+		this.setScale(axis.getScale());
 		if (axis.containsTickmarks())
 		{
 			this.addTickmarks();
@@ -74,7 +74,7 @@ public class Axis extends JPanel
 		{
 			this.addNumbers();
 			AxisNumbers numbers = axis.getNumbers();
-			this.getNumbers().setPrecision(numbers.getPrecision());
+			this.getNumbers().setScale(numbers.getScale());
 			this.getNumbers().getRange().copy(numbers.getRange());
 			this.getNumbers().getFontRange().copy(numbers.getFontRange());
 			this.getNumbers().fitFont();
@@ -146,11 +146,11 @@ public class Axis extends JPanel
 			AxisNumbers numbers;
 			if (this.horizontal())
 			{
-				numbers = new AxisNumbersHorizontal(this.getTickmarks(), this.getGraph().getPlane().getRangeX(), this.precision, Axis.DEFAULT_HORIZONTAL_PADDING);
+				numbers = new AxisNumbersHorizontal(this.getTickmarks(), this.getGraph().getPlane().getRangeX(), this.scale, Axis.DEFAULT_HORIZONTAL_PADDING);
 			}
 			else
 			{
-				numbers = new AxisNumbersVertical(this.getTickmarks(), this.getGraph().getPlane().getRangeY(), this.precision, Axis.DEFAULT_VERTICAL_PADDING, this.direction == Direction.LEFT);
+				numbers = new AxisNumbersVertical(this.getTickmarks(), this.getGraph().getPlane().getRangeY(), this.scale, Axis.DEFAULT_VERTICAL_PADDING, this.direction == Direction.LEFT);
 			}
 			this.addAxisComponent(numbers, 1);
 		}

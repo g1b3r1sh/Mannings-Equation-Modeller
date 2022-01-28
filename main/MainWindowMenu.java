@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import main.dialogs.DataEditDialog;
-import spinner.PrecisionSpinnerModel;
+import spinner.ScaleSpinnerModel;
 
 import java.awt.event.ActionEvent;
 
@@ -48,7 +48,7 @@ public class MainWindowMenu extends JMenuBar
 			this.window.getModel().loadSampleData();
 			this.window.getInputScreen().refreshTableModel();
 			this.window.getInputScreen().repaintGraph();
-			((PrecisionSpinnerModel) this.window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(this.window.getModel().getCalculator().getWaterLevel());
+			((ScaleSpinnerModel) this.window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(this.window.getModel().getCalculator().getWaterLevel());
 		}));
 		return menu;
 	}

@@ -15,9 +15,9 @@ public class AxisNumbersVertical extends AxisNumbers
 {
 	boolean alignRight;
 
-	public AxisNumbersVertical(AxisTickmarks axis, Range range, int precision, int padding, boolean alignRight)
+	public AxisNumbersVertical(AxisTickmarks axis, Range range, int scale, int padding, boolean alignRight)
 	{
-		super(axis, range, precision, padding);
+		super(axis, range, scale, padding);
 		this.alignRight = alignRight;
 	}
 

@@ -2,20 +2,20 @@ package main;
 
 import java.math.BigDecimal;
 
-import data.DataPrecision;
+import data.DataScale;
 import data.functions.MapDiscreteData;
 import hydraulics.WaterLevelCalculator;
 
 public class CrossSectionModel
 {
 	private MapDiscreteData<BigDecimal, BigDecimal> data;
-	private DataPrecision precision;
+	private DataScale scale;
 	private WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator;
 	
 	public CrossSectionModel()
 	{
 		this.data = defaultData();
-		this.precision = defaultPrecision();
+		this.scale = defaultScale();
 		this.waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(this.data, defaultWaterLevel());
 	}
 
@@ -24,9 +24,9 @@ public class CrossSectionModel
 		return this.data;
 	}
 
-	public DataPrecision getPrecision()
+	public DataScale getScale()
 	{
-		return this.precision;
+		return this.scale;
 	}
 
 	public WaterLevelCalculator<BigDecimal, BigDecimal> getCalculator()
@@ -37,7 +37,7 @@ public class CrossSectionModel
 	public void loadSampleData()
 	{
 		this.data.load(defaultData());
-		this.precision.load(defaultPrecision());
+		this.scale.load(defaultScale());
 		this.waterCalculator.setWaterLevel(defaultWaterLevel());
 	}
 	
@@ -58,9 +58,9 @@ public class CrossSectionModel
 		return data;
 	}
 
-	public static DataPrecision defaultPrecision()
+	public static DataScale defaultScale()
 	{
-		return new DataPrecision(3, 2);
+		return new DataScale(3, 2);
 	}
 
 	public static BigDecimal defaultWaterLevel()
