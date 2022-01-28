@@ -85,10 +85,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 		Wrapper<Double> area = new Wrapper<>(0d);
 		this.data.iterateSegments
 		(
-			(left, right) ->
-			{
-				area.value += WaterLevelCalculator.this.calcArea(left, right);
-			}
+			(left, right) -> area.value += WaterLevelCalculator.this.calcArea(left, right)
 		);
 		return area.value;
 	}

@@ -67,7 +67,7 @@ public class MainWindowMenu extends JMenuBar
 				this.window.getResultScreen().openGraphEditDialog();
 		}));
 		menu.addSeparator();
-		menu.add(menuItem("Exit", () -> { this.window.dispose(); }));
+		menu.add(menuItem("Exit", this.window::dispose));
 		return menu;
 	}
 

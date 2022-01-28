@@ -256,8 +256,8 @@ public class Axis extends JPanel
 	private void addAxisComponent(JComponent component, int index)
 	{
 		this.directionPanelMethodVoid(
-			(panel) -> panel.add(component, index), 
-			(panel) -> panel.add(component, panel.getComponentCount() - index)
+			panel -> panel.add(component, index),
+			panel -> panel.add(component, panel.getComponentCount() - index)
 		);
 	}
 
@@ -265,16 +265,16 @@ public class Axis extends JPanel
 	private void addAxisComponent(JComponent component)
 	{
 		this.directionPanelMethodVoid(
-			(panel) -> panel.add(component), 
-			(panel) -> panel.add(component, 0)
+			panel -> panel.add(component),
+			panel -> panel.add(component, 0)
 		);
 	}
 
 	private Component getAxisComponent(int index)
 	{
 		return this.directionPanelMethod(
-			(panel) -> panel.getComponent(index),
-			(panel) -> panel.getComponent(panel.getComponentCount() - 1 - index)
+			panel -> panel.getComponent(index),
+			panel -> panel.getComponent(panel.getComponentCount() - 1 - index)
 		);
 	}
 
@@ -282,16 +282,16 @@ public class Axis extends JPanel
 	private Component getAxisComponent()
 	{
 		return this.directionPanelMethod(
-			(panel) -> panel.getComponent(panel.getComponentCount() - 1),
-			(panel) -> panel.getComponent(0)
+			panel -> panel.getComponent(panel.getComponentCount() - 1),
+			panel -> panel.getComponent(0)
 		);
 	}
 
 	private void removeAxisComponent(int index)
 	{
 		this.directionPanelMethodVoid(
-			(panel) -> panel.remove(index), 
-			(panel) -> panel.remove(panel.getComponentCount() - 1 - index)
+			panel -> panel.remove(index),
+			panel -> panel.remove(panel.getComponentCount() - 1 - index)
 		);
 	}
 
@@ -299,8 +299,8 @@ public class Axis extends JPanel
 	private void removeAxisComponent()
 	{
 		this.directionPanelMethodVoid(
-			(panel) -> panel.remove(panel.getComponentCount() - 1), 
-			(panel) -> panel.remove(0)
+			panel -> panel.remove(panel.getComponentCount() - 1),
+			panel -> panel.remove(0)
 		);
 	}
 }

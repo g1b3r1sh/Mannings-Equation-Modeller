@@ -257,7 +257,7 @@ public class ResultScreen extends JPanel
 
 	protected static JPanel numberEditPanel(Component parent, String name, Wrapper<BigDecimal> wrapper)
 	{
-		return ResultScreen.numberEditPanel(parent, name, wrapper::get, wrapper::set, (value) -> {});
+		return ResultScreen.numberEditPanel(parent, name, wrapper::get, wrapper::set, value -> {});
 	}
 
 	protected static JPanel integerSpinnerPanel(String label, SpinnerController<Integer> controller, Integer min, Integer max, int step)
