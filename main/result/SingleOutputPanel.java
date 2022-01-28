@@ -16,25 +16,27 @@ import main.result.ManningsResultModel.ModelError;
 
 public class SingleOutputPanel extends OutputPanel
 {
-	private JLabel errorLabel;
-	private JTextField levelLabel;
-	private JTextField vLabel;
+	private JLabel errorLabel = SingleOutputPanel.createErrorLabel();
+	private JTextField levelLabel = SingleOutputPanel.createOutputField();
+	private JTextField vLabel = SingleOutputPanel.createOutputField();
 
 	public SingleOutputPanel(ResultScreen parent, ManningsResultModel resultModel)
 	{
 		super(parent, resultModel);
-
-		this.errorLabel = new JLabel("");
-		this.errorLabel.setForeground(Color.RED);
-		this.errorLabel.setVisible(false);
-		this.levelLabel = this.createOutputField();
-		this.vLabel = this.createOutputField();
 		this.addComponents();
 	}
 
 	/// Panel methods
 
-	private JTextField createOutputField()
+	private static JLabel createErrorLabel()
+	{
+		JLabel errorLabel = new JLabel("");
+		errorLabel.setForeground(Color.RED);
+		errorLabel.setVisible(false);
+		return errorLabel;
+	}
+
+	private static JTextField createOutputField()
 	{
 		return new JTextField(10)
 		{

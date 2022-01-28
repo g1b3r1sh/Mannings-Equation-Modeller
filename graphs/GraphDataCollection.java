@@ -11,12 +11,11 @@ import data.functions.DiscreteData;
 public class GraphDataCollection
 {
 	private Graph graph; // Graph to contain data in
-	private LinkedList<DataVisualsHandler> dataList;
+	private LinkedList<DataVisualsHandler> dataList = new LinkedList<>();
 
 	public GraphDataCollection(Graph graph)
 	{
 		this.graph = graph;
-		this.dataList = new LinkedList<>();
 	}
 
 	public boolean containsData(DiscreteData<?, ?> data)

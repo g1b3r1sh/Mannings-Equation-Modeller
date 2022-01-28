@@ -22,20 +22,15 @@ import spinner.SpinnerWrapperController;
 
 public class TableOutputPanel extends OutputPanel
 {
-	
-	private EnumMap<ModelError, JLabel> errorLabels;
+	private EnumMap<ModelError, JLabel> errorLabels = TableOutputPanel.createErrorLabelsMap();
 
 	private SpinnerController<Integer> numDischargeRowsController;
-	private ResultsTableModel tableModel;
+	private ResultsTableModel tableModel = new ResultsTableModel();
 
 	public TableOutputPanel(ResultScreen parent, ManningsResultModel resultModel)
 	{
 		super(parent, resultModel);
-
-		this.errorLabels = this.createErrorLabelsMap();
 		this.numDischargeRowsController = new SpinnerWrapperController<>(this.getModel().getNumDischargeRows());
-		this.tableModel = new ResultsTableModel();
-
 		this.addComponents();
 	}
 
@@ -76,7 +71,7 @@ public class TableOutputPanel extends OutputPanel
 
 		this.add(this.createErrorPanel());
 		this.add(ResultScreen.sidePadding());
-		this.add(this.createTablePane(this.createOutputTable()));
+		this.add(TableOutputPanel.createTablePane(this.createOutputTable()));
 
 		return panel;
 	}
@@ -89,7 +84,7 @@ public class TableOutputPanel extends OutputPanel
 		return table;
 	}
 
-	private JScrollPane createTablePane(JTable table)
+	private static JScrollPane createTablePane(JTable table)
 	{
 		JScrollPane pane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		// Default width: 350
@@ -121,17 +116,17 @@ public class TableOutputPanel extends OutputPanel
 		}
 	}
 
-	private EnumMap<ModelError, JLabel> createErrorLabelsMap()
+	private static EnumMap<ModelError, JLabel> createErrorLabelsMap()
 	{
 		EnumMap<ModelError, JLabel> labels = new EnumMap<>(ModelError.class);
-		labels.put(ModelError.CONSTANTS_NOT_SET, this.createErrorLabel("Constants not set!"));
-		labels.put(ModelError.DISCHARGE_UNDERFLOW, this.createErrorLabel("Discharge too low!"));
-		labels.put(ModelError.NOT_ENOUGH_DATA, this.createErrorLabel("Not enough data points!"));
-		labels.put(ModelError.INVALID_DISCHARGE_RANGE, this.createErrorLabel("Min value cannot be greater than max value!"));
+		labels.put(ModelError.CONSTANTS_NOT_SET, TableOutputPanel.createErrorLabel("Constants not set!"));
+		labels.put(ModelError.DISCHARGE_UNDERFLOW, TableOutputPanel.createErrorLabel("Discharge too low!"));
+		labels.put(ModelError.NOT_ENOUGH_DATA, TableOutputPanel.createErrorLabel("Not enough data points!"));
+		labels.put(ModelError.INVALID_DISCHARGE_RANGE, TableOutputPanel.createErrorLabel("Min value cannot be greater than max value!"));
 		return labels;
 	}
 
-	private JLabel createErrorLabel(String message)
+	private static JLabel createErrorLabel(String message)
 	{
 		JLabel label = new JLabel(message);
 		label.setVisible(false);
@@ -172,11 +167,11 @@ public class TableOutputPanel extends OutputPanel
 	private void internalProcessResults(Result[] results)
 	{
 		this.tableModel.setData(results);
-		this.showErrors(this.createErrorSet(results));
+		this.showErrors(TableOutputPanel.createErrorSet(results));
 		this.processResults(results);
 	}
 
-	private EnumSet<ModelError> createErrorSet(Result[] results)
+	private static EnumSet<ModelError> createErrorSet(Result[] results)
 	{
 		EnumSet<ModelError> errors = EnumSet.noneOf(ModelError.class);
 		errors.add(ModelError.NONE);

@@ -71,28 +71,19 @@ public class ManningsResultModel
 	private ManningsModel model;
 	private ManningsFunction function;
 
-	private Wrapper<BigDecimal> n;
-	private Wrapper<BigDecimal> s;
-	private Wrapper<BigDecimal> q;
+	private Wrapper<BigDecimal> n = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_N));
+	private Wrapper<BigDecimal> s = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_S));
+	private Wrapper<BigDecimal> q = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_Q));
 
-	private Wrapper<Integer> outputScale;
-	private Wrapper<BigDecimal> dischargeLower;
-	private Wrapper<BigDecimal> dischargeUpper;
-	private Wrapper<Integer> numDischargeRows;
+	private Wrapper<Integer> outputScale = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAY_SCALE);
+	private Wrapper<BigDecimal> dischargeLower = new Wrapper<>(ManningsResultModel.DEFAULT_MIN_DISCHARGE);
+	private Wrapper<BigDecimal> dischargeUpper = new Wrapper<>(ManningsResultModel.DEFAULT_MAX_DISCHARGE);
+	private Wrapper<Integer> numDischargeRows = new Wrapper<>(ManningsResultModel.DEFAULT_NUM_DISCHARGE_ROWS);
 
 	public ManningsResultModel(MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
 		this.model = new ManningsModel(data);
 		this.function = new ManningsFunction(this.model);
-
-		this.n = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_N));
-		this.s = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_S));
-		this.q = new Wrapper<>(new BigDecimal(ManningsResultModel.INITIAL_Q));
-
-		this.outputScale = new Wrapper<>(ManningsResultModel.DEFAULT_DISPLAY_SCALE);
-		this.dischargeLower = new Wrapper<>(ManningsResultModel.DEFAULT_MIN_DISCHARGE);
-		this.dischargeUpper = new Wrapper<>(ManningsResultModel.DEFAULT_MAX_DISCHARGE);
-		this.numDischargeRows = new Wrapper<>(ManningsResultModel.DEFAULT_NUM_DISCHARGE_ROWS);
 
 		this.updateModelConstants();
 	}

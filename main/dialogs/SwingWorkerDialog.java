@@ -20,22 +20,21 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 {
 	private static final String WORKER_PROPERTY_NAME = "state";
 	private JOptionPane dialogPane;
-	private JProgressBar bar;
+	private JProgressBar bar = SwingWorkerDialog.createBar();
 	private SwingWorker<?, ?> worker;
 
 	public SwingWorkerDialog(Frame parentWindow, String title, String message)
 	{
 		super(parentWindow, title, true);
 
-		this.bar = this.createBar();
-		this.dialogPane = new JOptionPane(this.createDialogPanel(message, this.bar), JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {"Cancel"});
+		this.dialogPane = new JOptionPane(SwingWorkerDialog.createDialogPanel(message, this.bar), JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[] {"Cancel"});
 		this.setContentPane(this.dialogPane);
 		this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		this.dialogPane.addPropertyChangeListener(JOptionPane.VALUE_PROPERTY, this);
 		this.addWindowListener(this.createwindowListener());
 	}
 
-	private JPanel createDialogPanel(String message, JProgressBar bar)
+	private static JPanel createDialogPanel(String message, JProgressBar bar)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -44,7 +43,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 		return panel;
 	}
 
-	private JProgressBar createBar()
+	private static JProgressBar createBar()
 	{
 		JProgressBar bar = new JProgressBar();
 		bar.setIndeterminate(true);

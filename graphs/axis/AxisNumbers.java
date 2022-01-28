@@ -20,7 +20,7 @@ public abstract class AxisNumbers extends JComponent
 {
 	private final float RESIZE_INCREMENT = 0.1f;
 
-	private Range fontRange;
+	private Range fontRange = new Range(10, 20);
 	private int padding;
 
 	private AxisTickmarks tickmarks;
@@ -32,14 +32,13 @@ public abstract class AxisNumbers extends JComponent
 	// Make fontRange parameter
 	public AxisNumbers(AxisTickmarks tickmarks, Range range, int scale, int padding)
 	{
-		this.fontRange = new Range(10, 20);
-
 		this.tickmarks = tickmarks;
 		this.range = range;
 		this.scale = scale;
 		this.padding = padding;
-		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
+		this.prevLength = this.getChangingLength();
 
+		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
 		this.addComponentListener(new ComponentAdapter()
 		{
 			@Override
@@ -48,8 +47,6 @@ public abstract class AxisNumbers extends JComponent
 				AxisNumbers.this.resizeFitFont();
 			}
 		});
-
-		this.prevLength = this.getChangingLength();
 	}
 
 	public AxisTickmarks getTickmarks()

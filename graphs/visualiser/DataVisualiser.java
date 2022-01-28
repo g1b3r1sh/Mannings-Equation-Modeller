@@ -18,7 +18,6 @@ public abstract class DataVisualiser extends GraphComponent
 	public DataVisualiser(Graph graph, DiscreteData<? extends Number, ? extends Number> data)
 	{
 		super(graph);
-
 		this.data = data;
 	}
 	

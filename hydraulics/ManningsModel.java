@@ -22,12 +22,11 @@ V is calculated when A is known (i.e. when manningFormulaConsistent() is true)
 public class ManningsModel
 {
 	private WaterLevelCalculator<?, ?> calculator;
-	private ManningsEquation equation;
+	private ManningsEquation equation = new ManningsEquation();
 
 	public ManningsModel(DiscreteData<?, ?> data)
 	{
 		this.calculator = new WaterLevelCalculator<>(data, 0);
-		this.equation = new ManningsEquation();
 	}
 
 	public ManningsModel(ManningsModel model)
@@ -134,7 +133,7 @@ public class ManningsModel
 		double q2 = this.calcDischarge(level2);
 		this.resetModel();
 		// Note: If both discharges are same distance away from desired discharge, level1 will be returned
-		return closest(discharge, q1, q2) == q1 ? level1 : level2;
+		return ManningsModel.closest(discharge, q1, q2) == q1 ? level1 : level2;
 	}
 
 	public Double calcWaterLevel(double discharge, int displayScale, BooleanSupplier runCondition)
@@ -148,7 +147,7 @@ public class ManningsModel
 		// Jump Search: Start by incrementing by a large value, then use the resulting level as a hint for smaller increments
 		for (int i = 0 < displayScale ? 0 : displayScale; i <= displayScale; i++)
 		{
-			waterLevel = this.calcWaterLevel(discharge, this.defaultStep(i), waterLevel, runCondition);
+			waterLevel = this.calcWaterLevel(discharge, ManningsModel.defaultStep(i), waterLevel, runCondition);
 			if (waterLevel == null)
 			{
 				return null;
@@ -220,7 +219,7 @@ public class ManningsModel
 	}
 
 	// Returns the number that is closest to n
-	private double closest(double n, double a, double b)
+	private static double closest(double n, double a, double b)
 	{
 		double aDist = Math.abs(n - a);
 		double bDist = Math.abs(n - b);
@@ -228,7 +227,7 @@ public class ManningsModel
 	}
 
 	// By, default, steps by 10^-(scale of displayed values + 1)
-	private double defaultStep(int displayScale)
+	private static double defaultStep(int displayScale)
 	{
 		return Math.pow(0.1, displayScale + 1);
 	}

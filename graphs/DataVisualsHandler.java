@@ -17,14 +17,12 @@ public class DataVisualsHandler
 {
 	private Graph graph;
 	private DiscreteData<? extends Number, ? extends Number> data;
-	private LinkedList<DataVisualiser> visualisers;
+	private LinkedList<DataVisualiser> visualisers = new LinkedList<>();
 
 	public DataVisualsHandler(Graph graph, DiscreteData<? extends Number, ? extends Number> data)
 	{
 		this.graph = graph;
 		this.data = data;
-
-		this.visualisers = new LinkedList<>();
 	}
 
 	public DiscreteData<? extends Number, ? extends Number> getData()

@@ -13,16 +13,12 @@ import java.util.TreeSet;
 
 public class MapDiscreteData<M extends Number, N extends Number> implements DiscreteData<M, N>
 {
-	private NavigableMap<M, N> data;
+	private NavigableMap<M, N> data = new TreeMap<>();
 
-	public MapDiscreteData()
-	{
-		this.data = new TreeMap<>();
-	}
+	public MapDiscreteData() { }
 
 	public MapDiscreteData(DiscreteData<M, N> data)
 	{
-		this();
 		this.load(data);
 	}
 

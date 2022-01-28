@@ -8,16 +8,9 @@ import hydraulics.WaterLevelCalculator;
 
 public class CrossSectionModel
 {
-	private MapDiscreteData<BigDecimal, BigDecimal> data;
-	private DataScale scale;
-	private WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator;
-	
-	public CrossSectionModel()
-	{
-		this.data = defaultData();
-		this.scale = defaultScale();
-		this.waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(this.data, defaultWaterLevel());
-	}
+	private MapDiscreteData<BigDecimal, BigDecimal> data = CrossSectionModel.defaultData();
+	private DataScale scale = CrossSectionModel.defaultScale();
+	private WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(this.data, defaultWaterLevel());
 
 	public MapDiscreteData<BigDecimal, BigDecimal> getData()
 	{

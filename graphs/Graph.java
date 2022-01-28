@@ -32,16 +32,9 @@ Restrictions on scrolling
 public class Graph extends JComponent
 {
 	private Plane plane;
-	private Grid grid;
-	private GraphComponentCollection components;
-	private GraphDataCollection dataList;
-
-	public Graph()
-	{
-		this.grid = new Grid(this, 1, 1);
-		this.components = new GraphComponentCollection();
-		this.dataList = new GraphDataCollection(this);
-	}
+	private Grid grid = new Grid(this, 1, 1);
+	private GraphComponentCollection components = new GraphComponentCollection();
+	private GraphDataCollection dataList = new GraphDataCollection(this);
 
 	public void setLinearPlane(Range rangeX, Range rangeY)
 	{

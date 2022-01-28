@@ -36,8 +36,6 @@ public class GraphContainer extends JComponent
 	private Axis bottomAxis;
 	private Axis leftAxis;
 
-	//private JScrollPane scrollPane;
-
 	public GraphContainer(Graph graph, DataScale defaultAxisScale)
 	{
 		this.setLayout(new BorderLayout());
@@ -45,10 +43,8 @@ public class GraphContainer extends JComponent
 		this.graph = graph;
 		this.defaultAxisScale = defaultAxisScale;
 
-		this.containerPanel = createContainerPanel();
-		//this.scrollPane = new JScrollPane(this.graph);
-		//this.scrollPane.setPreferredSize(this.graph.getPreferredSize());
-		
+		this.containerPanel = this.createContainerPanel();
+
 		GridBagConstraints graphConstraints = new GridBagConstraints();
 		graphConstraints.gridx = 1;
 		graphConstraints.gridy = 1;
@@ -56,7 +52,6 @@ public class GraphContainer extends JComponent
 		graphConstraints.weightx = 1;
 		graphConstraints.weighty = 1;
 
-		//this.containerPanel.add(this.scrollPane, graphConstraints);
 		this.containerPanel.add(this.graph, graphConstraints);
 
 		this.add(this.containerPanel);

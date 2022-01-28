@@ -27,11 +27,11 @@ import java.awt.BorderLayout;
 public class GraphEditScreen extends JPanel implements ChangeListener
 {
 	private GraphContainer outsideGraphContainer;
-	private GraphContainer previewGraphContainer;
+	private GraphContainer previewGraphContainer = GraphEditScreen.createDefaultGraphContainer();
 	private RangeSpinnerController xRangeController;
 	private RangeSpinnerController yRangeController;
-	private Axis xAxis;
-	private Axis yAxis;
+	private Axis xAxis = GraphEditScreen.getXAxis(this.previewGraphContainer);
+	private Axis yAxis = GraphEditScreen.getYAxis(this.previewGraphContainer);
 	private Wrapper<Integer> xScale;
 	private Wrapper<Integer> yScale;
 	private SpinnerController<Integer> xScaleController;
@@ -51,13 +51,7 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 
 		// Setup graphs
 		this.outsideGraphContainer = outsideGraphContainer;
-		this.previewGraphContainer = new GraphContainer(new Graph());
-		this.previewGraphContainer.getGraph().setPreferredSize(new Dimension(500, 500));
-		this.previewGraphContainer.getGraph().setLinearPlane(new Range(0, 1), new Range(0, 1));
 		this.previewGraphContainer.lightCopy(this.outsideGraphContainer);
-
-		this.xAxis = this.getXAxis(this.previewGraphContainer);
-		this.yAxis = this.getYAxis(this.previewGraphContainer);
 
 		this.xRangeController = new RangeSpinnerController(this.xAxis.getNumbers().getRange(), this);
 		this.yRangeController = new RangeSpinnerController(this.yAxis.getNumbers().getRange(), this);
@@ -150,30 +144,30 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(new JLabel("X Axis"));
-		panel.add(this.createRangeSpinners(this.xRangeController));
+		panel.add(GraphEditScreen.createRangeSpinners(this.xRangeController));
 		panel.add(new JLabel("Y Axis"));
-		panel.add(this.createRangeSpinners(this.yRangeController));
+		panel.add(GraphEditScreen.createRangeSpinners(this.yRangeController));
 
-		panel.add(this.createSpinnerPanel("X Scale: ", this.createIntegerSpinner(this.xScaleController, 0, null, 1)));
-		panel.add(this.createSpinnerPanel("Y Scale: ", this.createIntegerSpinner(this.yScaleController, 0, null, 1)));
+		panel.add(GraphEditScreen.createSpinnerPanel("X Scale: ", GraphEditScreen.createIntegerSpinner(this.xScaleController, 0, null, 1)));
+		panel.add(GraphEditScreen.createSpinnerPanel("Y Scale: ", GraphEditScreen.createIntegerSpinner(this.yScaleController, 0, null, 1)));
 		
-		panel.add(this.createSpinnerPanel("X Tickmarks: ", this.createIntegerSpinner(this.xTicksController, 2, null, 1)));
-		panel.add(this.createSpinnerPanel("Y Tickmarks: ", this.createIntegerSpinner(this.yTicksController, 2, null, 1)));
+		panel.add(GraphEditScreen.createSpinnerPanel("X Tickmarks: ", GraphEditScreen.createIntegerSpinner(this.xTicksController, 2, null, 1)));
+		panel.add(GraphEditScreen.createSpinnerPanel("Y Tickmarks: ", GraphEditScreen.createIntegerSpinner(this.yTicksController, 2, null, 1)));
 		
-		panel.add(this.createSpinnerPanel("Grid Columns: ", this.createIntegerSpinner(this.gridXController, 1, null, 1)));
-		panel.add(this.createSpinnerPanel("Grid Rows: ", this.createIntegerSpinner(this.gridYController, 1, null, 1)));
+		panel.add(GraphEditScreen.createSpinnerPanel("Grid Columns: ", GraphEditScreen.createIntegerSpinner(this.gridXController, 1, null, 1)));
+		panel.add(GraphEditScreen.createSpinnerPanel("Grid Rows: ", GraphEditScreen.createIntegerSpinner(this.gridYController, 1, null, 1)));
 		
 		return panel;
 	}
 
-	private JPanel createRangeSpinners(RangeSpinnerController controller)
+	private static JPanel createRangeSpinners(RangeSpinnerController controller)
 	{
 		Range range = controller.getRange();
 
 		JSpinner lower = new JSpinner(new SpinnerNumberModel(range.getLower(), null, null, 1));
 		JSpinner upper = new JSpinner(new SpinnerNumberModel(range.getUpper(), null, null, 1));
-		this.widenSpinner(lower);
-		this.widenSpinner(upper);
+		GraphEditScreen.widenSpinner(lower);
+		GraphEditScreen.widenSpinner(upper);
 		controller.setLowerSpinner(lower);
 		controller.setUpperSpinner(upper);
 
@@ -186,15 +180,15 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		return panel;
 	}
 
-	private JSpinner createIntegerSpinner(SpinnerController<Integer> controller, Integer min, Integer max, Number step)
+	private static JSpinner createIntegerSpinner(SpinnerController<Integer> controller, Integer min, Integer max, Number step)
 	{
 		JSpinner spinner = new JSpinner(new SpinnerNumberModel(controller.getValue(), min, max, step));
 		controller.setSpinner(spinner);
-		this.widenSpinner(spinner);
+		GraphEditScreen.widenSpinner(spinner);
 		return spinner;
 	}
 
-	private JPanel createSpinnerPanel(String label, JSpinner spinner)
+	private static JPanel createSpinnerPanel(String label, JSpinner spinner)
 	{
 		JPanel panel = new JPanel(new FlowLayout());
 		panel.add(new JLabel(label));
@@ -202,12 +196,12 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		return panel;
 	}
 	
-	private Axis getXAxis(GraphContainer container)
+	private static Axis getXAxis(GraphContainer container)
 	{
 		return container.getAxis(GraphContainer.Direction.BOTTOM);
 	}
 
-	private Axis getYAxis(GraphContainer container)
+	private static Axis getYAxis(GraphContainer container)
 	{
 		return container.getAxis(GraphContainer.Direction.LEFT);
 	}
@@ -217,8 +211,16 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		return this.previewGraphContainer.getGraph().getGrid();
 	}
 
-	private void widenSpinner(JSpinner spinner)
+	private static void widenSpinner(JSpinner spinner)
 	{
 		((DefaultEditor) spinner.getEditor()).getTextField().setColumns(3);
+	}
+
+	private static GraphContainer createDefaultGraphContainer()
+	{
+		GraphContainer container = new GraphContainer(new Graph());
+		container.getGraph().setPreferredSize(new Dimension(500, 500));
+		container.getGraph().setLinearPlane(new Range(0, 1), new Range(0, 1));
+		return container;
 	}
 }

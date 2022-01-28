@@ -24,9 +24,9 @@ public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal
 	}
 
 	@Override
-	public void refresh()
+	public void refreshData()
 	{
-		super.refresh();
+		super.refreshData();
 		if (this.scale != null)
 		{
 			if (this.scale.getX() != this.outsideScale.getX())

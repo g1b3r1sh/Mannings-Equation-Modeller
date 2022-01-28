@@ -11,13 +11,12 @@ public class DiscreteDataTableController
 {
 	private JTable table;
 	private DiscreteDataTableModel<?, ?> tableModel;
-	private HashMap<Class<? extends ControllerAction>, ControllerAction> actions;
+	private HashMap<Class<? extends ControllerAction>, ControllerAction> actions = new HashMap<>();
 
 	public DiscreteDataTableController(JTable table, DiscreteDataTableModel<?, ?> tableModel)
 	{
 		this.table = table;
 		this.tableModel = tableModel;
-		this.actions = new HashMap<>();
 	}
 
 	@SuppressWarnings("unchecked")

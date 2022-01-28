@@ -14,7 +14,6 @@ public class ManningsFunction implements ContinuousFunction
 	public ManningsFunction(ManningsModel model)
 	{
 		this.model = model;
-		this.lowestElevation = 0;
 		this.updateRange();
 	}
 

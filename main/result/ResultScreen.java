@@ -63,23 +63,21 @@ public class ResultScreen extends JPanel
 	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
 	{
 		super();
-		this.parent = parent;
-
-		this.resultModel = new ManningsResultModel(data);
-
 		this.setLayout(new BorderLayout(10, 10));
 
-		this.manningsGraph = this.createGraph();
-		this.manningsGraphContainer = this.createGraphContainer(this.manningsGraph);
-		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
-		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
-		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
-
+		this.parent = parent;
+		this.resultModel = new ManningsResultModel(data);
 		this.outputScaleController = new SpinnerWrapperController<>(this.resultModel.getOutputScale());
+
+		this.manningsGraph = ResultScreen.createGraph(this.resultModel);
+		this.manningsGraphContainer = ResultScreen.createGraphContainer(this.manningsGraph);
+		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
 
 		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
 
+		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
+		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
@@ -284,7 +282,7 @@ public class ResultScreen extends JPanel
 		return spinner;
 	}
 
-	private GraphContainer createGraphContainer(Graph graph)
+	private static GraphContainer createGraphContainer(Graph graph)
 	{
 		GraphContainer container = new GraphContainer(graph, new DataScale(2, 1));
 		container.getAxis(Direction.TOP).addName("Cross-Section Discharge vs Water Elevation");
@@ -297,12 +295,12 @@ public class ResultScreen extends JPanel
 		return container;	
 	}
 
-	private Graph createGraph()
+	private static Graph createGraph(ManningsResultModel resultModel)
 	{
 		Graph graph = new Graph();
 		graph.setLinearPlane(new Range(0, 500), new Range(0, 10));
 		graph.fitGridPlane(100, 2);
-		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, this.resultModel.getFunction()));
+		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, resultModel.getFunction()));
 		return graph;
 	}
 }

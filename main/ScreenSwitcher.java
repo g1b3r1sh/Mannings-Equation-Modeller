@@ -23,30 +23,19 @@ import java.awt.GridLayout;
 
 public class ScreenSwitcher extends JPanel
 {
-	private JPanel cards;
-	private CardLayout cardLayout;
-	private JButton prev;
-	private JButton next;
-	private JLabel label;
-	private int index;
-	private ArrayList<String> names;
+	private CardLayout cardLayout = new CardLayout();
+	private JPanel cards = new JPanel(this.cardLayout);
+	private JButton prev = new JButton(this.createPrevAction());
+	private JButton next = new JButton(this.createNextAction());
+	private JLabel label = ScreenSwitcher.createLabel();
+	private int index = 0;
+	private ArrayList<String> names = new ArrayList<>();
 
 	public ScreenSwitcher()
 	{
 		this.setLayout(new BorderLayout());
-
-		this.names = new ArrayList<>();
-		this.cardLayout = new CardLayout();
-		this.cards = new JPanel(this.cardLayout);
-
-		this.prev = new JButton(this.createPrevAction());
-		this.next = new JButton(this.createNextAction());
-		this.label = this.createLabel();
-		
-		this.index = 0;
 		this.add(this.cards);
-
-		this.add(this.addBottomSeparator(this.createButtonPanel()), BorderLayout.NORTH);
+		this.add(ScreenSwitcher.addBottomSeparator(this.createButtonPanel()), BorderLayout.NORTH);
 	}
 
 	public ScreenSwitcher(JComponent initScreen, String name)
@@ -155,14 +144,14 @@ public class ScreenSwitcher extends JPanel
 		return buttonPanel;
 	}
 
-	private JLabel createLabel()
+	private static JLabel createLabel()
 	{
 		JLabel label = new JLabel();
 		label.setFont(label.getFont().deriveFont(20f));
 		return label;
 	}
 
-	private JPanel addBottomSeparator(JPanel contentPanel)
+	private static JPanel addBottomSeparator(JPanel contentPanel)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

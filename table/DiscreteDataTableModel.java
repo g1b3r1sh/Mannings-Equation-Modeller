@@ -15,7 +15,7 @@ import utility.Pair;
 public abstract class DiscreteDataTableModel<M extends Number, N extends Number> extends AbstractTableModel
 {
 	private DiscreteData<M, N> outsideData;
-	private ArrayList<Pair<M, N>> data;
+	private ArrayList<Pair<M, N>> data = new ArrayList<>();
 	private String nameX;
 	private String nameY;
 	
@@ -26,15 +26,14 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		this.outsideData = outsideData;
 		this.nameX = nameX;
 		this.nameY = nameY;
-		
-		this.data = new ArrayList<>();
-		this.refresh();
+
+		this.refreshData();
 	}
 
 	@Override
 	public abstract Class<?> getColumnClass(int columnIndex);
 	
-	public void refresh()
+	public void refreshData()
 	{
 		this.data.clear();
 		for (Entry<M, N> e : this.outsideData.getEntrySet())

@@ -54,10 +54,12 @@ public class DataEditScreen extends JPanel
 				return true;
 			}
 		};
+		this.scaleController = new TableScaleController(this.tableModel);
+		this.table = DataEditScreen.createTable(this.tableModel, data, scale, xLabel, yLabel);
+		this.tableController = new DiscreteDataTableController(this.table, this.tableModel);
 
-		this.table = this.createTable(data, scale, xLabel, yLabel);
-		this.add(this.initTablePane(this.table), BorderLayout.WEST);
-		this.add(this.createControlPanel(this.table), BorderLayout.CENTER);
+		this.add(DataEditScreen.createTableScrollPane(this.table), BorderLayout.WEST);
+		this.add(this.createControlPanel(), BorderLayout.CENTER);
 	}
 
 	public EditableDiscreteDataModel getModel()
@@ -73,14 +75,14 @@ public class DataEditScreen extends JPanel
 	public void refresh()
 	{
 		// Update screen to be consistent with current values
-		this.tableModel.refresh();
+		this.tableModel.refreshData();
 		this.table.clearSelection();
 		this.scaleController.refreshSpinnerValues();
 	}
 
-	private JTable createTable(MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
+	private static JTable createTable(EditableDiscreteDataModel tableModel, MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
 	{
-		JTable table = new JTable(this.tableModel)
+		JTable table = new JTable(tableModel)
 		{
 			@Override
 			public boolean editCellAt(int row, int column, EventObject e)
@@ -100,7 +102,7 @@ public class DataEditScreen extends JPanel
 		return table;
 	}
 	
-	private JScrollPane initTablePane(JTable table)
+	private static JScrollPane createTableScrollPane(JTable table)
 	{
 		JScrollPane panel = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		// Default width: 200
@@ -108,20 +110,19 @@ public class DataEditScreen extends JPanel
 		return panel;
 	}
 
-	private JPanel createControlPanel(JTable table)
+	private JPanel createControlPanel()
 	{
-		this.tableController = new DiscreteDataTableController(table, this.tableModel);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(this.createTableControls(this.tableController));
-		panel.add(this.createScaleControls(this.tableController));
+		panel.add(DataEditScreen.createTableControls(this.tableController));
+		panel.add(DataEditScreen.createScaleControls(this.tableModel.getScale(), this.scaleController, this.tableController));
 		panel.add(Box.createVerticalGlue());
 
 		this.setupShortcuts(this.tableController);
 		return panel;
 	}
 
-	private JPanel createTableControls(DiscreteDataTableController controller)
+	private static JPanel createTableControls(DiscreteDataTableController controller)
 	{
 		JPanel tableControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tableControls.add(new JButton(controller.getInsertAction()));
@@ -152,14 +153,13 @@ public class DataEditScreen extends JPanel
 		});
 	}
 
-	private JPanel createScaleControls(DiscreteDataTableController controller)
+	private static JPanel createScaleControls(DataScale scale, TableScaleController scaleController, DiscreteDataTableController tableController)
 	{
 		// Create and link spinner models to controller
-		SpinnerNumberModel modelX = new SpinnerNumberModel(this.tableModel.getScale().getX(), null, null, 1);
-		SpinnerNumberModel modelY = new SpinnerNumberModel(this.tableModel.getScale().getY(), null, null, 1);
-		this.scaleController = new TableScaleController(this.tableModel);
-		this.scaleController.setSpinnerX(modelX);
-		this.scaleController.setSpinnerY(modelY);
+		SpinnerNumberModel modelX = new SpinnerNumberModel(scale.getX(), null, null, 1);
+		SpinnerNumberModel modelY = new SpinnerNumberModel(scale.getY(), null, null, 1);
+		scaleController.setSpinnerX(modelX);
+		scaleController.setSpinnerY(modelY);
 
 		// Construct panel containing controls
 		JPanel scaleControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -169,16 +169,16 @@ public class DataEditScreen extends JPanel
 		scaleXControls.setLayout(new BoxLayout(scaleXControls, BoxLayout.X_AXIS));
 		scaleYControls.setLayout(new BoxLayout(scaleYControls, BoxLayout.X_AXIS));
 		scaleXControls.add(new JLabel("Scale x: "));
-		scaleXControls.add(this.createScaleSpinner(modelX));
+		scaleXControls.add(DataEditScreen.createScaleSpinner(modelX));
 		scaleYControls.add(new JLabel("Scale y: "));
-		scaleYControls.add(this.createScaleSpinner(modelY));
+		scaleYControls.add(DataEditScreen.createScaleSpinner(modelY));
 
 		scaleControls.add(scaleXControls);
 		scaleControls.add(scaleYControls);
 		return scaleControls;
 	}
 
-	private JSpinner createScaleSpinner(SpinnerModel model)
+	private static JSpinner createScaleSpinner(SpinnerModel model)
 	{
 		JSpinner spinner = new JSpinner(model);
 		spinner.setPreferredSize(new Dimension(50, spinner.getPreferredSize().height));

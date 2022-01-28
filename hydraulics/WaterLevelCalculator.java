@@ -26,8 +26,12 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 
 	public WaterLevelCalculator(DiscreteData<M, N> data, Number waterLevel)
 	{
+		if (waterLevel == null)
+		{
+			throw new IllegalArgumentException("Water level cannot be null");
+		}
 		this.data = new ContinuousData<M, N>(data);
-		this.setWaterLevel(waterLevel);
+		this.waterLevel = waterLevel;
 	}
 
 	public Number getWaterLevel()
@@ -83,10 +87,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	{
 		// Data must be wrapped in Wrapper to be passed to lambda function
 		Wrapper<Double> area = new Wrapper<>(0d);
-		this.data.iterateSegments
-		(
-			(left, right) -> area.value += WaterLevelCalculator.this.calcArea(left, right)
-		);
+		this.data.iterateSegments( (left, right) -> area.value += WaterLevelCalculator.this.calcArea(left, right) );
 		return area.value;
 	}
 

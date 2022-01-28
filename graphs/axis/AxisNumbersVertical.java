@@ -24,7 +24,7 @@ public class AxisNumbersVertical extends AxisNumbers
 	@Override
 	public int getTickPos(int i)
 	{
-		return (int) invertY(this.getHeight() * this.getTickmarks().calcTickFraction(i), this.getHeight());
+		return (int) AxisNumbersVertical.invertY(this.getHeight() * this.getTickmarks().calcTickFraction(i), this.getHeight());
 	}
 	
 	@Override
@@ -123,7 +123,7 @@ public class AxisNumbersVertical extends AxisNumbers
 		return this.getTickPos(i) + (this.getNumberHeight(metrics) / 2);
 	}
 	
-	private double invertY(double pos, double max)
+	private static double invertY(double pos, double max)
 	{
 		return max - pos;
 	}
