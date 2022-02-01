@@ -173,8 +173,6 @@ public abstract class AxisNumbers extends JComponent
 	@Override
 	protected void paintComponent(Graphics g)
 	{
-		//g.setColor(Color.RED);
-		//g.fillRect(0, 0, 2000, 2000);
 		g.setColor(Color.BLACK);
 		g.setFont(this.getFont());
 		this.paintNumbers(g, this.getBounds());

@@ -14,7 +14,6 @@ import javax.swing.text.DefaultFormatterFactory;
 import data.DataScale;
 import data.Range;
 import data.functions.DiscreteData;
-import data.functions.MapDiscreteData;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,6 +27,7 @@ import graphs.GraphController;
 import hydraulics.WaterLevelChangeListener;
 import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
+import main.CrossSectionModel;
 import main.dialogs.DataEditDialog;
 import main.dialogs.DataEditScreen;
 import main.dialogs.GraphEditDialog;
@@ -53,29 +53,29 @@ public class InputScreen extends JPanel
 	private JSpinner waterLevelSpinner;
 	private GraphController graphController;
 
-	public InputScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator, JFrame parent)
+	public InputScreen(JFrame parent, CrossSectionModel model)
 	{
 		super(new BorderLayout());
 
-		this.editDialog = new DataEditDialog(parent, new DataEditScreen(data, scale, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL));
+		this.editDialog = new DataEditDialog(parent, new DataEditScreen(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL));
 
 		// Init components
 		this.graph = InputScreen.createGraph();
-		this.graph.getGraphComponents().add(new WaterLevelVisualiser(this.graph, waterCalculator));
-		GraphContainer graphContainer = InputScreen.createGraphContainer(this.graph, scale);
+		this.graph.getGraphComponents().add(new WaterLevelVisualiser(this.graph, model.getCalculator()));
+		GraphContainer graphContainer = InputScreen.createGraphContainer(this.graph, model.getScale());
 		this.add(graphContainer, BorderLayout.CENTER);
 		
 		this.graphController = new GraphController(graphContainer);
 		this.graphDialog = new GraphEditDialog(parent, new GraphEditScreen(graphContainer));
 		this.graphDialog.addPropertyChangeListener(this.graphController);
 
-		this.tableModel = new EditableDiscreteDataModel(data, scale, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL);
-		this.waterLevelSpinner = InputScreen.createWaterSpinner(waterCalculator, scale.getY(), this.graph);
+		this.tableModel = new EditableDiscreteDataModel(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL);
+		this.waterLevelSpinner = InputScreen.createWaterSpinner(model.getCalculator(), model.getScale().getY(), this.graph);
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 
 		// Connect data to components
-		this.addVisualData(data);
+		this.addVisualData(model.getData());
 	}
 
 	public DataEditDialog getEditDialog()
@@ -110,7 +110,7 @@ public class InputScreen extends JPanel
 		table.getTableHeader().setReorderingAllowed(false);
 		return table;
 	}
-	
+
 	private static JScrollPane createTablePane(JTable table)
 	{
 		JScrollPane pane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -118,7 +118,7 @@ public class InputScreen extends JPanel
 		pane.setPreferredSize(new Dimension(200, 1080));
 		return pane;
 	}
-	
+
 	private JPanel createSidePanel()
 	{
 		JPanel panel = new JPanel();
@@ -155,7 +155,7 @@ public class InputScreen extends JPanel
 
 		return graph;
 	}
-	
+
 	private static GraphContainer createGraphContainer(Graph graph, DataScale scale)
 	{		
 		GraphContainer container = new GraphContainer(graph, scale);
@@ -169,7 +169,7 @@ public class InputScreen extends JPanel
 		
 		return container;
 	}
-	
+
 	private void addVisualData(DiscreteData<?, ?> data)
 	{
 		this.graph.getDataList().addData(data);

@@ -26,8 +26,8 @@ public class MainWindow extends JFrame
 		this.setLocation(10, 10);
 		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		this.inputScreen = new InputScreen(model.getData(), model.getScale(), model.getCalculator(), this);
-		this.resultScreen = new ResultScreen(model.getData(), this);
+		this.inputScreen = new InputScreen(this, model);
+		this.resultScreen = new ResultScreen(this, model.getData());
 
 		this.screenSwitcher = this.createScreenSwitcher();
 		this.switchInputScreen();

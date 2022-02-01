@@ -60,7 +60,7 @@ public class ResultScreen extends JPanel
 
 	private ResultsVisualiser resultsVisualiser;
 
-	public ResultScreen(MapDiscreteData<BigDecimal, BigDecimal> data, JFrame parent)
+	public ResultScreen(JFrame parent, MapDiscreteData<BigDecimal, BigDecimal> data)
 	{
 		super();
 		this.setLayout(new BorderLayout(10, 10));
