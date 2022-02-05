@@ -7,7 +7,7 @@ import java.util.function.BooleanSupplier;
 import javax.swing.SwingWorker;
 
 import data.Range;
-import data.functions.MapDiscreteData;
+import data.functions.DiscreteData;
 import hydraulics.ManningsFunction;
 import hydraulics.ManningsModel;
 import utility.Wrapper;
@@ -80,7 +80,7 @@ public class ManningsResultModel
 	private Wrapper<BigDecimal> dischargeUpper = new Wrapper<>(ManningsResultModel.DEFAULT_MAX_DISCHARGE);
 	private Wrapper<Integer> numDischargeRows = new Wrapper<>(ManningsResultModel.DEFAULT_NUM_DISCHARGE_ROWS);
 
-	public ManningsResultModel(MapDiscreteData<BigDecimal, BigDecimal> data)
+	public ManningsResultModel(DiscreteData<BigDecimal, BigDecimal> data)
 	{
 		this.model = new ManningsModel(data);
 		this.function = new ManningsFunction(this.model);

@@ -1,17 +1,18 @@
 package main;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
 import data.DataScale;
+import data.functions.DiscreteData;
 import main.dialogs.DataEditDialog;
 import main.input.InputScreen;
 import spinner.ScaleSpinnerModel;
-import table.EditableDiscreteDataModel;
-import utility.Pair;
 
-public class CrossSectionController implements PropertyChangeListener
+public class CrossSectionController
 {
 	DataEditDialog editDialog;
 	InputScreen inputScreen;
@@ -20,39 +21,29 @@ public class CrossSectionController implements PropertyChangeListener
 	public CrossSectionController(CrossSectionModel model, MainWindow window)
 	{
 		this.editDialog = window.getInputScreen().getEditDialog();
-		this.editDialog.addPropertyChangeListener(this);
+		this.editDialog.addUpdateAction(this.getUpdateAction());
 		this.inputScreen = window.getInputScreen();
 		this.model = model;
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent evt)
+	public Action getUpdateAction()
 	{
-		if (evt.getSource() == this.editDialog)
+		return new AbstractAction("Update Data")
 		{
-			if ("update".equals(evt.getPropertyName()))
+			@Override
+			public void actionPerformed(ActionEvent e)
 			{
-				EditableDiscreteDataModel newData = (EditableDiscreteDataModel) evt.getNewValue();
-
-				this.matchData(newData);
-				this.matchScale(newData.getScale());
-
-				this.dataUpdated();
+				if (e.getSource() instanceof CrossSectionModel)
+				{	
+					CrossSectionController.this.copyData((CrossSectionModel) e.getSource());
+				}
 			}
-		}
+		};
 	}
 
-	private void matchData(EditableDiscreteDataModel newData)
+	private void matchData(DiscreteData<BigDecimal, BigDecimal> newData)
 	{
-
-		this.model.getData().clear();
-		for (Pair<BigDecimal, BigDecimal> row : newData.getData())
-		{
-			if (row.first != null && row.second != null)
-			{
-				this.model.getData().set(row.first, row.second);
-			}
-		}
+		this.model.getMutableData().load(newData);
 	}
 
 	private void matchScale(DataScale newScale)
@@ -61,10 +52,10 @@ public class CrossSectionController implements PropertyChangeListener
 		this.model.getScale().setY(newScale.getY());
 	}
 
-	private void dataUpdated()
+	private void copyData(CrossSectionModel model)
 	{
-		this.inputScreen.refreshTableModel();
-		this.inputScreen.repaintGraph();
-		((ScaleSpinnerModel) this.inputScreen.getWaterLevelSpinner().getModel()).setScale(this.model.getScale().getY());
+		CrossSectionController.this.matchData(model.getData());
+		CrossSectionController.this.matchScale(model.getScale());
+		((ScaleSpinnerModel) this.inputScreen.getWaterLevelSpinner().getModel()).setScale(this.model.getScale().getY()); // TODO: Delete after adding listeners for DataScale in inputscreen, then, decouple from InputScreen
 	}
 }

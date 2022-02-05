@@ -1,24 +1,28 @@
 package table;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.swing.table.AbstractTableModel;
 
 import data.functions.DiscreteData;
+import data.functions.MapDiscreteData;
+import data.functions.MutableDiscreteData;
 import utility.Pair;
 
 /**
  * The TableModel of DiscreteData. As such, it is restricted to two columns.
 **/
 
-public abstract class DiscreteDataTableModel<M extends Number, N extends Number> extends AbstractTableModel
+public abstract class DiscreteDataTableModel<M extends Number, N extends Number> extends AbstractTableModel implements PropertyChangeListener
 {
 	private DiscreteData<M, N> outsideData;
 	private ArrayList<Pair<M, N>> data = new ArrayList<>();
 	private String nameX;
 	private String nameY;
-	
+
 	public DiscreteDataTableModel(DiscreteData<M, N> outsideData, String nameX, String nameY)
 	{
 		super();
@@ -27,16 +31,26 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		this.nameX = nameX;
 		this.nameY = nameY;
 
-		this.refreshData();
+		this.copyData(outsideData);
+		this.outsideData.addPropertyChangeListener​(this);
 	}
 
 	@Override
 	public abstract Class<?> getColumnClass(int columnIndex);
-	
-	public void refreshData()
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt)
+	{
+		if (evt.getSource() == this.outsideData)
+		{
+			this.copyData(this.outsideData);
+		}
+	}
+
+	private void copyData(DiscreteData<M, N> data)
 	{
 		this.data.clear();
-		for (Entry<M, N> e : this.outsideData.getEntrySet())
+		for (Entry<M, N> e : data.getEntrySet())
 		{
 			this.data.add(new Pair<>(e.getKey(), e.getValue()));
 		}
@@ -152,6 +166,19 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 	public ArrayList<Pair<M, N>> getData()
 	{
 		return this.data;
+	}
+
+	public DiscreteData<M, N> createDiscreteData()
+	{
+		MutableDiscreteData<M, N> data = new MapDiscreteData<>();
+		for (Pair<M, N> row : this.data)
+		{
+			if (row.first != null && row.second != null)
+			{
+				data.set(row.first, row.second);
+			}
+		}
+		return data;
 	}
 	
 	protected boolean containsRow(int rowIndex)

@@ -1,25 +1,40 @@
 package main.dialogs;
 
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.util.LinkedList;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
+
+import main.CrossSectionModel;
 
 public class DataEditDialog extends EditDialog
 {
 	private static final String TITLE = "Edit Data";
 
 	private DataEditScreen screen;
+	private LinkedList<Action> updateActions = new LinkedList<>();
 
 	public DataEditDialog(Frame parentWindow, DataEditScreen screen)
 	{
 		super(parentWindow, DataEditDialog.TITLE, screen);
-		
 		this.screen = screen;
 	}
 
 	public DataEditScreen getEditScreen()
 	{
 		return this.screen;
+	}
+
+	public void addUpdateAction(Action action)
+	{
+		this.updateActions.add(action);
+	}
+
+	public void removeUpdateAction(Action action)
+	{
+		this.updateActions.remove(action);
 	}
 
 	@Override
@@ -29,7 +44,8 @@ public class DataEditDialog extends EditDialog
 	}
 
 	@Override
-	protected boolean canSave() {
+	protected boolean canSave()
+	{
 		if (this.screen.getModel().containsDuplicates())
 		{
 			JOptionPane.showMessageDialog(this, "Error: X column contains duplicates.", "Error: Duplicates", JOptionPane.ERROR_MESSAGE);
@@ -49,6 +65,18 @@ public class DataEditDialog extends EditDialog
 	@Override
 	protected void save()
 	{
-		this.firePropertyChange("update", null, this.screen.getModel());
+		for (Action action : this.updateActions)
+		{
+			action.actionPerformed(new ActionEvent
+			(
+				new CrossSectionModel
+				(
+					this.getEditScreen().getModel().createDiscreteData(),
+					this.getEditScreen().getModel().getScale()
+				),
+				ActionEvent.ACTION_PERFORMED,
+				"update"
+			));
+		}
 	}
 }

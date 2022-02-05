@@ -72,9 +72,15 @@ public class DataVisualsHandler
 			DataVisualiser visualiser = it.next();
 			if (predicate.test(visualiser))
 			{
-				this.graph.getGraphComponents().remove(visualiser);
+				this.disconnectVisualiser(visualiser);
 				it.remove();
 			}
 		}
+	}
+
+	private void disconnectVisualiser(DataVisualiser visualiser)
+	{
+		this.graph.getGraphComponents().remove(visualiser);
+		this.data.removePropertyChangeListener​(visualiser);
 	}
 }

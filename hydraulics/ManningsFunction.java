@@ -1,12 +1,14 @@
 package hydraulics;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Map.Entry;
 
 import data.functions.ContinuousFunction;
 import data.functions.DiscreteData;
 
 // Function mapping water level to discharge
-public class ManningsFunction implements ContinuousFunction
+public class ManningsFunction implements ContinuousFunction, PropertyChangeListener
 {
 	private ManningsModel model;
 	private double lowestElevation;
@@ -14,7 +16,8 @@ public class ManningsFunction implements ContinuousFunction
 	public ManningsFunction(ManningsModel model)
 	{
 		this.model = model;
-		this.updateRange();
+		this.updateLowestElevation();
+		this.model.getSectionData().addPropertyChangeListener​(this);
 	}
 
 	@Override
@@ -37,12 +40,17 @@ public class ManningsFunction implements ContinuousFunction
 		return this.model.calcDischarge(x);
 	}
 
-	public void update()
+	@Override
+	public void propertyChange(PropertyChangeEvent evt)
 	{
-		this.updateRange();
+		if (evt.getSource() == this.model.getSectionData())
+		{
+			this.updateLowestElevation();
+			// TODO: this.fireUpdate();
+		}
 	}
 
-	private void updateRange()
+	private void updateLowestElevation()
 	{
 		Number lowest = ManningsFunction.getMinLevelY(this.model.getSectionData());
 		if (lowest != null)

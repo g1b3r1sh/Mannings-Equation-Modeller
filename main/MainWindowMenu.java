@@ -46,7 +46,6 @@ public class MainWindowMenu extends JMenuBar
 		{
 			this.window.switchInputScreen();
 			this.window.getModel().loadSampleData();
-			this.window.getInputScreen().refreshTableModel();
 			this.window.getInputScreen().repaintGraph();
 			((ScaleSpinnerModel) this.window.getInputScreen().getWaterLevelSpinner().getModel()).setValue(this.window.getModel().getCalculator().getWaterLevel());
 		}));

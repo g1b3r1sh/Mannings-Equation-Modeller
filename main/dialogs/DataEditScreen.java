@@ -29,7 +29,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import data.DataScale;
-import data.functions.MapDiscreteData;
+import data.functions.DiscreteData;
 import table.DiscreteDataTableController;
 import table.DiscreteDataTransferHandler;
 import table.EditableDiscreteDataModel;
@@ -42,7 +42,7 @@ public class DataEditScreen extends JPanel
 	private TableScaleController scaleController;
 	private DiscreteDataTableController tableController;
 
-	public DataEditScreen(MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
+	public DataEditScreen(DiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
 	{
 		super(new BorderLayout());
 
@@ -55,7 +55,7 @@ public class DataEditScreen extends JPanel
 			}
 		};
 		this.scaleController = new TableScaleController(this.tableModel);
-		this.table = DataEditScreen.createTable(this.tableModel, data, scale, xLabel, yLabel);
+		this.table = DataEditScreen.createTable(this.tableModel, scale, xLabel, yLabel);
 		this.tableController = new DiscreteDataTableController(this.table, this.tableModel);
 
 		this.add(DataEditScreen.createTableScrollPane(this.table), BorderLayout.WEST);
@@ -75,12 +75,11 @@ public class DataEditScreen extends JPanel
 	public void refresh()
 	{
 		// Update screen to be consistent with current values
-		this.tableModel.refreshData();
 		this.table.clearSelection();
 		this.scaleController.refreshSpinnerValues();
 	}
 
-	private static JTable createTable(EditableDiscreteDataModel tableModel, MapDiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
+	private static JTable createTable(EditableDiscreteDataModel tableModel, DataScale scale, String xLabel, String yLabel)
 	{
 		JTable table = new JTable(tableModel)
 		{

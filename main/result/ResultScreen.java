@@ -27,7 +27,7 @@ import javax.swing.text.JTextComponent;
 
 import data.DataScale;
 import data.Range;
-import data.functions.MapDiscreteData;
+import data.functions.DiscreteData;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.GraphController;
@@ -60,7 +60,7 @@ public class ResultScreen extends JPanel
 
 	private ResultsVisualiser resultsVisualiser;
 
-	public ResultScreen(JFrame parent, MapDiscreteData<BigDecimal, BigDecimal> data)
+	public ResultScreen(JFrame parent, DiscreteData<BigDecimal, BigDecimal> data)
 	{
 		super();
 		this.setLayout(new BorderLayout(10, 10));
@@ -104,7 +104,6 @@ public class ResultScreen extends JPanel
 
 	private void refreshGraph()
 	{
-		this.resultModel.getFunction().update();
 		this.manningsGraph.repaint();
 	}
 

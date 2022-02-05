@@ -30,5 +30,10 @@ public abstract class GraphComponent
 		return this.graph.getCanvasHeight();
 	}
 
+	public void repaint()
+	{
+		this.graph.repaint();
+	}
+
 	protected abstract void paintComponent(Graphics g);
 }

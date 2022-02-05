@@ -23,24 +23,23 @@ public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal
 		this.scale = new DataScale(this.outsideScale);
 	}
 
+	/*
 	@Override
-	public void refreshData()
+	TODO: public void propertyChange(PropertyChangeEvent evt)
 	{
-		super.refreshData();
-		if (this.scale != null)
+		if (evt.getSource() == this.outsideScale)
 		{
-			if (this.scale.getX() != this.outsideScale.getX())
+			if ("x".equals(evt.getPropertyName()))
 			{
-				this.scale.setX(this.outsideScale.getX());
 				this.updateScaleX();
 			}
-			if (this.scale.getY() != this.outsideScale.getY())
+			else if ("y".equals(evt.getPropertyName()))
 			{
-				this.scale.setY(this.outsideScale.getY());
 				this.updateScaleY();
 			}
 		}
 	}
+	*/
 	
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex)

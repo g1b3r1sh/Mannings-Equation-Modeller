@@ -88,11 +88,6 @@ public class InputScreen extends JPanel
 		this.graphDialog.open();
 	}
 
-	public void refreshTableModel()
-	{
-		this.tableModel.refreshData();
-	}
-
 	public void repaintGraph()
 	{
 		this.graph.repaint();
