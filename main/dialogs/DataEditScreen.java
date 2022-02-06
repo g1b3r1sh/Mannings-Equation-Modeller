@@ -77,9 +77,10 @@ public class DataEditScreen extends JPanel
 		return this.tableController;
 	}
 
-	public void refresh()
+	public void reset()
 	{
 		this.table.clearSelection();
+		this.tableModel.copyData(this.outsideDataModel.getData());
 	}
 
 	public void save()

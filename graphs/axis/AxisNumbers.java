@@ -130,6 +130,7 @@ public abstract class AxisNumbers extends JComponent implements PropertyChangeLi
 			size -= this.RESIZE_INCREMENT;
 			this.setFont(this.getFont().deriveFont(size));
 		}
+		this.repaint();
 	}
 	
 	// Fits font after resizing along the changing length
@@ -162,6 +163,7 @@ public abstract class AxisNumbers extends JComponent implements PropertyChangeLi
 			}
 		}
 		this.prevLength = currLength;
+		this.repaint();
 	}
 
 	@Override

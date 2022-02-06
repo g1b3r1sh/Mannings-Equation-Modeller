@@ -85,8 +85,6 @@ public class ResultScreen extends JPanel
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 		this.add(this.manningsGraphContainer, BorderLayout.CENTER);
-
-		this.refreshGraph();
 	}
 
 	public void openGraphEditDialog()
@@ -102,12 +100,6 @@ public class ResultScreen extends JPanel
 	protected void processResults(ManningsResultModel.Result[] results)
 	{
 		this.resultsVisualiser.setResults(results);
-		this.manningsGraph.repaint();
-	}
-
-	private void refreshGraph()
-	{
-		this.manningsGraph.repaint();
 	}
 
 	private JPanel createSidePanel()
@@ -145,7 +137,7 @@ public class ResultScreen extends JPanel
 		return ResultScreen.numberEditPanel(this, name, wrapper::get, wrapper::set, (value) ->
 		{
 			ResultScreen.this.resultModel.updateModelConstants();
-			ResultScreen.this.refreshGraph();
+			ResultScreen.this.resultsVisualiser.repaint();
 		});
 	}
 

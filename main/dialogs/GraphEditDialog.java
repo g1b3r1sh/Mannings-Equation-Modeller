@@ -18,7 +18,7 @@ public class GraphEditDialog extends EditDialog
 	@Override
 	protected void prepareScreen()
 	{
-		this.screen.refresh();
+		this.screen.reset();
 	}
 
 	@Override

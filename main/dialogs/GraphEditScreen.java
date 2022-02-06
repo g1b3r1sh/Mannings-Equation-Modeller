@@ -77,7 +77,7 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		return this.previewGraphContainer;
 	}
 
-	public void refresh()
+	public void reset()
 	{
 		this.previewGraphContainer.lightCopy(this.outsideGraphContainer);
 		this.xScaleController.setValue(this.xAxis.getNumbers().getScale());
@@ -103,13 +103,11 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		{
 			this.xAxis.getTickmarks().setNumTicks(this.xTicks.value);
 			this.xAxis.getNumbers().fitFont();
-			this.xAxis.repaint();
 		}
 		else if (e.getSource() == this.yTicksController)
 		{
 			this.yAxis.getTickmarks().setNumTicks(this.yTicks.value);
 			this.yAxis.getNumbers().fitFont();
-			this.yAxis.repaint();
 		}
 		else if (e.getSource() == this.gridXController)
 		{

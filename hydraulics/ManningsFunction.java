@@ -46,7 +46,6 @@ public class ManningsFunction implements ContinuousFunction, PropertyChangeListe
 		if (evt.getSource() == this.model.getSectionData())
 		{
 			this.updateLowestElevation();
-			// TODO: this.fireUpdate();
 		}
 	}
 

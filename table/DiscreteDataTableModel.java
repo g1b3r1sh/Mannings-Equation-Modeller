@@ -47,7 +47,7 @@ public abstract class DiscreteDataTableModel<M extends Number, N extends Number>
 		}
 	}
 
-	private void copyData(DiscreteData<M, N> data)
+	public void copyData(DiscreteData<M, N> data)
 	{
 		this.data.clear();
 		for (Entry<M, N> e : data.getEntrySet())

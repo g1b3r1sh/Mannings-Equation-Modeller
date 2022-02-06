@@ -21,6 +21,7 @@ public class ResultsVisualiser extends GraphComponent
 	public void setResults(Result[] results)
 	{
 		this.data = results;
+		this.repaint();
 	}
 
 	@Override
