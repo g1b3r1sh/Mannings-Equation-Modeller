@@ -60,8 +60,8 @@ public class CrossSectionModel
 		MapDiscreteData<BigDecimal, BigDecimal> data = new MapDiscreteData<>();
 		
 		data.set(new BigDecimal("0.254"), new BigDecimal("4.12"));
-		data.set(new BigDecimal("1.000"), new BigDecimal("1.00"));
-		data.set(new BigDecimal("2.000"), new BigDecimal("3.00"));
+		data.set(new BigDecimal("1.000"), new BigDecimal("1.50"));
+		data.set(new BigDecimal("2.000"), new BigDecimal("0.90"));
 		data.set(new BigDecimal("4.234"), new BigDecimal("0.26"));
 		data.set(new BigDecimal("5.723"), new BigDecimal("3.26"));
 		data.set(new BigDecimal("6.320"), new BigDecimal("3.55"));

@@ -46,6 +46,9 @@ import utility.Wrapper;
 
 public class ResultScreen extends JPanel
 {
+	private static Range DEFAULT_X_RANGE = new Range(0, 10);
+	private static Range DEFAULT_Y_RANGE = new Range(0, 5);
+
 	private JFrame parent;
 
 	private ManningsResultModel resultModel;
@@ -297,8 +300,8 @@ public class ResultScreen extends JPanel
 	private static Graph createGraph(ManningsResultModel resultModel)
 	{
 		Graph graph = new Graph();
-		graph.setLinearPlane(new Range(0, 500), new Range(0, 10));
-		graph.fitGridPlane(100, 2);
+		graph.setLinearPlane(ResultScreen.DEFAULT_X_RANGE, ResultScreen.DEFAULT_Y_RANGE);
+		graph.fitGridPlane(2, 1);
 		graph.getGraphComponents().add(new InverseContinuousFunctionVisualiser(graph, resultModel.getFunction()));
 		return graph;
 	}

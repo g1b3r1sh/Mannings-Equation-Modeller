@@ -19,12 +19,12 @@ public class ManningsResultModel
 	private static final int DEFAULT_DISPLAY_SCALE = 3;
 
 	private static final String INITIAL_N = "0.025";
-	private static final String INITIAL_S = "1";
+	private static final String INITIAL_S = "0.01";
 	private static final String INITIAL_Q = "1";
 
 	protected static final int MIN_NUM_DISCHARGE_ROWS = 0;
 	private static final BigDecimal DEFAULT_MIN_DISCHARGE = new BigDecimal(0);
-	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(500);
+	private static final BigDecimal DEFAULT_MAX_DISCHARGE = new BigDecimal(10);
 	private static final int DEFAULT_NUM_DISCHARGE_ROWS = 5;
 
 	protected static enum ModelError
