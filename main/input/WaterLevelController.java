@@ -7,16 +7,16 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import data.DataScale;
-import hydraulics.WaterLevelCalculator;
+import hydraulics.CrossSectionCalculator;
 import spinner.ScaleSpinnerModel;
 
 public class WaterLevelController implements PropertyChangeListener, ChangeListener
 {
-	private WaterLevelCalculator<?, ?> calculator;
+	private CrossSectionCalculator<?, ?> calculator;
 	private DataScale scale;
 	private ScaleSpinnerModel spinnerModel;
 
-	public WaterLevelController(WaterLevelCalculator<?, ?> calculator)
+	public WaterLevelController(CrossSectionCalculator<?, ?> calculator)
 	{
 		this.calculator = calculator;
 	}

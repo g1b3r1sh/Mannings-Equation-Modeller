@@ -21,12 +21,12 @@ V is calculated when A is known (i.e. when manningFormulaConsistent() is true)
 
 public class ManningsModel
 {
-	private WaterLevelCalculator<?, ?> calculator;
+	private CrossSectionCalculator<?, ?> calculator;
 	private ManningsEquation equation = new ManningsEquation();
 
 	public ManningsModel(DiscreteData<?, ?> data)
 	{
-		this.calculator = new WaterLevelCalculator<>(data, 0);
+		this.calculator = new CrossSectionCalculator<>(data, 0);
 	}
 
 	public ManningsModel(ManningsModel model)

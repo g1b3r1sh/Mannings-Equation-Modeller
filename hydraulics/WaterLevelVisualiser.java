@@ -18,10 +18,10 @@ import graphs.visualiser.DataVisualiser;
 // Allow for adjusting out of bounds, but don't color anything
 public class WaterLevelVisualiser extends DataVisualiser
 {
-	private WaterLevelCalculator<? extends Number, ? extends Number> calculator;
+	private CrossSectionCalculator<? extends Number, ? extends Number> calculator;
 	private Color WATER_COLOR = Color.BLUE;
 	
-	public WaterLevelVisualiser(Graph graph, WaterLevelCalculator<? extends Number, ? extends Number> calculator)
+	public WaterLevelVisualiser(Graph graph, CrossSectionCalculator<? extends Number, ? extends Number> calculator)
 	{
 		super(graph, calculator.getSectionData());
 		this.calculator = calculator;

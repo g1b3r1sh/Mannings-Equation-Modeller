@@ -6,13 +6,13 @@ import data.DataScale;
 import data.functions.DiscreteData;
 import data.functions.MapDiscreteData;
 import data.functions.MutableDiscreteData;
-import hydraulics.WaterLevelCalculator;
+import hydraulics.CrossSectionCalculator;
 
 public class CrossSectionModel
 {
 	private MutableDiscreteData<BigDecimal, BigDecimal> data = CrossSectionModel.defaultData();
 	private DataScale scale = CrossSectionModel.defaultScale();
-	private WaterLevelCalculator<BigDecimal, BigDecimal> waterCalculator = new WaterLevelCalculator<BigDecimal, BigDecimal>(this.data, defaultWaterLevel());
+	private CrossSectionCalculator<BigDecimal, BigDecimal> crossSectionCalculator = new CrossSectionCalculator<BigDecimal, BigDecimal>(this.data, defaultWaterLevel());
 
 	public CrossSectionModel() { }
 
@@ -37,9 +37,9 @@ public class CrossSectionModel
 		return this.scale;
 	}
 
-	public WaterLevelCalculator<BigDecimal, BigDecimal> getCalculator()
+	public CrossSectionCalculator<BigDecimal, BigDecimal> getCalculator()
 	{
-		return this.waterCalculator;
+		return this.crossSectionCalculator;
 	}
 
 	public void load(DiscreteData<BigDecimal, BigDecimal> data, DataScale scale)
@@ -52,7 +52,7 @@ public class CrossSectionModel
 	{
 		this.data.load(defaultData());
 		this.scale.load(defaultScale());
-		this.waterCalculator.setWaterLevel(defaultWaterLevel());
+		this.crossSectionCalculator.setWaterLevel(defaultWaterLevel());
 	}
 	
 	public static MutableDiscreteData<BigDecimal, BigDecimal> defaultData()
