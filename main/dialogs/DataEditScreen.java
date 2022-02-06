@@ -30,23 +30,28 @@ import java.awt.event.KeyEvent;
 
 import data.DataScale;
 import data.functions.DiscreteData;
+import main.CrossSectionModel;
 import table.DiscreteDataTableController;
 import table.DiscreteDataTransferHandler;
 import table.EditableDiscreteDataModel;
-import table.TableScaleController;
+import table.ScaleSpinnerController;
 
 public class DataEditScreen extends JPanel
 {
+	private CrossSectionModel outsideDataModel;
+
 	private EditableDiscreteDataModel tableModel;
 	private JTable table;
-	private TableScaleController scaleController;
+	private ScaleSpinnerController scaleController;
 	private DiscreteDataTableController tableController;
 
-	public DataEditScreen(DiscreteData<BigDecimal, BigDecimal> data, DataScale scale, String xLabel, String yLabel)
+	public DataEditScreen(DiscreteData<BigDecimal, BigDecimal> data, CrossSectionModel outsideModel, String xLabel, String yLabel)
 	{
 		super(new BorderLayout());
 
-		this.tableModel = new EditableDiscreteDataModel(data, scale, xLabel, yLabel)
+		this.outsideDataModel = outsideModel;
+
+		this.tableModel = new EditableDiscreteDataModel(data, this.outsideDataModel.getScale(), xLabel, yLabel)
 		{
 			@Override
 			public boolean isCellEditable(int row, int col)
@@ -54,8 +59,8 @@ public class DataEditScreen extends JPanel
 				return true;
 			}
 		};
-		this.scaleController = new TableScaleController(this.tableModel);
-		this.table = DataEditScreen.createTable(this.tableModel, scale, xLabel, yLabel);
+		this.scaleController = new ScaleSpinnerController(this.tableModel.getScale());
+		this.table = DataEditScreen.createTable(this.tableModel);
 		this.tableController = new DiscreteDataTableController(this.table, this.tableModel);
 
 		this.add(DataEditScreen.createTableScrollPane(this.table), BorderLayout.WEST);
@@ -74,12 +79,15 @@ public class DataEditScreen extends JPanel
 
 	public void refresh()
 	{
-		// Update screen to be consistent with current values
 		this.table.clearSelection();
-		this.scaleController.refreshSpinnerValues();
 	}
 
-	private static JTable createTable(EditableDiscreteDataModel tableModel, DataScale scale, String xLabel, String yLabel)
+	public void save()
+	{
+		this.outsideDataModel.load(this.tableModel.createDiscreteData(), this.tableModel.getScale());
+	}
+
+	private static JTable createTable(EditableDiscreteDataModel tableModel)
 	{
 		JTable table = new JTable(tableModel)
 		{
@@ -100,7 +108,7 @@ public class DataEditScreen extends JPanel
 		table.getTableHeader().setReorderingAllowed(false);
 		return table;
 	}
-	
+
 	private static JScrollPane createTableScrollPane(JTable table)
 	{
 		JScrollPane panel = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -114,7 +122,7 @@ public class DataEditScreen extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(DataEditScreen.createTableControls(this.tableController));
-		panel.add(DataEditScreen.createScaleControls(this.tableModel.getScale(), this.scaleController, this.tableController));
+		panel.add(DataEditScreen.createScaleControls(this.tableModel.getScale(), this.scaleController));
 		panel.add(Box.createVerticalGlue());
 
 		this.setupShortcuts(this.tableController);
@@ -152,7 +160,7 @@ public class DataEditScreen extends JPanel
 		});
 	}
 
-	private static JPanel createScaleControls(DataScale scale, TableScaleController scaleController, DiscreteDataTableController tableController)
+	private static JPanel createScaleControls(DataScale scale, ScaleSpinnerController scaleController)
 	{
 		// Create and link spinner models to controller
 		SpinnerNumberModel modelX = new SpinnerNumberModel(scale.getX(), null, null, 1);

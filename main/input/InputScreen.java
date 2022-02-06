@@ -19,6 +19,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 
 import graphs.Graph;
@@ -33,6 +35,7 @@ import main.dialogs.DataEditScreen;
 import main.dialogs.GraphEditDialog;
 import main.dialogs.GraphEditScreen;
 import spinner.ScaleSpinnerModel;
+import table.DiscreteDataTableModel;
 import table.EditableDiscreteDataModel;
 
 /**
@@ -48,7 +51,7 @@ public class InputScreen extends JPanel
 
 	private DataEditDialog editDialog;
 	private GraphEditDialog graphDialog;
-	private EditableDiscreteDataModel tableModel;
+	private DiscreteDataTableModel<BigDecimal, BigDecimal> tableModel;
 	private Graph graph;
 	private JSpinner waterLevelSpinner;
 	private GraphController graphController;
@@ -57,7 +60,7 @@ public class InputScreen extends JPanel
 	{
 		super(new BorderLayout());
 
-		this.editDialog = new DataEditDialog(parent, new DataEditScreen(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL));
+		this.editDialog = new DataEditDialog(parent, new DataEditScreen(model.getData(), model, InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL));
 
 		// Init components
 		this.graph = InputScreen.createGraph();
@@ -70,7 +73,7 @@ public class InputScreen extends JPanel
 		this.graphDialog.addPropertyChangeListener(this.graphController);
 
 		this.tableModel = new EditableDiscreteDataModel(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL);
-		this.waterLevelSpinner = InputScreen.createWaterSpinner(model.getCalculator(), model.getScale().getY(), this.graph);
+		this.waterLevelSpinner = InputScreen.createWaterSpinner(model.getCalculator(), model.getScale(), this.graph);
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 
@@ -98,7 +101,7 @@ public class InputScreen extends JPanel
 		return this.waterLevelSpinner;
 	}
 
-	private static JTable createTable(EditableDiscreteDataModel tableModel)
+	private static JTable createTable(DiscreteDataTableModel<?, ?> tableModel)
 	{
 		JTable table = new JTable(tableModel);
 		table.setCellSelectionEnabled(true);
@@ -128,9 +131,21 @@ public class InputScreen extends JPanel
 		return panel;
 	}
 
-	private static JSpinner createWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, int scale, Graph graph)
+	private static JSpinner createWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, DataScale scale, Graph graph)
 	{
-		JSpinner spinner = new JSpinner(new ScaleSpinnerModel(calculator.getWaterLevel().doubleValue(), null, null, scale));
+		ScaleSpinnerModel model = new ScaleSpinnerModel(calculator.getWaterLevel().doubleValue(), null, null, scale.getY());
+		scale.addPropertyChangeListener(new PropertyChangeListener()
+		{
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (evt.getSource() == scale && "y".equals(evt.getPropertyName()))
+				{
+					model.setScale(scale.getY());
+				}
+			}
+		});
+		JSpinner spinner = new JSpinner(model);
 		((DefaultEditor) spinner.getEditor()).getTextField().setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
 		spinner.addChangeListener(new WaterLevelChangeListener(calculator, graph));
 		InputScreen.increaseFont(spinner, 5);

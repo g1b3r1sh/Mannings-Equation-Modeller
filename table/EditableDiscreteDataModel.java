@@ -1,5 +1,6 @@
 package table;
 
+import java.beans.PropertyChangeEvent;
 import java.math.BigDecimal;
 
 import data.DataScale;
@@ -14,32 +15,30 @@ import utility.Pair;
 public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal, BigDecimal>
 {
 	private DataScale scale;
-	private DataScale outsideScale;
 
 	public EditableDiscreteDataModel(DiscreteData<BigDecimal, BigDecimal> outsideData, DataScale outsideScale, String nameX, String nameY)
 	{
 		super(outsideData, nameX, nameY);
-		this.outsideScale = outsideScale;
-		this.scale = new DataScale(this.outsideScale);
+		this.scale = new DataScale(outsideScale);
+		this.scale.addPropertyChangeListener(this);
 	}
 
-	/*
 	@Override
-	TODO: public void propertyChange(PropertyChangeEvent evt)
+	public void propertyChange(PropertyChangeEvent evt)
 	{
-		if (evt.getSource() == this.outsideScale)
+		super.propertyChange(evt);
+		if (evt.getSource() == this.scale)
 		{
 			if ("x".equals(evt.getPropertyName()))
 			{
-				this.updateScaleX();
+				this.updateXScale();
 			}
 			else if ("y".equals(evt.getPropertyName()))
 			{
-				this.updateScaleY();
+				this.updateYScale();
 			}
 		}
 	}
-	*/
 	
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex)
@@ -126,7 +125,7 @@ public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal
 		return this.scale;
 	}
 
-	public void updateScaleX()
+	private void updateXScale()
 	{
 		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
 		{
@@ -138,7 +137,7 @@ public class EditableDiscreteDataModel extends DiscreteDataTableModel<BigDecimal
 		this.fireTableRowsUpdated(0, this.getData().size() - 1);
 	}
 
-	public void updateScaleY()
+	private void updateYScale()
 	{
 		for (Pair<BigDecimal, BigDecimal> pair : this.getData())
 		{

@@ -42,6 +42,12 @@ public class CrossSectionModel
 		return this.waterCalculator;
 	}
 
+	public void load(DiscreteData<BigDecimal, BigDecimal> data, DataScale scale)
+	{
+		this.data.load(data);
+		this.scale.load(scale);
+	}
+
 	public void loadSampleData()
 	{
 		this.data.load(defaultData());

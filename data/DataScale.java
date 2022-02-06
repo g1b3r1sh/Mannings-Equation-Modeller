@@ -1,5 +1,7 @@
 package data;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -11,6 +13,7 @@ public class DataScale
 {
 	private int x;
 	private int y;
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	public DataScale(int scaleX, int scaleY)
 	{
@@ -25,10 +28,10 @@ public class DataScale
 
 	public void load(DataScale scale)
 	{
-		this.x = scale.getX();
-		this.y = scale.getY();
+		this.setX(scale.getX());
+		this.setY(scale.getY());
 	}
-	
+
 	public int getX()
 	{
 		return this.x;
@@ -36,9 +39,14 @@ public class DataScale
 
 	public void setX(int scaleX)
 	{
-		this.x = scaleX;
+		if (this.x != scaleX)
+		{
+			int oldX = this.x;
+			this.x = scaleX;
+			this.propertyChangeSupport.firePropertyChange("x", oldX, this.x);
+		}
 	}
-	
+
 	public int getY()
 	{
 		return this.y;
@@ -46,7 +54,12 @@ public class DataScale
 
 	public void setY(int scaleY)
 	{
-		this.y = scaleY;
+		if (this.y != scaleY)
+		{
+			int oldY = this.y;
+			this.y = scaleY;
+			this.propertyChangeSupport.firePropertyChange("y", oldY, this.y);
+		}
 	}
 
 	// Return BigDecimal fitted to scale represented by DataScale
@@ -58,5 +71,15 @@ public class DataScale
 	public BigDecimal fitScaleY(BigDecimal decimal)
 	{
 		return decimal.setScale(this.y, RoundingMode.HALF_UP);
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 }
