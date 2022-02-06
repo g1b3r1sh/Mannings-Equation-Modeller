@@ -30,7 +30,6 @@ import data.Range;
 import data.functions.DiscreteData;
 import graphs.Graph;
 import graphs.GraphContainer;
-import graphs.GraphController;
 import graphs.GraphContainer.Direction;
 import graphs.visualiser.InverseContinuousFunctionVisualiser;
 import main.dialogs.GraphEditDialog;
@@ -55,7 +54,6 @@ public class ResultScreen extends JPanel
 
 	private Graph manningsGraph;
 	private GraphContainer manningsGraphContainer;
-	private GraphController manningsGraphController;
 	private GraphEditDialog manningsGraphEditDialog;
 	private SwingWorkerDialog workerDialog;
 
@@ -74,13 +72,11 @@ public class ResultScreen extends JPanel
 
 		this.manningsGraph = ResultScreen.createGraph(this.resultModel);
 		this.manningsGraphContainer = ResultScreen.createGraphContainer(this.manningsGraph);
-		this.manningsGraphController = new GraphController(this.manningsGraphContainer);
 
 		this.resultsVisualiser = new ResultsVisualiser(this.manningsGraph);
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
 
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
-		this.manningsGraphEditDialog.addPropertyChangeListener(this.manningsGraphController);
 		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);

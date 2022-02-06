@@ -79,6 +79,7 @@ public class GraphContainer extends JComponent
 		}
 		this.defaultAxisScale.setX(container.defaultAxisScale.getX());
 		this.defaultAxisScale.setY(container.defaultAxisScale.getY());
+		this.repaint();
 	}
 	
 	// Creates GridBag layout with four BoxLayout panels surrounding empty center

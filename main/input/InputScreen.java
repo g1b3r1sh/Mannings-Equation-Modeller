@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 
 import graphs.Graph;
 import graphs.GraphContainer;
-import graphs.GraphController;
 import hydraulics.WaterLevelVisualiser;
 import main.CrossSectionModel;
 import main.dialogs.DataEditDialog;
@@ -61,7 +60,6 @@ public class InputScreen extends JPanel
 		this.add(graphContainer, BorderLayout.CENTER);
 
 		this.graphDialog = new GraphEditDialog(parent, new GraphEditScreen(graphContainer));
-		this.graphDialog.addPropertyChangeListener(new GraphController(graphContainer));
 
 		WaterLevelController waterLevelController = new WaterLevelController(model.getCalculator());
 		waterLevelController.addScale(model.getScale());

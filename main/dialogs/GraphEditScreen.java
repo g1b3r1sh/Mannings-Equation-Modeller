@@ -72,9 +72,9 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 	}
 
-	public GraphContainer getPreviewGraph()
+	public void saveGraph()
 	{
-		return this.previewGraphContainer;
+		this.outsideGraphContainer.lightCopy(this.previewGraphContainer);
 	}
 
 	public void reset()

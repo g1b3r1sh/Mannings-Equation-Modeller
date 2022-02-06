@@ -30,6 +30,6 @@ public class GraphEditDialog extends EditDialog
 	@Override
 	protected void save()
 	{
-		this.firePropertyChange("update", null, this.screen.getPreviewGraph());
+		this.screen.saveGraph();
 	}
 }
