@@ -55,9 +55,9 @@ public class TableOutputPanel extends OutputPanel
 	{
 		JPanel panel = ResultScreen.mainSidePanel();
 		
-		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min", this.getModel().getDischargeLower()));
+		panel.add(ResultScreen.numberEditPanel(this, "Discharge Min (m^3/s)", this.getModel().getDischargeLower()));
 		panel.add(ResultScreen.sidePadding());
-		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max", this.getModel().getDischargeUpper()));
+		panel.add(ResultScreen.numberEditPanel(this, "Discharge Max (m^3/s)", this.getModel().getDischargeUpper()));
 		panel.add(ResultScreen.sidePadding());
 		panel.add(ResultScreen.integerSpinnerPanel("Output Rows: ", this.numDischargeRowsController, ManningsResultModel.MIN_NUM_DISCHARGE_ROWS, null, 1));
 		panel.add(ResultScreen.sidePadding());

@@ -1,6 +1,7 @@
 package main.input;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,7 +41,7 @@ import table.EditableDiscreteDataModel;
 public class InputScreen extends JPanel
 {
 	private static final String X_LABEL = "Distance from bank (m)";
-	private static final String TABLE_X_LABEL = "<html>Distance from<br>bank(m)</html>";
+	private static final String TABLE_X_LABEL = "<html>Distance from<br>bank (m)</html>";
 	private static final String Y_LABEL = "Elevation (m)";
 	private static final String GRAPH_TITLE = "Cross-Section of River Bank";
 
@@ -65,10 +66,12 @@ public class InputScreen extends JPanel
 		waterLevelController.addScale(model.getScale());
 
 		this.add(InputScreen.createSidePanel
-		(
-			new EditableDiscreteDataModel(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL),
-			this.editDialog,
-			InputScreen.createWaterSpinner(waterLevelController, model.getCalculator().getWaterLevel(), model.getScale())),
+			(
+				waterLevelController,
+				model,
+				new EditableDiscreteDataModel(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL),
+				this.editDialog
+			),
 			BorderLayout.WEST
 		);
 
@@ -102,23 +105,25 @@ public class InputScreen extends JPanel
 		return pane;
 	}
 
-	private static JPanel createSidePanel(DiscreteDataTableModel<BigDecimal, BigDecimal> tableModel, DataEditDialog editDialog, JSpinner waterLevelSpinner)
+	private static JPanel createSidePanel(WaterLevelController controller, CrossSectionModel model, DiscreteDataTableModel<BigDecimal, BigDecimal> tableModel, DataEditDialog editDialog)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-		panel.add(new JLabel("Cross-Section Data"));
-		panel.add(InputScreen.createTablePane(InputScreen.createTable(tableModel)), BorderLayout.WEST);
-		panel.add(new JButton(editDialog.createOpenAction("Edit Dataset")));
-		panel.add(new JLabel("Water Level:"));
-		panel.add(waterLevelSpinner);
+		panel.add(InputScreen.createHeader("Cross-Section Data"));
+		panel.add(InputScreen.centerComponent(InputScreen.createTablePane(InputScreen.createTable(tableModel))));
+		panel.add(InputScreen.centerComponent(new JButton(editDialog.createOpenAction("Edit Dataset"))));
+		panel.add(InputScreen.createHeader("Water Level:"));
+		panel.add(InputScreen.centerComponent(InputScreen.createWaterSpinner(controller, model.getCalculator().getWaterLevel(), model.getScale().getY())));
+		panel.add(InputScreen.createHeader("Cross-Section Values"));
+		panel.add(InputScreen.centerComponent(new OutputPanel(model.getCalculator(), model.getScale())));
 
 		return panel;
 	}
 
-	private static JSpinner createWaterSpinner(WaterLevelController waterLevelController, Number initialValue, DataScale scale)
+	private static JSpinner createWaterSpinner(WaterLevelController waterLevelController, Number initialValue, int initialScale)
 	{
-		ScaleSpinnerModel model = new ScaleSpinnerModel(initialValue, null, null, scale.getY());
+		ScaleSpinnerModel model = new ScaleSpinnerModel(initialValue, null, null, initialScale);
 		waterLevelController.addSpinnerModel(model);
 		JSpinner spinner = new JSpinner(model);
 		((DefaultEditor) spinner.getEditor()).getTextField().setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
@@ -159,6 +164,19 @@ public class InputScreen extends JPanel
 		graph.getDataList().addData(data);
 		graph.getDataList().getVisualsHandler(data).plotData();
 		graph.getDataList().getVisualsHandler(data).connectData();
+	}
+
+	private static JLabel createHeader(String string)
+	{
+		JLabel label = new JLabel(string);
+		label.setFont(label.getFont().deriveFont(15f));
+		return InputScreen.centerComponent(label);
+	}
+
+	private static <T extends JComponent> T centerComponent(T component)
+	{
+		component.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return component;
 	}
 
 	private static void increaseFont(Component component, float increment)
