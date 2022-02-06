@@ -10,13 +10,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.awt.event.ComponentAdapter;
 
 /**
  * Represents the numbers displayed in intervals along the axis of a graph.
 **/
 
-public abstract class AxisNumbers extends JComponent
+public abstract class AxisNumbers extends JComponent implements PropertyChangeListener
 {
 	private final float RESIZE_INCREMENT = 0.1f;
 
@@ -39,6 +41,7 @@ public abstract class AxisNumbers extends JComponent
 		this.prevLength = this.getChangingLength();
 
 		this.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, this.fontRange.getUpper()));
+		this.range.addPropertyChangeListener​(this);
 		this.addComponentListener(new ComponentAdapter()
 		{
 			@Override
@@ -67,27 +70,38 @@ public abstract class AxisNumbers extends JComponent
 	public void setScale(int scale)
 	{
 		this.scale = scale;
+		this.fitFont();
 		this.repaint();
 	}
 
-	public Range getFontRange()
+	@Override
+	public void propertyChange(PropertyChangeEvent evt)
+	{
+		if (evt.getSource() == this.range)
+		{
+			this.fitFont();
+			this.repaint();
+		}
+	}
+
+	protected Range getFontRange()
 	{
 		return this.fontRange;
 	}
 
-	public int getPadding()
+	protected int getPadding()
 	{
 		return this.padding;
 	}
 	
 	// Get number for (i + 1)th tick
-	public double getNumber(int i)
+	protected double getNumber(int i)
 	{
 		return this.range.getNumber((double) i / (this.tickmarks.getNumTicks() - 1));
 	}
 
 	// Get number for ith tick
-	public String getNumberString(int i)
+	protected String getNumberString(int i)
 	{
 		return String.format("%." + this.scale + "f", this.getNumber(i));
 	}
@@ -120,7 +134,7 @@ public abstract class AxisNumbers extends JComponent
 	
 	// Fits font after resizing along the changing length
 	// Does not work if the length along which the font size should change didn't change
-	public void resizeFitFont()
+	private void resizeFitFont()
 	{
 		if (this.getGraphics() == null)
 		{

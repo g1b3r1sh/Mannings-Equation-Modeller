@@ -53,8 +53,8 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 		this.outsideGraphContainer = outsideGraphContainer;
 		this.previewGraphContainer.lightCopy(this.outsideGraphContainer);
 
-		this.xRangeController = new RangeSpinnerController(this.xAxis.getNumbers().getRange(), this);
-		this.yRangeController = new RangeSpinnerController(this.yAxis.getNumbers().getRange(), this);
+		this.xRangeController = new RangeSpinnerController(this.xAxis.getNumbers().getRange());
+		this.yRangeController = new RangeSpinnerController(this.yAxis.getNumbers().getRange());
 		this.xScale = new Wrapper<>(this.xAxis.getScale());
 		this.yScale = new Wrapper<>(this.yAxis.getScale());
 		this.xScaleController = new SpinnerWrapperController<>(this.xScale, this);
@@ -80,8 +80,6 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 	public void refresh()
 	{
 		this.previewGraphContainer.lightCopy(this.outsideGraphContainer);
-		this.xRangeController.setRange(this.xAxis.getNumbers().getRange());
-		this.yRangeController.setRange(this.yAxis.getNumbers().getRange());
 		this.xScaleController.setValue(this.xAxis.getNumbers().getScale());
 		this.yScaleController.setValue(this.yAxis.getNumbers().getScale());
 		this.xTicksController.setValue(this.xAxis.getTickmarks().getNumTicks());
@@ -93,27 +91,13 @@ public class GraphEditScreen extends JPanel implements ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
-		if (e.getSource() == this.xRangeController)
-		{
-			this.xAxis.getNumbers().fitFont();
-			this.xAxis.getNumbers().repaint();
-		}
-		else if (e.getSource() == this.yRangeController)
-		{
-			this.yAxis.getNumbers().fitFont();
-			this.yAxis.getNumbers().repaint();
-		}
-		else if (e.getSource() == this.xScaleController)
+		if (e.getSource() == this.xScaleController)
 		{
 			this.xAxis.getNumbers().setScale(this.xScale.value);
-			this.xAxis.getNumbers().fitFont();
-			this.xAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.yScaleController)
 		{
 			this.yAxis.getNumbers().setScale(this.yScale.value);
-			this.yAxis.getNumbers().fitFont();
-			this.yAxis.getNumbers().repaint();
 		}
 		else if (e.getSource() == this.xTicksController)
 		{

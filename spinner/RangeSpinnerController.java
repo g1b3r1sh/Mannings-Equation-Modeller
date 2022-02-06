@@ -1,22 +1,24 @@
 package spinner;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import data.Range;
 
-public class RangeSpinnerController implements ChangeListener
+public class RangeSpinnerController implements ChangeListener, PropertyChangeListener
 {
 	private Range range;
 	private JSpinner lowerSpinner;
 	private JSpinner upperSpinner;
-	private ChangeListener listener;
 
-	public RangeSpinnerController(Range range, ChangeListener listener)
+	public RangeSpinnerController(Range range)
 	{
 		this.range = range;
-		this.listener = listener;
+		this.range.addPropertyChangeListener​(this);
 	}
 
 	public Range getRange()
@@ -44,13 +46,6 @@ public class RangeSpinnerController implements ChangeListener
 		this.upperSpinner.addChangeListener(this);
 	}
 
-	public void setRange(Range range)
-	{
-		this.range.copy(range);
-		this.lowerSpinner.setValue(this.range.getLower());
-		this.upperSpinner.setValue(this.range.getUpper());
-	}
-
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
@@ -62,7 +57,6 @@ public class RangeSpinnerController implements ChangeListener
 				this.upperSpinner.setValue(newValue + 1);
 			}
 			this.range.setLower(newValue);
-			this.notifyListener();
 		}
 		else if (e.getSource() == this.upperSpinner)
 		{
@@ -72,15 +66,22 @@ public class RangeSpinnerController implements ChangeListener
 				this.lowerSpinner.setValue(newValue - 1);
 			}
 			this.range.setUpper(newValue);
-			this.notifyListener();
 		}
 	}
 
-	private void notifyListener()
+	@Override
+	public void propertyChange(PropertyChangeEvent evt)
 	{
-		if (this.listener != null)
+		if (evt.getSource() == this.range)
 		{
-			this.listener.stateChanged(new ChangeEvent(this));
+			if ("lower".equals(evt.getPropertyName()))
+			{
+				this.lowerSpinner.setValue(evt.getNewValue());
+			}
+			else if ("upper".equals(evt.getPropertyName()))
+			{
+				this.upperSpinner.setValue(evt.getNewValue());
+			}
 		}
 	}
 }
