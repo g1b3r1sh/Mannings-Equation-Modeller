@@ -5,6 +5,7 @@ import java.awt.geom.Path2D;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.PathIterator;
+import java.beans.PropertyChangeEvent;
 
 import graphs.Graph;
 import graphs.Plane;
@@ -24,8 +25,19 @@ public class WaterLevelVisualiser extends DataVisualiser
 	{
 		super(graph, calculator.getSectionData());
 		this.calculator = calculator;
+		this.calculator.addPropertyChangeListener(this);
 
 		this.setColor(this.WATER_COLOR);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt)
+	{
+		super.propertyChange(evt);
+		if (evt.getSource() == this.calculator)
+		{
+			this.repaint();
+		}
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import data.functions.DiscreteData;
 import utility.Wrapper;
 
 import java.awt.geom.Path2D;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * Stores water level and calculates hydraulic data based off of it
@@ -17,6 +19,7 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 {
 	private ContinuousData<M, N> data;
 	private Number waterLevel;
+	private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
 	// Enum for placement of points in line segment in relation to water level
 	private enum SegmentPlacement
@@ -43,10 +46,12 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 	{
 		if (waterLevel != null)
 		{
+			Number oldValue = this.waterLevel;
 			this.waterLevel = waterLevel;
+			this.propertyChangeSupport.firePropertyChange("waterLevel", oldValue, waterLevel);
 		}
 	}
-	
+
 	public DiscreteData<M, N> getSectionData()
 	{
 		return this.data.getDataSet();
@@ -239,5 +244,15 @@ public class WaterLevelCalculator<M extends Number, N extends Number>
 			list.add(currentPolygon.value);
 		}
 		return list;
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.propertyChangeSupport.addPropertyChangeListener(listener);
+	}
+
+	public void removePropertyChangeListener(PropertyChangeListener listener)
+	{
+		this.propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 }

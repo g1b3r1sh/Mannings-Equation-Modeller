@@ -24,7 +24,6 @@ import java.math.BigDecimal;
 import graphs.Graph;
 import graphs.GraphContainer;
 import graphs.GraphController;
-import hydraulics.WaterLevelCalculator;
 import hydraulics.WaterLevelVisualiser;
 import main.CrossSectionModel;
 import main.dialogs.DataEditDialog;
@@ -71,7 +70,7 @@ public class InputScreen extends JPanel
 		(
 			new EditableDiscreteDataModel(model.getData(), model.getScale(), InputScreen.TABLE_X_LABEL, InputScreen.Y_LABEL),
 			this.editDialog,
-			InputScreen.createWaterSpinner(model.getCalculator(), waterLevelController, model.getScale())),
+			InputScreen.createWaterSpinner(waterLevelController, model.getCalculator().getWaterLevel(), model.getScale())),
 			BorderLayout.WEST
 		);
 
@@ -119,9 +118,9 @@ public class InputScreen extends JPanel
 		return panel;
 	}
 
-	private static JSpinner createWaterSpinner(WaterLevelCalculator<BigDecimal, BigDecimal> calculator, WaterLevelController waterLevelController, DataScale scale)
+	private static JSpinner createWaterSpinner(WaterLevelController waterLevelController, Number initialValue, DataScale scale)
 	{
-		ScaleSpinnerModel model = new ScaleSpinnerModel(calculator.getWaterLevel().doubleValue(), null, null, scale.getY());
+		ScaleSpinnerModel model = new ScaleSpinnerModel(initialValue, null, null, scale.getY());
 		waterLevelController.addSpinnerModel(model);
 		JSpinner spinner = new JSpinner(model);
 		((DefaultEditor) spinner.getEditor()).getTextField().setFormatterFactory(new DefaultFormatterFactory(new DefaultFormatter()));
