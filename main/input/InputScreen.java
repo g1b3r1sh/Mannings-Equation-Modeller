@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import graphs.Graph;
 import graphs.GraphContainer;
 import hydraulics.WaterLevelVisualiser;
-import main.CrossSectionModel;
+import main.CrossSectionDataset;
 import main.dialogs.DataEditDialog;
 import main.dialogs.DataEditScreen;
 import main.dialogs.GraphEditDialog;
@@ -48,7 +48,7 @@ public class InputScreen extends JPanel
 	private DataEditDialog editDialog;
 	private GraphEditDialog graphDialog;
 
-	public InputScreen(JFrame parent, CrossSectionModel model)
+	public InputScreen(JFrame parent, CrossSectionDataset model)
 	{
 		super(new BorderLayout());
 
@@ -105,7 +105,7 @@ public class InputScreen extends JPanel
 		return pane;
 	}
 
-	private static JPanel createSidePanel(WaterLevelController controller, CrossSectionModel model, DiscreteDataTableModel<BigDecimal, BigDecimal> tableModel, DataEditDialog editDialog)
+	private static JPanel createSidePanel(WaterLevelController controller, CrossSectionDataset model, DiscreteDataTableModel<BigDecimal, BigDecimal> tableModel, DataEditDialog editDialog)
 	{
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));

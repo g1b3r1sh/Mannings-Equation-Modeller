@@ -16,7 +16,7 @@ public class Main
 			@Override
 			public void run()
 			{
-				final CrossSectionModel model = new CrossSectionModel();
+				final CrossSectionDataset model = new CrossSectionDataset();
 				final MainWindow window = new MainWindow(model);
 				window.setVisible(true);
 			}

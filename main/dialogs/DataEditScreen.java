@@ -30,7 +30,7 @@ import java.awt.event.KeyEvent;
 
 import data.DataScale;
 import data.functions.DiscreteData;
-import main.CrossSectionModel;
+import main.CrossSectionDataset;
 import table.DiscreteDataTableController;
 import table.DiscreteDataTransferHandler;
 import table.EditableDiscreteDataModel;
@@ -38,14 +38,14 @@ import table.ScaleSpinnerController;
 
 public class DataEditScreen extends JPanel
 {
-	private CrossSectionModel outsideDataModel;
+	private CrossSectionDataset outsideDataModel;
 
 	private EditableDiscreteDataModel tableModel;
 	private JTable table;
 	private ScaleSpinnerController scaleController;
 	private DiscreteDataTableController tableController;
 
-	public DataEditScreen(DiscreteData<BigDecimal, BigDecimal> data, CrossSectionModel outsideModel, String xLabel, String yLabel)
+	public DataEditScreen(DiscreteData<BigDecimal, BigDecimal> data, CrossSectionDataset outsideModel, String xLabel, String yLabel)
 	{
 		super(new BorderLayout());
 

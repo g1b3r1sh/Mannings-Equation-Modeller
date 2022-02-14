@@ -9,13 +9,13 @@ public class MainWindow extends JFrame
 {
 	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
 
-	private CrossSectionModel model;
+	private CrossSectionDataset model;
 	private ScreenSwitcher screenSwitcher;
 
 	private InputScreen inputScreen;
 	private ResultScreen resultScreen;
 
-	public MainWindow(CrossSectionModel model)
+	public MainWindow(CrossSectionDataset model)
 	{
 		super(MainWindow.FRAME_TITLE);
 
@@ -34,7 +34,7 @@ public class MainWindow extends JFrame
 		this.initializeFrame();
 	}
 
-	public CrossSectionModel getModel()
+	public CrossSectionDataset getModel()
 	{
 		return this.model;
 	}
