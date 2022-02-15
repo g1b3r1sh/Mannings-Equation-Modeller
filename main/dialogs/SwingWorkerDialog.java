@@ -74,6 +74,7 @@ public class SwingWorkerDialog extends JDialog implements PropertyChangeListener
 		if (!this.isVisible())
 		{
 			this.worker = worker;
+			// Add this as a property change listener to the worker
 			this.worker.getPropertyChangeSupport().addPropertyChangeListener(SwingWorkerDialog.WORKER_PROPERTY_NAME, this);
 			this.worker.execute();
 

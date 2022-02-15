@@ -59,7 +59,7 @@ public class CrossSectionCalculator<M extends Number, N extends Number>
 
 	// Points at water level are considered out of water
 	// Assumes that x is a point in the dataset
-	public boolean aboveWater(M x)
+	private boolean aboveWater(M x)
 	{
 		return this.data.getDataSet().y(x).doubleValue() >= this.waterLevel.doubleValue();
 	}

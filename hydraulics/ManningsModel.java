@@ -184,18 +184,6 @@ public class ManningsModel
 		return velocity;
 	}
 
-	public double calcArea(double level)
-	{
-		this.calculator.setWaterLevel(level);
-		return this.calculator.crossSectionArea();
-	}
-
-	public double calcPerimeter(double level)
-	{
-		this.calculator.setWaterLevel(level);
-		return this.calculator.wettedPerimeter();
-	}
-
 	private void setupModel(double waterLevel)
 	{
 		this.calculator.setWaterLevel(waterLevel);
