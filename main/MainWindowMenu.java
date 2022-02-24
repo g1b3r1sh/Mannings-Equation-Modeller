@@ -71,37 +71,45 @@ public class MainWindowMenu extends JMenuBar
 	{
 		JMenu menu = new JMenu("Help");
 		
-		menu.add(helpItem("What is this?", 
+		menu.add(helpItem("About", 
 			"""
-			This application calculates the area of the cross-section of a river. The plot on the graph represents\n
-			 the waterbed and the blue represent water. The water level can be adjusted to calculate the area under different conditions.
-			"""
-		));
-		menu.addSeparator();
-		menu.add(helpItem("How to modify data", 
-			"""
-			To modify the data, click the \"Edit\" button above the table to open the edit dialog. You can\n
-			edit the data by selecting the cells and typing a number, click on the buttons in the panel to the right,\n
-			or use keyboard shortcuts.
+			This application allows for the modeling the cross-section of the river. By passing discharge values to
+			the program, it will use the Manning's Equation to output the water level associated with that discharge
+			in the model.
 			"""
 		));
-		menu.add(helpItem("Data Editing Keyboard Shortcuts",
+		menu.add(helpItem("Dataset Editing Keyboard Shortcuts",
 			"""
-			This is a non-exhaustive list of possible shortcuts when editing table data:\n
-			CTRL+C - Copy selected cells\n
-			CTRL+V - Paste cells\n
-			CTRL+X - Cut selected cells\n
+			This is a non-exhaustive list of shortcuts when editing the model dataset:
+			CTRL+C - Copy selected cells
+			CTRL+V - Paste cells
+			CTRL+X - Cut selected cells
 			CTRL+D - Insert row
 			CTRL+SHIFT+D - Add row to last
-			DEL - Clear selected cells\n
+			DEL - Clear selected cells
 			ESC - Cancel edit
 			"""
 		));
-		menu.add(helpItem("How to modify water level", 
+		menu.addSeparator();
+		menu.add(helpItem("How to modify dataset", 
 			"""
-			To modify water level on the graph, modify the number in the number field below the table.\n
-			You can also click on the arrows to increment it by small amounts. If the water cannot be \n
-			contained by the banks, it won't be drawn.
+			To modify the dataset of the model, click the \"Edit\" button above the table to open the edit dialog. You can
+			edit the data by selecting the cells and typing a number, click on the buttons in the panel to the right,
+			or use keyboard shortcuts.
+			"""
+		));
+		menu.add(helpItem("How to input discharge", 
+			"""
+			In the left column of the \"Manning's Equation Model\" screen, choose \"Single Output\" tab for inputting a single
+			discharge value and the \"Table Output\" tab for inputting a range of discharge values. Input the discharge as
+			specified under the tabs.
+			"""
+		));
+		menu.add(helpItem("How to calculate water level", 
+			"""
+			Press the calculate button in the left column of the \"Manning's Equation Model\" screen. Wait for the calculating
+			dialog that pops up to close and view the results under the calculate button. If discharge was inputted in \"Table Output\"
+			mode, the discharge values will also show up on the rating curve graph to the right of the screen.
 			"""
 		));
 
