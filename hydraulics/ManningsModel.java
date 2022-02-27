@@ -53,7 +53,7 @@ public class ManningsModel
 
 	public boolean areConstantsSet()
 	{
-		return this.equation.n != null && this.equation.n != 0 && this.equation.s != null && this.equation.s != 0;
+		return this.equation.n != null && this.equation.n > 0 && this.equation.s != null && this.equation.s > 0;
 	}
 
 	public boolean dischargeUnderflow(double discharge)
