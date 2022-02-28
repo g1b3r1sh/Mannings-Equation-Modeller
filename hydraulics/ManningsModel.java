@@ -69,6 +69,7 @@ public class ManningsModel
 	// If interrupted by runCondition returning false before finishing loop, returns null
 	private Double calcWaterLevel(double discharge, double initStep, double hint, BooleanSupplier runCondition)
 	{
+		// Error handling
 		if (!this.areConstantsSet())
 		{
 			throw new IllegalStateException("Model is not ready.");
@@ -86,9 +87,13 @@ public class ManningsModel
 			throw new IllegalArgumentException("Data cannot be used to calculate water level.");
 		}
 
-		this.equation.q = discharge;
+		this.equation.q = discharge; // Set the value of discharge in the equation
+
+		// Initialise hint
 		double lowestWaterLevel = this.calculator.getLowest().doubleValue();
-		hint = Math.max(hint, lowestWaterLevel);
+		hint = Math.max(hint, lowestWaterLevel); // If hint is lower than lowest possible water level, set it to that
+
+		// Initialise step value
 		int offsetDir = this.calcConsistent(hint, -1);
 		// Increment is positive or negative, depending on if desired discharge is greater or less than discharge calculated using hint
 		double increment = offsetDir == -1 ? Math.abs(initStep) : -1 * Math.abs(initStep);
@@ -106,6 +111,7 @@ public class ManningsModel
 			this.calcConsistent(waterLevel, -1) == offsetDir; 
 			waterLevel += increment)
 		{
+			// Prematurely stop if run condition is false (mainly used if method is executed in SwingWorker, which can get cancelled)
 			if (!runCondition.getAsBoolean())
 			{
 				this.resetModel();
@@ -113,8 +119,8 @@ public class ManningsModel
 			}
 		}
 
-		// Two levels that are on either side of the correct level
-		// To ensure consistency in return value when given differing hints, level1 < level2
+		// Algorithm ends with two candidate water levels - one on either side of the "correct" water level
+		// To ensure return value consistency when given different hint values, return the one closest to the "correct" water level
 		double level1;
 		double level2;
 		if (increment > 0)
@@ -148,6 +154,7 @@ public class ManningsModel
 		for (int i = 0 < displayScale ? 0 : displayScale; i <= displayScale; i++)
 		{
 			waterLevel = this.calcWaterLevel(discharge, ManningsModel.defaultStep(i), waterLevel, runCondition);
+			// If search function returns null, run condition is false, meaning loop should be prematurely terminated
 			if (waterLevel == null)
 			{
 				return null;

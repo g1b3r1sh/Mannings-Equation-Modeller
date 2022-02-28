@@ -77,7 +77,7 @@ public class ResultScreen extends JPanel
 		this.manningsGraph.getGraphComponents().add(this.resultsVisualiser);
 
 		this.manningsGraphEditDialog = new GraphEditDialog(this.parent, new GraphEditScreen(this.manningsGraphContainer));
-		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Water Level...");
+		this.workerDialog = new SwingWorkerDialog(this.parent, "Calculate", "Calculating Results...");
 
 		this.add(this.createSidePanel(), BorderLayout.WEST);
 		this.add(this.manningsGraphContainer, BorderLayout.CENTER);
