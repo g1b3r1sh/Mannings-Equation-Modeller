@@ -24,7 +24,7 @@ public class MainWindow extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1000, 600);
 		this.setLocation(10, 10);
-		// this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		this.inputScreen = new InputScreen(this, model);
 		this.resultScreen = new ResultScreen(this, model.getData());
