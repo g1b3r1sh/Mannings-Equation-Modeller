@@ -1,5 +1,9 @@
 package utility;
 
+/**
+ * Stores an object of class T, allowing for storage of immutable objects by referencing the Wrapper object
+**/
+
 public class Wrapper<T>
 {
 	public T value;
