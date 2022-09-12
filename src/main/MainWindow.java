@@ -7,7 +7,7 @@ import main.result.ResultScreen;
 
 public class MainWindow extends JFrame
 {
-	private static final String FRAME_TITLE = "Hydraulic Analysis Program";
+	private static final String FRAME_TITLE = "Manning's Equation Modeller";
 
 	private CrossSectionDataset model;
 	private ScreenSwitcher screenSwitcher;
