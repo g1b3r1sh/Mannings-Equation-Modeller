@@ -1,7 +1,7 @@
 package utility;
 
 /**
- * A pair of two objects that can be different classes
+ * A pair of two objects that may be different classes (think C++ std::pair)
 **/
 
 public class Pair<F, S>
